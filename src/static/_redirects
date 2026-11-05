@@ -1,0 +1,6 @@
+# Alte Adressen aus der Demo auf die neuen Seiten umleiten.
+/leitfaden/finanz-check        /finanz-check/       301
+/leitfaden/finanz-check.html   /finanz-check/       301
+/leitfaden/danke.html          /leitfaden/danke/    301
+/finanz-check.html             /finanz-check/       301
+/termin.html                   /termin/             301

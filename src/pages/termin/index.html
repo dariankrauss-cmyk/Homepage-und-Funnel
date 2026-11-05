@@ -1,0 +1,100 @@
+---
+title: Ehrliche Einschätzung in 20 Minuten, in deiner Sprache | Darian Krauß
+ogTitle: Deine ehrliche Einschätzung, in deiner Sprache
+description: In 20 Minuten schauen wir gemeinsam auf deine Finanzen. Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Kostenlos, ehrlich und unverbindlich.
+---
+{{> head}}
+<body class="funnel">
+{{> header-funnel}}
+<main id="inhalt">
+  <section class="hero termin-hero">
+    <div class="wrap termin-grid">
+      <div class="termin-intro">
+        <p class="badge">Kostenlos · 20 Minuten · per Video-Call</p>
+        <h1>Deine ehrliche Einschätzung, <span>in deiner Sprache</span></h1>
+        <p class="lead">In 20 Minuten schauen wir gemeinsam auf deine Finanzen: was gut läuft, wo Geld liegen bleibt und was du als Erstes angehen solltest. Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Ehrlich und unverbindlich.</p>
+
+        <div class="video" data-src="{{site.videos.termin.src}}" data-poster="{{site.videos.termin.poster}}" data-untertitel="{{site.videos.termin.untertitel}}" data-label="Darian stellt sich vor, in Gebärdensprache mit Untertiteln">
+          <span class="dgs">DGS · Untertitel · Ton</span>
+          <div class="ph">
+            <div class="play" aria-hidden="true">▶</div>
+            <b>Darian stellt sich vor</b>
+            <small>Video in Gebärdensprache folgt in Kürze</small>
+          </div>
+          <button class="ton" type="button" hidden>🔈 Ton an</button>
+        </div>
+      </div>
+
+      <div class="form-card" id="anfrage">
+        <h2 class="form-h">Drei kurze Fragen, dann direkt in den Kalender</h2>
+        <p class="sub">Dauert keine Minute. Telefonieren musst du nicht.</p>
+        <form class="lead-form" data-quelle="termin" data-danke="/termin/danke/" novalidate>
+          <fieldset class="choice-group" data-pflicht>
+            <legend>Worum geht es dir? <span class="hint">Mehrere Antworten möglich</span></legend>
+            <div class="opts-list">
+              <label class="opt"><input type="checkbox" name="thema" value="Vorsorge"><span>Vorsorge</span></label>
+              <label class="opt"><input type="checkbox" name="thema" value="Geldanlage"><span>Geldanlage</span></label>
+              <label class="opt"><input type="checkbox" name="thema" value="Versicherung"><span>Versicherung</span></label>
+              <label class="opt"><input type="checkbox" name="thema" value="Immobilie"><span>Immobilie</span></label>
+              <label class="opt"><input type="checkbox" name="thema" value="Steuervorteile"><span>Steuervorteile</span></label>
+              <label class="opt"><input type="checkbox" name="thema" value="Schulden"><span>Schulden</span></label>
+              <label class="opt"><input type="checkbox" name="thema" value="Weiß ich noch nicht"><span>Weiß ich noch nicht</span></label>
+            </div>
+            <p class="msg" id="thema-msg">Bitte wähl mindestens ein Thema aus.</p>
+          </fieldset>
+
+          <fieldset class="choice-group" data-pflicht>
+            <legend>Wie möchtest du sprechen?</legend>
+            <div class="opts-list">
+              <label class="opt"><input type="radio" name="sprache" value="Gebärdensprache"><span>Gebärdensprache</span></label>
+              <label class="opt"><input type="radio" name="sprache" value="Lautsprache"><span>Lautsprache</span></label>
+              <label class="opt"><input type="radio" name="sprache" value="Chat"><span>Chat</span></label>
+            </div>
+            <p class="msg" id="sprache-msg">Bitte wähl aus, wie du sprechen möchtest.</p>
+          </fieldset>
+
+          {{> lead-felder}}
+          <div class="consent">
+            <input id="einwilligung" name="einwilligung" type="checkbox" required>
+            <label for="einwilligung">{{site.einwilligung.termin}} Es gilt die <a href="/datenschutz/">Datenschutzerklärung</a>.</label>
+            <p class="msg" id="einwilligung-msg">Bitte bestätige kurz die Einwilligung.</p>
+          </div>
+          <button class="btn full" type="submit">Weiter zum Kalender</button>
+          {{> lead-fuss}}
+          <ul class="trust"><li>Kostenlos</li><li>Unverbindlich</li><li>Kein Anruf nötig</li></ul>
+        </form>
+      </div>
+
+      <div class="termin-extra">
+        <p class="kicker">So geht es weiter</p>
+        <ol class="steps">
+          <li><b>Uhrzeit wählen</b><span>Im Online-Kalender, wann es dir passt.</span></li>
+          <li><b>Bestätigung per WhatsApp</b><span>Als Text und als kurzes Video von mir in Gebärdensprache, kurz vorher die Erinnerung mit dem Link.</span></li>
+          <li><b>20 Minuten per Video-Call</b><span>In Gebärdensprache, Lautsprache oder per Chat. Kostenlos und unverbindlich.</span></li>
+        </ol>
+        {{> ueber-darian}}
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" aria-labelledby="noch-nicht-titel">
+    <div class="wrap">
+      <h2 id="noch-nicht-titel">Noch nicht bereit für ein Gespräch?</h2>
+      <div class="alts">
+        <a class="alt-card" href="/finanz-check/">
+          <b>Erst selbst schauen: der Finanz-Check</b>
+          <span>Fünf Fragen, 90 Sekunden. Du siehst sofort, wo du wahrscheinlich Geld liegen lässt.</span>
+          <em>Check starten →</em>
+        </a>
+        <a class="alt-card" href="/leitfaden/">
+          <b>Der Finanz-Leitfaden 2027</b>
+          <span>Als PDF und als Video in Gebärdensprache, kostenlos per E-Mail.</span>
+          <em>Leitfaden holen →</em>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+{{> footer-funnel}}
+</body>
+</html>
