@@ -1,0 +1,35 @@
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        {{> marke}}
+        <p>Finanzberater und Makler, selbst hörgeschädigt. Beratung per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Kein Anruf nötig.</p>
+      </div>
+      <nav aria-label="Angebote">
+        <h2 class="foot-h">Angebote</h2>
+        <a href="/termin/">Ehrliche Einschätzung in 20 Minuten</a>
+        <a href="/finanz-check/">Finanz-Check in 90 Sekunden</a>
+        <a href="/leitfaden/">Finanz-Leitfaden 2027</a>
+        <a href="/#podcast">Podcast</a>
+      </nav>
+      <div>
+        <h2 class="foot-h">Kontakt</h2>
+        <a href="/termin/">Termin per Video-Call</a>
+        {{#link.whatsapp}}<a href="{{link.whatsapp}}">WhatsApp</a>{{/link.whatsapp}}
+        {{#link.email}}<a href="{{link.email}}">{{site.kontakt.email}}</a>{{/link.email}}
+        {{#site.social.instagram}}<a href="{{site.social.instagram}}">Instagram</a>{{/site.social.instagram}}
+        {{#site.social.tiktok}}<a href="{{site.social.tiktok}}">TikTok</a>{{/site.social.tiktok}}
+        {{#site.social.youtube}}<a href="{{site.social.youtube}}">YouTube</a>{{/site.social.youtube}}
+        {{#site.social.spotify}}<a href="{{site.social.spotify}}">Spotify</a>{{/site.social.spotify}}
+      </div>
+      <nav aria-label="Rechtliches">
+        <h2 class="foot-h">Rechtliches</h2>
+        <a href="/impressum/">Impressum</a>
+        <a href="/impressum/#erstinformation">Erstinformation</a>
+        <a href="/datenschutz/">Datenschutz</a>
+      </nav>
+    </div>
+    <p class="disc">{{page.disclaimer}}</p>
+    <p class="copy">© {{jahr}} {{site.name}}</p>
+  </div>
+</footer>

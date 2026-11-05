@@ -1,0 +1,1 @@
+Hier dein Porträt ablegen (z. B. darian.jpg) und in site.config.mjs bei portrait eintragen: /bilder/darian.jpg

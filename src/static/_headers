@@ -1,0 +1,13 @@
+# Sicherheits-Header für alle Seiten (Cloudflare Workers Static Assets).
+# Wenn du Videos oder Bilder von einer anderen Domain einbindest, ergänze sie
+# bei media-src bzw. img-src.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+# CSS und JS tragen eine Versionsnummer (?v=…), dürfen also lange im Cache bleiben.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

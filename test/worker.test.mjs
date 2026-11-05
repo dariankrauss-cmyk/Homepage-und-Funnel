@@ -1,0 +1,216 @@
+import { test, beforeEach, afterEach } from "node:test";
+import assert from "node:assert/strict";
+import worker from "../worker/index.js";
+import site from "../site.config.mjs";
+
+const ORIGIN = "https://darian-krauss.example";
+const ASSETS = { fetch: async (req) => new Response(`asset:${new URL(req.url).pathname}`) };
+
+let gesendet;
+let antworten;
+let original;
+
+beforeEach(() => {
+  gesendet = [];
+  antworten = [200];
+  original = { fetch: globalThis.fetch, warn: console.warn, error: console.error };
+  console.warn = () => {};
+  console.error = () => {};
+  globalThis.fetch = async (url, init) => {
+    gesendet.push({ url: String(url), body: JSON.parse(init.body) });
+    const status = antworten.length > 1 ? antworten.shift() : antworten[0];
+    return new Response("ok", { status });
+  };
+});
+
+afterEach(() => {
+  globalThis.fetch = original.fetch;
+  console.warn = original.warn;
+  console.error = original.error;
+});
+
+const env = (extra = {}) => ({ ASSETS, LEAD_WEBHOOK_URL: "https://crm.example/hook", ...extra });
+
+function post(body, headers = {}) {
+  return new Request(`${ORIGIN}/api/lead`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: ORIGIN, ...headers },
+    body: typeof body === "string" ? body : JSON.stringify(body),
+  });
+}
+
+const leitfaden = {
+  quelle: "leitfaden",
+  vorname: "Lea",
+  email: "lea@example.de",
+  phone: "0176 1234567",
+  einwilligung: true,
+  hinweisfeld: "",
+  seite: "/leitfaden/",
+  t: 9000,
+};
+
+async function senden(body, e = env(), headers) {
+  const r = await worker.fetch(post(body, headers), e);
+  return { status: r.status, json: await r.json() };
+}
+
+test("gültiger Leitfaden-Lead geht mit Tag und Einwilligung an den Webhook", async () => {
+  const { status, json } = await senden(leitfaden);
+  assert.equal(status, 200);
+  assert.deepEqual(json, { ok: true });
+  assert.equal(gesendet.length, 1);
+  const b = gesendet[0].body;
+  assert.equal(gesendet[0].url, "https://crm.example/hook");
+  assert.equal(b.first_name, "Lea");
+  assert.equal(b.email, "lea@example.de");
+  assert.equal(b.tag, "leitfaden-2027");
+  assert.equal(b.quelle, "leitfaden");
+  assert.equal(b.telefon_international, "+491761234567");
+  assert.equal(b.einwilligung, true);
+  assert.equal(b.einwilligung_text, site.einwilligung.leitfaden);
+  assert.equal(b.seite, `${ORIGIN}/leitfaden/`);
+  assert.ok(!Number.isNaN(Date.parse(b.einwilligung_zeitpunkt)));
+  assert.equal("hinweisfeld" in b, false);
+});
+
+test("Terminanfrage braucht Thema und Sprache", async () => {
+  const { status, json } = await senden({ ...leitfaden, quelle: "termin" });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["thema", "sprache"]);
+  assert.equal(gesendet.length, 0);
+});
+
+test("Terminanfrage mit Thema und Sprache", async () => {
+  const { status } = await senden({ ...leitfaden, quelle: "termin", thema: ["Vorsorge", "Geldanlage"], sprache: "Gebärdensprache" });
+  assert.equal(status, 200);
+  const b = gesendet[0].body;
+  assert.equal(b.tag, "termin-anfrage");
+  assert.equal(b.thema, "Vorsorge, Geldanlage");
+  assert.equal(b.sprache, "Gebärdensprache");
+  assert.equal(b.einwilligung_text, site.einwilligung.termin);
+});
+
+test("fehlende oder falsche Angaben werden benannt", async () => {
+  const { status, json } = await senden({ quelle: "leitfaden", vorname: " ", email: "lea@", phone: "123", einwilligung: "ja" });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["vorname", "email", "phone", "einwilligung"]);
+});
+
+test("unbekannte Quelle wird abgelehnt", async () => {
+  const { status, json } = await senden({ ...leitfaden, quelle: "__proto__" });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["quelle"]);
+});
+
+test("Honigtopf: Bot bekommt ok, aber nichts wird weitergeleitet", async () => {
+  const { status, json } = await senden({ ...leitfaden, hinweisfeld: "spam" });
+  assert.equal(status, 200);
+  assert.equal(json.ok, true);
+  assert.equal(gesendet.length, 0);
+});
+
+test("Formulare von fremden Seiten werden abgelehnt", async () => {
+  const { status } = await senden(leitfaden, env(), { Origin: "https://boese.example" });
+  assert.equal(status, 403);
+  const zwei = await senden(leitfaden, env(), { Origin: "null" });
+  assert.equal(zwei.status, 403);
+});
+
+test("nur POST mit JSON, höchstens 16 KB", async () => {
+  const get = await worker.fetch(new Request(`${ORIGIN}/api/lead`), env());
+  assert.equal(get.status, 405);
+  assert.equal(get.headers.get("Allow"), "POST");
+  const text = await worker.fetch(post("vorname=Lea", { "Content-Type": "text/plain" }), env());
+  assert.equal(text.status, 415);
+  const kaputt = await worker.fetch(post("{kein json"), env());
+  assert.equal(kaputt.status, 400);
+  const liste = await worker.fetch(post("[1,2]"), env());
+  assert.equal(liste.status, 400);
+  const gross = await worker.fetch(post({ ...leitfaden, vorname: "x".repeat(17000) }), env());
+  assert.equal(gross.status, 413);
+});
+
+test("Webhook fällt aus: zweiter Versuch, dann Fehler an die Seite", async () => {
+  antworten = [500, 500];
+  const { status, json } = await senden(leitfaden);
+  assert.equal(status, 502);
+  assert.equal(json.fehler, "zustellung");
+  assert.equal(gesendet.length, 2);
+});
+
+test("Webhook antwortet 4xx: kein zweiter Versuch", async () => {
+  antworten = [400];
+  const { status } = await senden(leitfaden);
+  assert.equal(status, 502);
+  assert.equal(gesendet.length, 1);
+});
+
+test("Webhook erholt sich beim zweiten Versuch", async () => {
+  antworten = [503, 200];
+  const { status } = await senden(leitfaden);
+  assert.equal(status, 200);
+  assert.equal(gesendet.length, 2);
+});
+
+test("ohne Webhook: Anfrage wird angenommen (nur Log)", async () => {
+  const { status, json } = await senden(leitfaden, { ASSETS });
+  assert.equal(status, 200);
+  assert.equal(json.ok, true);
+  assert.equal(gesendet.length, 0);
+});
+
+test("mehrere Webhooks, einer davon kaputt: trotzdem ok", async () => {
+  globalThis.fetch = async (url, init) => {
+    gesendet.push({ url: String(url), body: JSON.parse(init.body) });
+    return new Response("", { status: String(url).includes("kaputt") ? 404 : 200 });
+  };
+  const { status } = await senden(leitfaden, env({ LEAD_WEBHOOK_URL: "https://crm.example/a, https://kaputt.example/b" }));
+  assert.equal(status, 200);
+  assert.deepEqual(gesendet.map((g) => g.url).sort(), ["https://crm.example/a", "https://kaputt.example/b"]);
+});
+
+test("Finanz-Check- und Kampagnen-Felder werden gefiltert", async () => {
+  await senden({
+    ...leitfaden,
+    quelle: "finanz-check",
+    finanzcheck: { gdb: "Ja, GdB 100", ziel: "Steuern sparen", boese: "x" },
+    utm: { utm_source: "instagram", utm_campaign: "leitfaden-2027", boese: "x" },
+  });
+  const b = gesendet[0].body;
+  assert.equal(b.tag, "finanz-check");
+  assert.deepEqual(b.finanzcheck, { gdb: "Ja, GdB 100", ziel: "Steuern sparen" });
+  assert.equal(b.finanzcheck_gdb, "Ja, GdB 100");
+  assert.equal(b.utm_source, "instagram");
+  assert.equal(b.utm_campaign, "leitfaden-2027");
+  assert.equal("boese" in b, false);
+  assert.equal("finanzcheck_boese" in b, false);
+});
+
+test("Handynummern werden international aufbereitet", async () => {
+  const faelle = {
+    "+49 (0) 176 1234567": "+491761234567",
+    "0049 176 1234567": "+491761234567",
+    "0176/123 45 67": "+491761234567",
+    "4917612345678": "+4917612345678",
+  };
+  for (const [ein, aus] of Object.entries(faelle)) {
+    gesendet = [];
+    await senden({ ...leitfaden, phone: ein });
+    assert.equal(gesendet[0].body.telefon_international, aus, ein);
+  }
+});
+
+test("Rate-Limit greift, wenn eingerichtet", async () => {
+  const LEAD_LIMIT = { limit: async () => ({ success: false }) };
+  const { status } = await senden(leitfaden, env({ LEAD_LIMIT }));
+  assert.equal(status, 429);
+  assert.equal(gesendet.length, 0);
+});
+
+test("Seiten kommen aus den Assets, unbekannte API-Pfade sind 404", async () => {
+  const seite = await worker.fetch(new Request(`${ORIGIN}/leitfaden/`), env());
+  assert.equal(await seite.text(), "asset:/leitfaden/");
+  const api = await worker.fetch(new Request(`${ORIGIN}/api/gibtsnicht`), env());
+  assert.equal(api.status, 404);
+});

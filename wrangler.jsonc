@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Name des Workers bei Cloudflare. Ohne eigene Domain ist die Seite unter
+  // https://darian-krauss.<deine-subdomain>.workers.dev erreichbar.
+  "name": "darian-krauss",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-20",
+
+  // Vor jedem "wrangler dev" und "wrangler deploy" wird die Seite aus src/
+  // nach dist/ gebaut (auch bei Cloudflare Workers Builds).
+  "build": {
+    "command": "node build.mjs",
+    "watch_dir": ["src", "site.config.mjs"]
+  },
+
+  // Statische Seiten. /leitfaden/index.html ist unter /leitfaden/ erreichbar,
+  // unbekannte Adressen bekommen die 404-Seite.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+
+  // Logs im Cloudflare-Dashboard (Workers > darian-krauss > Logs).
+  "observability": { "enabled": true },
+
+  "workers_dev": true,
+  "preview_urls": true
+
+  // Optional: Formular-Schutz gegen Massenanfragen (5 pro Minute je IP).
+  // Zum Aktivieren das Komma oben setzen und die Zeilen einkommentieren.
+  // "ratelimits": [
+  //   { "name": "LEAD_LIMIT", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }
+  // ]
+}

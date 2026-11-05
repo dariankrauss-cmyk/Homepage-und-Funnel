@@ -1,0 +1,52 @@
+---
+title: Finanz-Check in 90 Sekunden | Darian Krauß
+ogTitle: Finanz-Check: Wo lässt du Geld liegen?
+description: Fünf Fragen, 90 Sekunden: Finde heraus, wo du bei Steuern, Vorsorge und Absicherung wahrscheinlich Geld liegen lässt.
+headerCta: Leitfaden holen
+headerCtaLink: /leitfaden/#anfordern
+disclaimer: Der Finanz-Check gibt eine erste Orientierung und ersetzt keine individuelle Steuer- oder Finanzberatung. Pauschbeträge nach § 33b EStG, Stand November 2026, ohne Gewähr.
+---
+{{> head}}
+<body class="funnel">
+{{> header-funnel}}
+<main id="inhalt">
+  <section class="hero">
+    <div class="wrap check">
+      <p class="badge">Finanz-Check · 90 Sekunden</p>
+      <h1>Wo lässt du <span>Geld liegen?</span></h1>
+      <p class="lead">Fünf kurze Fragen, ein Klick pro Frage. Danach siehst du deine wichtigsten Hebel bei Steuern, Vorsorge und Absicherung.</p>
+
+      <div class="progress" aria-hidden="true"><i id="balken"></i></div>
+      <div id="fragen">
+        <noscript><p class="note">Der Finanz-Check braucht JavaScript. Alternativ kannst du dir direkt den <a href="/leitfaden/">Finanz-Leitfaden</a> holen.</p></noscript>
+      </div>
+
+      <div id="ergebnis" class="hidden">
+        <p class="step-no">Dein Ergebnis</p>
+        <h2 id="erg-titel" tabindex="-1">Deine wichtigsten Hebel</h2>
+        <ul class="result" id="erg-liste"></ul>
+
+        <div class="form-card">
+          <h3>Ausführliche Auswertung und Leitfaden per E-Mail</h3>
+          <p class="sub">Ich schicke dir den Finanz-Leitfaden 2027 als PDF und Video in Gebärdensprache, passend zu deinen Antworten.</p>
+          <form class="lead-form" data-quelle="finanz-check" data-danke="/leitfaden/danke/" novalidate>
+            {{> lead-felder}}
+            <div class="consent">
+              <input id="einwilligung" name="einwilligung" type="checkbox" required>
+              <label for="einwilligung">{{site.einwilligung.finanzCheck}} Es gilt die <a href="/datenschutz/">Datenschutzerklärung</a>.</label>
+              <p class="msg" id="einwilligung-msg">Bitte bestätige kurz die Einwilligung.</p>
+            </div>
+            <button class="btn full" type="submit">Auswertung per E-Mail erhalten</button>
+            {{> lead-fuss}}
+            <ul class="trust"><li>Kostenlos</li><li>Kein Spam</li><li>Kein Anruf nötig</li></ul>
+          </form>
+        </div>
+        <button class="back" type="button" id="neu">↺ Check neu starten</button>
+      </div>
+    </div>
+  </section>
+</main>
+{{> footer-funnel}}
+<script src="{{asset.finanzcheck}}" defer></script>
+</body>
+</html>

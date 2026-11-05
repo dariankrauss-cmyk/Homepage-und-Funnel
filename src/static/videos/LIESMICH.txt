@@ -1,0 +1,1 @@
+Hier deine Videos ablegen (MP4, max. 25 MB pro Datei) und den Pfad in site.config.mjs eintragen, z. B. /videos/vorstellung.mp4
