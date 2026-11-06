@@ -4,6 +4,8 @@ Website für **Darian Krauß, Finanzberatung in Laut- und Gebärdensprache**, ge
 Inhalte und Design stammen aus der Strategie-Demo und dem Leitfaden-Funnel der Best Life Agency:
 Schwarz und Gold, helle Funnel-Seiten, Kontakt ohne Anruf.
 
+**Live (Vorschau):** https://homepage.darian-krauss.workers.dev
+
 | Seite | Adresse | Zweck |
 |---|---|---|
 | Startseite | `/` | Wer ist Darian, Themen, Ablauf, Podcast, FAQ |
@@ -63,16 +65,17 @@ Ohne Webhook nimmt die Seite Anfragen trotzdem an und schreibt sie nur ins Log (
 
 ## Auf Cloudflare veröffentlichen
 
+Der Worker **`homepage`** läuft bereits in deinem Cloudflare-Konto unter
+`https://homepage.darian-krauss.workers.dev`. Für Updates gibt es drei Wege.
+
 ### Weg A: Cloudflare mit GitHub verbinden (empfohlen)
 
 Danach geht jede Änderung auf GitHub automatisch online.
 
-1. Im [Cloudflare-Dashboard](https://dash.cloudflare.com) zu **Workers & Pages** gehen und **Erstellen** wählen.
-2. **Repository importieren** (Import a repository), GitHub verbinden und `homepage-und-funnel` auswählen.
-3. Projektname **`darian-krauss`** lassen (muss zu `name` in `wrangler.jsonc` passen).
-   Build-Befehl leer lassen, Deploy-Befehl `npx wrangler deploy` (Standard). Cloudflare baut die Seite dabei selbst.
-4. **Speichern und bereitstellen.** Die Seite ist dann unter
-   `https://darian-krauss.misty-hat-6afe.workers.dev` erreichbar.
+1. Im [Cloudflare-Dashboard](https://dash.cloudflare.com) **Workers & Pages → homepage** öffnen.
+2. In den Einstellungen unter **Build** das Git-Repository verbinden: GitHub autorisieren und
+   `homepage-und-funnel` auswählen.
+3. Build-Befehl leer lassen, Deploy-Befehl `npx wrangler deploy` (Standard). Cloudflare baut die Seite dabei selbst.
 
 Cloudflare veröffentlicht den Haupt-Branch (`main`). Die Arbeit liegt zunächst im Branch
 `claude/homepage-funnel-leitfaden-zringm`: Entweder per Pull Request nach `main` übernehmen oder in
@@ -86,20 +89,28 @@ npx wrangler login
 npm run deploy
 ```
 
+### Weg C: Aus einer Claude-Code-Sitzung
+
+In Claude-Code-Sitzungen kommt Wranglers Datei-Upload nicht durch den Proxy. Dafür bettet
+`npm run deploy:eingebettet` alle Seiten direkt in den Worker ein und lädt nur ihn hoch
+(Token als Secret für `api.cloudflare.com` in der Umgebung, `CLOUDFLARE_API_TOKEN=proxy-injected`).
+So wurde die aktuelle Live-Version veröffentlicht. Videos über 1 MB passen so nicht hinein,
+dafür Weg A oder B nehmen. Beide Wege ersetzen die eingebettete Version ohne Weiteres.
+
 ### Webhook für die Formulare eintragen
 
 Damit Anfragen in deinem CRM landen, den Webhook als **Secret** hinterlegen:
 
-- im Dashboard: **Workers & Pages → darian-krauss → Settings → Variables and Secrets → Add**,
+- im Dashboard: **Workers & Pages → homepage → Settings → Variables and Secrets → Add**,
   Typ **Secret**, Name `LEAD_WEBHOOK_URL`, Wert: die Webhook-Adresse aus FinSuites (oder Zapier, Make, n8n …),
 - oder per Konsole: `npx wrangler secret put LEAD_WEBHOOK_URL`.
 
 Mehrere Ziele mit Komma trennen. Fällt der Webhook aus, bekommt die Person eine Fehlermeldung mit
-WhatsApp- und E-Mail-Alternative, und die Anfrage steht in den Logs (**Workers → darian-krauss → Logs**).
+WhatsApp- und E-Mail-Alternative, und die Anfrage steht in den Logs (**Workers → homepage → Logs**).
 
 ### Eigene Domain
 
-**Workers & Pages → darian-krauss → Settings → Domains & Routes → Add → Custom domain**, z. B.
+**Workers & Pages → homepage → Settings → Domains & Routes → Add → Custom domain**, z. B.
 `www.darian-krauss.de` (die Domain muss bei Cloudflare liegen). Danach in `site.config.mjs` die `url` anpassen.
 
 ### Optional: Schutz gegen Massenanfragen
@@ -130,5 +141,6 @@ worker/index.js     Lead-API: POST /api/lead → CRM-Webhook
 src/pages/          Seiten
 src/partials/       Bausteine (Kopf, Navigation, Formularfelder, Fußzeile)
 src/static/         CSS, JS, Bilder, Videos, Sicherheits-Header (_headers), Weiterleitungen (_redirects)
+tools/eingebettet.mjs  Deploy ohne Datei-Upload (Weg C), mit worker/eingebettet.js
 test/               Tests für Build und Lead-API (npm test)
 ```

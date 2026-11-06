@@ -43,7 +43,7 @@ Jedes Formular schickt per `POST` ein JSON an `LEAD_WEBHOOK_URL`. Die Felder sin
   "einwilligung": true,
   "einwilligung_text": "Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, …",
   "einwilligung_zeitpunkt": "2026-11-05T18:02:11.000Z",
-  "seite": "https://darian-krauss.misty-hat-6afe.workers.dev/termin/",
+  "seite": "https://homepage.darian-krauss.workers.dev/termin/",
   "zeitpunkt": "2026-11-05T18:02:11.000Z",
   "utm_source": "instagram",
   "utm_campaign": "stufe-3-termin"
