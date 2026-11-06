@@ -11,7 +11,7 @@
 export default {
   // Adresse der Website, ohne Schrägstrich am Ende. Wenn du eine eigene Domain
   // verbindest (z. B. https://www.darian-krauss.de), trag sie hier ein.
-  url: "https://darian-krauss.misty-hat-6afe.workers.dev",
+  url: "https://homepage.darian-krauss.workers.dev",
 
   // Live-Modus. Solange false: Vorschau-Hinweis oben auf jeder Seite und
   // Suchmaschinen dürfen die Seite nicht aufnehmen (noindex).
