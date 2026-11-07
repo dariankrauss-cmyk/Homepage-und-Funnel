@@ -109,7 +109,7 @@ test("Leitfaden: Nummer freiwillig, zwei getrennte Häkchen, Tipps erst mit Numm
 test("„ohne Fachchinesisch“ steht nur noch im Hero der Startseite", () => {
   const treffer = Object.entries(seiten).flatMap(([name, html]) => (html.match(/ohne Fachchinesisch/gi) || []).map(() => name));
   assert.deepEqual(treffer, ["index.html"]);
-  assert.match(seiten["index.html"], /<p class="lead">Ich bin Darian Krauß[^<]*Ohne Fachchinesisch/);
+  assert.match(seiten["index.html"], /<p class="hero-lead">Ich bin Darian Krauß[^<]*ohne Fachchinesisch/);
   assert.equal(/Fachchinesisch/.test(readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8")), false);
 });
 
@@ -120,13 +120,66 @@ test("Finanz-Check: Alter zuerst, GdB an dritter Stelle, überall „Sechs Frage
   for (const [name, html] of Object.entries(seiten)) assert.equal(/Fünf (kurze )?Fragen/.test(html), false, name);
 });
 
-test("Foto mit DK-Fallback auf der Startseite (Hero und Über mich)", () => {
+test("Foto mit DK-Fallback im Hero der Startseite", () => {
   const fotos = seiten["index.html"].match(/<img\b[^>]*src="\/img\/darian\.jpg"[^>]*>/g) || [];
-  assert.equal(fotos.length, 2);
+  assert.equal(fotos.length, site.videos.startseite.src ? 0 : 1);
   for (const img of fotos) {
     assert.match(img, /\sdata-fallback\b/);
     assert.match(img, /\salt="[^"]{8,}"/);
     assert.equal(/\sonerror=/.test(img), false, "kein Inline-Handler (CSP)");
+  }
+});
+
+test("Selbstbeschreibung: gehörlos mit zwei CIs, nirgends mehr „hörgeschädigt“", () => {
+  for (const [name, html] of Object.entries(seiten)) assert.equal(/hörgeschädigt/i.test(html), false, name);
+  const start = seiten["index.html"];
+  assert.match(start, /Ich bin gehörlos und trage zwei Cochlea-Implantate\./);
+  assert.match(start, /Deutscher Gebärdensprache \(DGS\) und in deutscher Lautsprache/);
+  // Die Berufsbezeichnung bleibt bis zur rechtlichen Klärung unverändert.
+  assert.match(start, /Ich bin Darian Krauß, Finanzberater und Makler\./);
+});
+
+test("Startseite: keine falschen Video-Vorschauen, keine erfundenen Podcast-Links", () => {
+  const start = seiten["index.html"];
+  if (!site.videos.startseite.src) {
+    assert.equal(/class="video\b/.test(start), false, "Video-Kasten ohne Video");
+    assert.equal(/folgt in Kürze/.test(start), false, "Platzhalter-Text");
+  }
+  const podcast = start.slice(start.indexOf('id="podcast"'), start.indexOf('id="fragen"'));
+  for (const [dienst, url] of [["youtube", site.social.youtube], ["spotify", site.social.spotify]]) {
+    if (!url) assert.equal(new RegExp(dienst, "i").test(podcast), false, `${dienst}: Link ohne Eintrag`);
+  }
+  assert.equal(/Jede Woche neu|Kundengeschichten|Gäste/.test(podcast), false, "keine erfundenen Formate oder Gäste");
+});
+
+test("Startseite: Themen-Karten führen zum Termin, das Thema gibt es im Formular", () => {
+  const start = seiten["index.html"];
+  const termin = seiten["termin/index.html"];
+  const themen = [...start.matchAll(/href="\/termin\/\?thema=([^"]+)"/g)].map((m) => decodeURIComponent(m[1]));
+  assert.equal(themen.length, 6);
+  for (const t of themen) assert.ok(termin.includes(`name="thema" value="${t}"`), `Thema ${t} fehlt im Terminformular`);
+});
+
+test("Knöpfe heißen überall gleich", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    for (const m of html.matchAll(/<a class="btn\b[^"]*" href="\/(termin|leitfaden)\/">([^<]+)<\/a>/g)) {
+      const soll = m[1] === "termin" ? "Kostenlosen Termin wählen" : "Leitfaden kostenlos holen";
+      assert.equal(m[2], soll, `${name}: Knopf zu /${m[1]}/`);
+    }
+  }
+});
+
+test("Schriften liegen auf dem eigenen Server und werden vorab geladen", () => {
+  const css = readFileSync(join(DIST, "assets", "style.css"), "utf8");
+  const dateien = [...css.matchAll(/url\((\/assets\/fonts\/[^)]+\.woff2)\)/g)].map((m) => m[1]);
+  assert.equal(dateien.length, 3);
+  for (const d of dateien) assert.ok(existsSync(join(DIST, d)), `${d} fehlt`);
+  assert.equal(/url\((["']?)https?:/.test(css), false, "keine externen Dateien im CSS");
+  for (const lizenz of ["OFL-Fraunces.txt", "OFL-Atkinson-Hyperlegible-Next.txt", "OFL-Inter.txt"]) {
+    assert.ok(existsSync(join(DIST, "assets", "fonts", lizenz)), `${lizenz} fehlt`);
+  }
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal((html.match(/<link rel="preload" href="\/assets\/fonts\/[^"]+" as="font" type="font\/woff2" crossorigin>/g) || []).length, 2, name);
   }
 });
 

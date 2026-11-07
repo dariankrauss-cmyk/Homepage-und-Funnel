@@ -8,7 +8,7 @@ Schwarz und Gold, helle Funnel-Seiten, Kontakt ohne Anruf.
 
 | Seite | Adresse | Zweck |
 |---|---|---|
-| Startseite | `/` | Wer ist Darian, Themen, Ablauf, Podcast, FAQ |
+| Startseite | `/` | Angebot, Über mich (DGS und Lautsprache), Beratung, Ablauf, Finanzwissen, Podcast, FAQ, Kontakt |
 | Termin-Funnel | `/termin/` | Video, drei kurze Fragen, dann in den Kalender (Stufe 3 der Anzeigen) |
 | Termin, Schritt 2 | `/termin/danke/` | Uhrzeit im Online-Kalender wählen |
 | Leitfaden-Funnel | `/leitfaden/` | Finanz-Leitfaden 2027 als Freebie (PDF und DGS-Video) |
@@ -44,11 +44,20 @@ oder im Impressum gelb markiert. Beim Bauen listet die Konsole auf, was noch feh
 
 - **Texte der Seiten:** `src/pages/…/index.html`
 - **Kopf, Navigation, Fußzeile:** `src/partials/`
-- **Design:** `src/static/assets/style.css`
+- **Design:** `src/static/assets/style.css`. Farben, Schriften und Abstände stehen oben als Variablen (`:root`):
+  Tiefschwarz, Weiß, warmes Off-White und Champagnergold. Gold nur für Akzente, Linien und einzelne Überschriften.
+- **Schriften:** Fraunces (Überschriften) und Atkinson Hyperlegible Next (Text) liegen in `src/static/assets/fonts/`,
+  frei nutzbar (SIL Open Font License, Lizenztexte daneben). Die Ziffer 0 kommt aus Inter, weil die Textschrift
+  sie mit Schrägstrich zeichnet und „2.840 €“ sonst wie „Ø“ (Durchschnitt) aussieht.
+- **Marmor:** Die dezenten Texturen `src/static/img/marmor-dunkel.webp` und `marmor-hell.webp` sind selbst gerechnet,
+  ohne fremde Bildrechte: `python3 tools/marmor.py` (braucht numpy und Pillow).
 - **Videos:** MP4 nach `src/static/videos/` legen (höchstens 25 MB pro Datei), Untertitel als `.vtt` daneben,
   dann den Pfad in `site.config.mjs` unter `videos` eintragen, z. B. `"/videos/vorstellung.mp4"`.
-- **Foto:** als `src/static/img/darian.jpg` ablegen. Es erscheint im Hero und bei „Über mich“.
-  Solange die Datei fehlt, zeigt die Seite den DK-Kreis.
+- **Foto:** als `src/static/img/darian.jpg` ablegen, am besten im Hochformat 4:5 (mindestens 800 × 1000 Pixel).
+  Es erscheint im Bogen-Rahmen im Hero. Solange die Datei fehlt, zeigt der Rahmen das Monogramm „DK“.
+- **Video auf der Startseite:** Sobald `videos.startseite.src` in `site.config.mjs` gefüllt ist, ersetzt das
+  DGS-Video den Foto-Rahmen im Hero (mit Untertiteln aus `untertitel`). Ohne Eintrag gibt es keine Video-Vorschau.
+- **Podcast:** Knöpfe zu YouTube und Spotify erscheinen erst, wenn `social.youtube` bzw. `social.spotify` gefüllt sind.
 - **Logo:** Sobald das DANOKA-Logo da ist, ersetzt es das „DK“ in `src/partials/marke.html`.
 
 ## Lokal ansehen
@@ -114,6 +123,9 @@ WhatsApp- und E-Mail-Alternative, und die Anfrage steht in den Logs (**Workers �
 **Workers & Pages → homepage → Settings → Domains & Routes → Add → Custom domain**, z. B.
 `www.darian-krauss.de` (die Domain muss bei Cloudflare liegen). Danach in `site.config.mjs` die `url` anpassen.
 
+Gewünscht ist später `www.darian-krauß-finanzen.de`. Sie ist noch nicht registriert, und an der Website ist dafür
+noch nichts umgestellt.
+
 ### Optional: Schutz gegen Massenanfragen
 
 In `wrangler.jsonc` ist ein Rate-Limit vorbereitet (5 Anfragen pro Minute je IP). Zum Aktivieren den
@@ -143,5 +155,6 @@ src/pages/          Seiten
 src/partials/       Bausteine (Kopf, Navigation, Formularfelder, Fußzeile)
 src/static/         CSS, JS, Bilder, Videos, Sicherheits-Header (_headers), Weiterleitungen (_redirects)
 tools/eingebettet.mjs  Deploy ohne Datei-Upload (Weg C), mit worker/eingebettet.js
+tools/marmor.py     Erzeugt die Marmor-Texturen (optional, braucht numpy und Pillow)
 test/               Tests für Build und Lead-API (npm test)
 ```

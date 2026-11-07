@@ -1,6 +1,7 @@
 /* Darian Krauß · Website-Skript
-   Menü auf dem Handy, Videos mit Untertiteln, Formulare an /api/lead und
-   persönliche Ansprache auf den Danke-Seiten. Keine Cookies, kein Tracking. */
+   Menü auf dem Handy, Videos mit Untertiteln, Formulare an /api/lead,
+   persönliche Ansprache auf den Danke-Seiten, feine Einblend-Animation und
+   Termin-Leiste auf dem Handy (Startseite). Keine Cookies, kein Tracking. */
 (function () {
   "use strict";
 
@@ -227,6 +228,58 @@
     if (img.complete && img.naturalWidth === 0) fehlt();
     else img.addEventListener("error", fehlt);
   });
+
+  /* 6. Feine Einblend-Animation: nur für Elemente unterhalb des ersten Bildschirms und nur,
+     wenn das Gerät keine reduzierte Bewegung wünscht. Ohne JavaScript ist alles sofort sichtbar. */
+  var ruhigeBewegung = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!ruhigeBewegung && "IntersectionObserver" in window) {
+    var einblenden = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("sichtbar");
+        einblenden.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.08 });
+    document.querySelectorAll("[data-reveal]").forEach(function (el) {
+      if (el.getBoundingClientRect().top < window.innerHeight) return; /* schon zu sehen: nichts verstecken */
+      el.classList.add("reveal");
+      einblenden.observe(el);
+    });
+  }
+
+  /* 7. Handy: Termin-Leiste am unteren Rand. Sie erscheint, sobald die Knöpfe im Hero nach oben
+     aus dem Bild gescrollt sind, und verschwindet beim Kontakt-Abschnitt und in der Fußzeile. */
+  var leiste = document.querySelector("[data-mobil-cta]");
+  var heroKnoepfe = document.querySelector(".start-hero .cta-row");
+  if (leiste && heroKnoepfe && "IntersectionObserver" in window) {
+    var heroVorbei = false;
+    var endeSichtbar = {};
+    var leisteZeigen = function () {
+      var amEnde = Object.keys(endeSichtbar).some(function (k) { return endeSichtbar[k]; });
+      var an = heroVorbei && !amEnde;
+      leiste.classList.toggle("an", an);
+      document.documentElement.classList.toggle("mit-leiste", an);
+    };
+    new IntersectionObserver(function (eintraege) {
+      var e = eintraege[eintraege.length - 1];
+      heroVorbei = !e.isIntersecting && e.boundingClientRect.top < 0;
+      leisteZeigen();
+    }).observe(heroKnoepfe);
+    var endeBeobachter = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e) { endeSichtbar[e.target.id || e.target.className] = e.isIntersecting; });
+      leisteZeigen();
+    });
+    document.querySelectorAll("#kontakt, footer").forEach(function (el) { endeBeobachter.observe(el); });
+  }
+
+  /* 8. Terminformular: Thema aus dem Link vorauswählen, z. B. /termin/?thema=Vorsorge
+     (die Themen-Karten der Startseite verlinken so) */
+  var themaAusLink = new URLSearchParams(location.search).get("thema");
+  if (themaAusLink) {
+    document.querySelectorAll('form.lead-form input[name="thema"]').forEach(function (i) {
+      if (i.value === themaAusLink) i.checked = true;
+    });
+  }
 
   /* Zurück-Knopf des Browsers holt die Seite aus dem Cache: Absende-Knopf wieder freigeben */
   window.addEventListener("pageshow", function (e) {
