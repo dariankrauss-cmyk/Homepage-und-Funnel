@@ -1,0 +1,2 @@
+Hier das Foto als darian.jpg ablegen (quadratisch oder hochkant, mindestens 800 px breit).
+Solange es fehlt, zeigt die Website den DK-Kreis.

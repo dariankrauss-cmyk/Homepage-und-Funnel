@@ -52,8 +52,8 @@ Jedes Formular schickt per `POST` ein JSON an `LEAD_WEBHOOK_URL`. Die Felder sin
 
 | `quelle` | `tag` | Zusätzliche Felder |
 |---|---|---|
-| `leitfaden` | `leitfaden-2027` | |
-| `finanz-check` | `finanz-check` | `finanzcheck_gdb`, `finanzcheck_pauschbetrag`, `finanzcheck_vorsorge`, `finanzcheck_kredit`, `finanzcheck_ziel` |
+| `leitfaden` | `leitfaden-2027` | `consent_leitfaden` (immer `true`), `consent_marketing` (`true`/`false`), Texte dazu in `consent_leitfaden_text` / `consent_marketing_text`, `consent_zeitpunkt`. Kein Feld `einwilligung`. Handynummer freiwillig: `phone` fehlt, wenn leer. |
+| `finanz-check` | `finanz-check` | `finanzcheck_alter`, `finanzcheck_vorsorge`, `finanzcheck_gdb`, `finanzcheck_pauschbetrag`, `finanzcheck_kredit`, `finanzcheck_ziel` |
 | `termin` | `termin-anfrage` | `thema`, `sprache` |
 
 Hat jemand vorher den Finanz-Check gemacht, kommen dessen Antworten auch bei Leitfaden und Termin mit.
@@ -64,6 +64,8 @@ WhatsApp-Nachrichten, die du automatisch verschickst, laufen über die WhatsApp 
 CRM. Vorlagen dafür muss Meta einmal freigeben.
 
 ### Leitfaden und Finanz-Check (`leitfaden-2027`, `finanz-check`)
+
+**Wichtig beim Leitfaden:** Die Seite hat zwei getrennte Häkchen. Mit `consent_marketing = false` bekommt die Person nur den Leitfaden, sonst nichts. Tipps, Einladungen und WhatsApp-Werbung nur bei `consent_marketing = true` und erst nach der Bestätigung (Double-Opt-In).
 
 **1. Sofort: Bestätigung (Double-Opt-In, Pflicht für E-Mail-Werbung)**
 

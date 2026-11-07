@@ -12,7 +12,7 @@ Schwarz und Gold, helle Funnel-Seiten, Kontakt ohne Anruf.
 | Termin-Funnel | `/termin/` | Video, drei kurze Fragen, dann in den Kalender (Stufe 3 der Anzeigen) |
 | Termin, Schritt 2 | `/termin/danke/` | Uhrzeit im Online-Kalender wählen |
 | Leitfaden-Funnel | `/leitfaden/` | Finanz-Leitfaden 2027 als Freebie (PDF und DGS-Video) |
-| Finanz-Check | `/finanz-check/` | Fünf Fragen, 90 Sekunden, Ergebnis, dann Leitfaden |
+| Finanz-Check | `/finanz-check/` | Sechs Fragen, 90 Sekunden, Ergebnis, dann Leitfaden |
 | Danke-Seite | `/leitfaden/danke/` | Bestätigung und nächster Schritt: Termin |
 | Rechtliches | `/impressum/`, `/datenschutz/` | Vorlagen mit allen Pflichtfeldern |
 
@@ -39,7 +39,7 @@ Clip / Anzeige ──▶ /termin/ oder /leitfaden/ oder /finanz-check/
 ## Inhalte anpassen
 
 Fast alles, was du ändern musst, steht in **`site.config.mjs`**: E-Mail, WhatsApp-Nummer, Kalender-Link,
-Social-Links, Videos, Porträt, Impressum und Datenschutz-Angaben. Leere Felder werden ausgeblendet
+Social-Links, Videos, Impressum und Datenschutz-Angaben. Leere Felder werden ausgeblendet
 oder im Impressum gelb markiert. Beim Bauen listet die Konsole auf, was noch fehlt.
 
 - **Texte der Seiten:** `src/pages/…/index.html`
@@ -47,7 +47,8 @@ oder im Impressum gelb markiert. Beim Bauen listet die Konsole auf, was noch feh
 - **Design:** `src/static/assets/style.css`
 - **Videos:** MP4 nach `src/static/videos/` legen (höchstens 25 MB pro Datei), Untertitel als `.vtt` daneben,
   dann den Pfad in `site.config.mjs` unter `videos` eintragen, z. B. `"/videos/vorstellung.mp4"`.
-- **Porträt:** z. B. `src/static/bilder/darian.jpg` und in `site.config.mjs` `portrait: "/bilder/darian.jpg"`.
+- **Foto:** als `src/static/img/darian.jpg` ablegen. Es erscheint im Hero und bei „Über mich“.
+  Solange die Datei fehlt, zeigt die Seite den DK-Kreis.
 - **Logo:** Sobald das DANOKA-Logo da ist, ersetzt es das „DK“ in `src/partials/marke.html`.
 
 ## Lokal ansehen
@@ -125,9 +126,9 @@ auskommentierten Block `ratelimits` einkommentieren.
 - [ ] E-Mail-Adresse und WhatsApp-Nummer eingetragen
 - [ ] Kalender-Link eingetragen (`kalender.url`) und im Kalender die WhatsApp-Bestätigung aktiv
 - [ ] `LEAD_WEBHOOK_URL` gesetzt und eine Test-Anfrage im CRM angekommen
-- [ ] Double-Opt-In für die Leitfaden-Mail im CRM eingerichtet (Pflicht für E-Mail-Werbung)
+- [ ] Im CRM: Tipps und Einladungen nur bei `consent_marketing = true` und erst nach Double-Opt-In (siehe FUNNEL.md)
 - [ ] Leitfaden-PDF und DGS-Video fertig und in der Mail verlinkt
-- [ ] Videos mit Untertiteln eingebunden, Porträt hochgeladen
+- [ ] Videos mit Untertiteln eingebunden, Foto `src/static/img/darian.jpg` hochgeladen
 - [ ] Instagram-Link geprüft (aus dem Anzeigen-Entwurf übernommen: `da.no.ka`)
 - [ ] In `site.config.mjs` **`live: true`** setzen: Vorschau-Leiste verschwindet, Google darf die Seite aufnehmen
 

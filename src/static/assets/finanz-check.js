@@ -1,19 +1,23 @@
-/* Darian Krauß · Finanz-Check: fünf Fragen, ein Klick pro Frage.
-   Die Antworten bleiben im Browser-Tab und werden nur mitgeschickt,
-   wenn jemand danach das Formular absendet. */
+/* Darian Krauß · Finanz-Check: sechs Fragen, ein Klick pro Frage.
+   Die Antworten liegen im Sitzungsspeicher dieses Browser-Tabs. main.js schickt sie
+   mit, wenn danach in diesem Tab ein Formular abgesendet wird (Finanz-Check,
+   Leitfaden oder Termin). Beim Beantworten selbst wird nichts gesendet. */
 (function () {
   "use strict";
 
   var FRAGEN = [
+    { feld: "alter", titel: "Wie alt bist du?",
+      hinweis: "Ein Klick genügt.",
+      optionen: ["unter 25", "25–39", "40–54", "55+"] },
+    { feld: "vorsorge", titel: "Wie sorgst du heute fürs Alter vor?",
+      hinweis: "Wähl das, was am ehesten passt.",
+      optionen: ["Nur gesetzliche Rente", "Betriebsrente über den Arbeitgeber", "Private Vorsorge oder Depot", "Noch gar nicht"] },
     { feld: "gdb", titel: "Hast du einen anerkannten Grad der Behinderung (GdB)?",
       hinweis: "Steht in deinem Schwerbehindertenausweis oder im Bescheid vom Versorgungsamt.",
       optionen: ["Nein", "Ja, GdB 20 bis 40", "Ja, GdB 50 bis 90", "Ja, GdB 100", "Weiß ich nicht genau"] },
     { feld: "pauschbetrag", titel: "Nutzt du den Behinderten-Pauschbetrag in deiner Steuererklärung?",
       hinweis: "Eine Auswahl genügt, du legst dich damit nicht fest.",
       optionen: ["Ja, schon eingetragen", "Nein", "Ich mache keine Steuererklärung", "Weiß ich nicht"] },
-    { feld: "vorsorge", titel: "Wie sorgst du heute fürs Alter vor?",
-      hinweis: "Wähl das, was am ehesten passt.",
-      optionen: ["Nur gesetzliche Rente", "Betriebsrente über den Arbeitgeber", "Private Vorsorge oder Depot", "Noch gar nicht"] },
     { feld: "kredit", titel: "Nutzt du gerade Dispo oder Ratenkredit?",
       hinweis: "Hier geht es oft um mehr Geld, als man denkt.",
       optionen: ["Nein", "Ja, den Dispo", "Ja, einen Ratenkredit", "Beides"] },
@@ -31,7 +35,7 @@
 
   var ZIELE = {
     "Steuern sparen": "Kapitel 1 und 2 im Leitfaden zeigen dir Schritt für Schritt, was du eintragen kannst.",
-    "Altersvorsorge aufbauen": "Kapitel 3 erklärt die drei Säulen der Vorsorge ohne Fachchinesisch.",
+    "Altersvorsorge aufbauen": "Kapitel 3 erklärt die drei Säulen der Vorsorge in einfachen Worten.",
     "Geld anlegen": "Kapitel 4 erklärt ETF mit Chancen, Risiken und Kosten. Investieren bietet Chancen, aber keine Garantie.",
     "Richtig abgesichert sein": "Kapitel 5 zeigt, welche Versicherungen du wirklich brauchst.",
     "Schulden loswerden": "Kapitel 6 zeigt die fünf teuersten Geldfehler und den Weg raus."

@@ -133,9 +133,12 @@
       });
       pruefe(f.vorname, !!f.vorname.value.trim());
       pruefe(f.email, MAIL.test(f.email.value.trim()));
+      /* Handynummer: Pflicht nur mit required (Leitfaden: freiwillig). Wenn sie dasteht, muss sie stimmen. */
       var ziffern = f.phone.value.replace(/\D/g, "");
-      pruefe(f.phone, ziffern.length >= 7 && ziffern.length <= 15);
-      pruefe(f.einwilligung, f.einwilligung.checked);
+      var telLeer = !f.phone.value.trim();
+      pruefe(f.phone, (telLeer && !f.phone.required) || (ziffern.length >= 7 && ziffern.length <= 15));
+      /* Pflicht-Häkchen haben required, freiwillige nicht */
+      form.querySelectorAll(".consent input[type=checkbox][required]").forEach(function (c) { pruefe(c, c.checked); });
       if (fehler.length) { fehler[0].focus(); return; }
 
       var daten = {
@@ -143,11 +146,12 @@
         vorname: f.vorname.value.trim(),
         email: f.email.value.trim(),
         phone: f.phone.value.trim(),
-        einwilligung: true,
         hinweisfeld: f.hinweisfeld ? f.hinweisfeld.value : "",
         seite: location.pathname,
         t: Date.now() - START
       };
+      /* Jedes Häkchen getrennt senden: einwilligung bzw. consent_leitfaden und consent_marketing */
+      form.querySelectorAll(".consent input[type=checkbox]").forEach(function (c) { daten[c.name] = c.checked; });
       var themen = [].map.call(form.querySelectorAll('input[name="thema"]:checked'), function (i) { return i.value; });
       if (themen.length) daten.thema = themen;
       var sprache = form.querySelector('input[name="sprache"]:checked');
@@ -198,6 +202,30 @@
     var zuruecksetzen = function (e) { if (e.target.name) setFehler(e.target, false); };
     form.addEventListener("input", zuruecksetzen);
     form.addEventListener("change", zuruecksetzen);
+
+    /* Bereiche, die erst erscheinen, wenn ein Feld ausgefüllt ist (data-braucht="phone").
+       Verschwindet die Nummer wieder, wird das Häkchen darin zurückgesetzt. */
+    form.querySelectorAll("[data-braucht]").forEach(function (box) {
+      var feld = f[box.getAttribute("data-braucht")];
+      if (!feld) return;
+      var zeigen = function () {
+        var an = feld.value.trim() !== "";
+        box.hidden = !an;
+        if (!an) box.querySelectorAll("input[type=checkbox]").forEach(function (c) { c.checked = false; });
+      };
+      feld.addEventListener("input", zeigen);
+      feld.addEventListener("change", zeigen);
+      window.addEventListener("pageshow", zeigen);
+      zeigen();
+    });
+  });
+
+  /* 5. Fotos: Fehlt die Datei, wird das Bild ausgeblendet und der DK-Kreis darunter bleibt sichtbar.
+     (onerror direkt im HTML würde die Content-Security-Policy blockieren.) */
+  document.querySelectorAll("img[data-fallback]").forEach(function (img) {
+    var fehlt = function () { img.classList.add("fehlt"); };
+    if (img.complete && img.naturalWidth === 0) fehlt();
+    else img.addEventListener("error", fehlt);
   });
 
   /* Zurück-Knopf des Browsers holt die Seite aus dem Cache: Absende-Knopf wieder freigeben */

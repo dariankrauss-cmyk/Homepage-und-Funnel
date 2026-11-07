@@ -86,9 +86,47 @@ test("Formulare: Quelle, Danke-Seite, Beschriftungen und Einwilligungstext", () 
     for (const m of html.matchAll(/<input\b[^>]*\sid="([^"]+)"/g)) {
       assert.ok(html.includes(`for="${m[1]}"`), `${name}: Feld #${m[1]} ohne Beschriftung`);
     }
-    for (const feld of ["vorname", "email", "phone", "einwilligung", "hinweisfeld"]) {
+    const haekchen = name.startsWith("leitfaden/") ? ["consent_leitfaden", "consent_marketing"] : ["einwilligung"];
+    for (const feld of ["vorname", "email", "phone", "hinweisfeld", ...haekchen]) {
       assert.ok(html.includes(`name="${feld}"`), `${name}: Feld ${feld} fehlt`);
     }
+  }
+});
+
+test("Leitfaden: Nummer freiwillig, zwei getrennte Häkchen, Tipps erst mit Nummer", () => {
+  const html = seiten["leitfaden/index.html"];
+  const telefon = html.match(/<input\b[^>]*id="phone"[^>]*>/)[0];
+  assert.equal(/\srequired\b/.test(telefon), false, "Handynummer darf hier nicht required sein");
+  assert.match(html, /<input id="consent_leitfaden" name="consent_leitfaden" type="checkbox" required>/);
+  assert.match(html, /<div class="consent" data-braucht="phone" hidden>\s*<input id="consent_marketing" name="consent_marketing" type="checkbox">/);
+  assert.ok(html.includes(esc(site.einwilligung.marketing)), "Text der Tipps-Einwilligung");
+  for (const andere of ["finanz-check/index.html", "termin/index.html"]) {
+    const t = seiten[andere].match(/<input\b[^>]*id="phone"[^>]*>/)[0];
+    assert.match(t, /\srequired\b/, `${andere}: Handynummer bleibt Pflicht`);
+  }
+});
+
+test("„ohne Fachchinesisch“ steht nur noch im Hero der Startseite", () => {
+  const treffer = Object.entries(seiten).flatMap(([name, html]) => (html.match(/ohne Fachchinesisch/gi) || []).map(() => name));
+  assert.deepEqual(treffer, ["index.html"]);
+  assert.match(seiten["index.html"], /<p class="lead">Ich bin Darian Krauß[^<]*Ohne Fachchinesisch/);
+  assert.equal(/Fachchinesisch/.test(readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8")), false);
+});
+
+test("Finanz-Check: Alter zuerst, GdB an dritter Stelle, überall „Sechs Fragen“", () => {
+  const js = readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8");
+  const felder = [...js.matchAll(/\{ feld: "(\w+)"/g)].map((m) => m[1]);
+  assert.deepEqual(felder, ["alter", "vorsorge", "gdb", "pauschbetrag", "kredit", "ziel"]);
+  for (const [name, html] of Object.entries(seiten)) assert.equal(/Fünf (kurze )?Fragen/.test(html), false, name);
+});
+
+test("Foto mit DK-Fallback auf der Startseite (Hero und Über mich)", () => {
+  const fotos = seiten["index.html"].match(/<img\b[^>]*src="\/img\/darian\.jpg"[^>]*>/g) || [];
+  assert.equal(fotos.length, 2);
+  for (const img of fotos) {
+    assert.match(img, /\sdata-fallback\b/);
+    assert.match(img, /\salt="[^"]{8,}"/);
+    assert.equal(/\sonerror=/.test(img), false, "kein Inline-Handler (CSP)");
   }
 });
 
