@@ -9,12 +9,21 @@
 */
 import site from "../site.config.mjs";
 
+// Jede Quelle hat ein Pflicht-Häkchen. Der Leitfaden hat zusätzlich ein freiwilliges
+// (consent_marketing), und dort ist die Handynummer freiwillig. Gespeichert wird der
+// Wortlaut, den die Person auf der Seite gesehen hat.
+const DATENSCHUTZ_SATZ = " Es gilt die Datenschutzerklärung.";
 const QUELLEN = {
-  leitfaden: { tag: "leitfaden-2027", einwilligung: site.einwilligung.leitfaden },
-  "finanz-check": { tag: "finanz-check", einwilligung: site.einwilligung.finanzCheck },
-  termin: { tag: "termin-anfrage", einwilligung: site.einwilligung.termin },
+  leitfaden: {
+    tag: "leitfaden-2027",
+    pflicht: "consent_leitfaden",
+    text: site.einwilligung.leitfaden + DATENSCHUTZ_SATZ,
+    telefonFreiwillig: true,
+  },
+  "finanz-check": { tag: "finanz-check", pflicht: "einwilligung", text: site.einwilligung.finanzCheck + DATENSCHUTZ_SATZ },
+  termin: { tag: "termin-anfrage", pflicht: "einwilligung", text: site.einwilligung.termin + DATENSCHUTZ_SATZ },
 };
-const FINANZCHECK_FELDER = ["gdb", "pauschbetrag", "vorsorge", "kredit", "ziel"];
+const FINANZCHECK_FELDER = ["alter", "vorsorge", "gdb", "pauschbetrag", "kredit", "ziel"];
 const KAMPAGNE = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
 const MAX_BYTES = 16 * 1024;
 const MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -100,7 +109,8 @@ function txt(v, max) {
 function pruefen(roh) {
   const felder = [];
   const quelle = txt(roh.quelle, 40);
-  if (!Object.hasOwn(QUELLEN, quelle)) felder.push("quelle");
+  const q = Object.hasOwn(QUELLEN, quelle) ? QUELLEN[quelle] : null;
+  if (!q) felder.push("quelle");
 
   const vorname = txt(roh.vorname, 80);
   if (!vorname) felder.push("vorname");
@@ -108,11 +118,14 @@ function pruefen(roh) {
   const email = txt(roh.email, 254);
   if (!MAIL.test(email)) felder.push("email");
 
+  // Handynummer: Pflicht außer beim Leitfaden. Steht eine da, muss sie stimmen.
   const phone = txt(roh.phone, 40);
   const ziffern = phone.replace(/\D/g, "");
-  if (ziffern.length < 7 || ziffern.length > 15 || /[^\d\s+()\-/.]/.test(phone)) felder.push("phone");
+  const telefonOk = ziffern.length >= 7 && ziffern.length <= 15 && !/[^\d\s+()\-/.]/.test(phone);
+  if (phone ? !telefonOk : !q?.telefonFreiwillig) felder.push("phone");
 
-  if (roh.einwilligung !== true) felder.push("einwilligung");
+  if (q && roh[q.pflicht] !== true) felder.push(q.pflicht);
+  const marketing = quelle === "leitfaden" && roh.consent_marketing === true;
 
   let thema = [];
   let sprache = "";
@@ -134,27 +147,45 @@ function pruefen(roh) {
     }
   }
 
-  return { felder, daten: { quelle, vorname, email, phone, thema, sprache, finanzcheck } };
+  return { felder, daten: { quelle, vorname, email, phone, marketing, thema, sprache, finanzcheck } };
 }
 
 /* Flache Felder, damit sie sich im CRM leicht zuordnen lassen */
 function aufbereiten(d, roh, url) {
   const jetzt = new Date().toISOString();
   const seite = txt(roh.seite, 200);
+  const q = QUELLEN[d.quelle];
   const eintrag = {
     vorname: d.vorname,
     first_name: d.vorname,
     email: d.email,
-    phone: d.phone,
-    telefon_international: international(d.phone),
+    ...(d.phone ? { phone: d.phone, telefon_international: international(d.phone) } : {}),
     quelle: d.quelle,
-    tag: QUELLEN[d.quelle].tag,
-    einwilligung: true,
-    einwilligung_text: QUELLEN[d.quelle].einwilligung,
-    einwilligung_zeitpunkt: jetzt,
+    tag: q.tag,
     seite: seite.startsWith("/") ? new URL(seite, url.origin).href : url.origin + "/",
     zeitpunkt: jetzt,
   };
+
+  if (q.pflicht === "consent_leitfaden") {
+    /*
+      HINWEIS DOUBLE-OPT-IN (im CRM umsetzen):
+      - consent_leitfaden = true: Die Person will nur den Leitfaden. Schicke ihn,
+        aber keine Tipps, keine Einladungen und keine Werbung per WhatsApp.
+      - consent_marketing = true: Das Häkchen allein reicht als Nachweis für E-Mail-Werbung
+        nicht. Das CRM schickt zuerst eine Bestätigungsmail mit Link (Double-Opt-in).
+        Erst nach dem Klick dürfen Tipps und Einladungen per E-Mail und WhatsApp kommen.
+        Zeitpunkt der Bestätigung im CRM speichern, ebenso einen Widerruf.
+    */
+    eintrag.consent_leitfaden = true;
+    eintrag.consent_leitfaden_text = q.text;
+    eintrag.consent_marketing = d.marketing;
+    if (d.marketing) eintrag.consent_marketing_text = site.einwilligung.marketing;
+    eintrag.consent_zeitpunkt = jetzt;
+  } else {
+    eintrag.einwilligung = true;
+    eintrag.einwilligung_text = q.text;
+    eintrag.einwilligung_zeitpunkt = jetzt;
+  }
   if (d.thema.length) eintrag.thema = d.thema.join(", ");
   if (d.sprache) eintrag.sprache = d.sprache;
   if (d.finanzcheck) {

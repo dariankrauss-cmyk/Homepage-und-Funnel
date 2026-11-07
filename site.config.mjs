@@ -59,22 +59,20 @@ export default {
     terminDanke: { src: "", poster: "", untertitel: "" },
   },
 
-  // Porträtfoto, z. B. "/bilder/darian.jpg" (Datei in src/static/bilder/).
-  // Leer = Platzhalter mit deinen Initialen.
-  portrait: "",
+  // Foto von Darian: als src/static/img/darian.jpg ablegen. Solange die Datei
+  // fehlt, zeigen Startseite und „Über mich“ den DK-Kreis.
 
-  // Pflichtangaben für das Impressum (§ 5 DDG) und die Erstinformation
-  // als Vermittler. Bitte vollständig ausfüllen und rechtlich prüfen lassen.
+  // Pflichtangaben für das Impressum. Werte bewusst leer: Sie werden nach der
+  // rechtlichen Klärung eingetragen und erscheinen bis dahin als gelber Platzhalter.
   impressum: {
-    firma: "", // optional, z. B. Firmenname oder Marke
-    strasse: "",
-    ort: "", // PLZ und Ort
+    name: "",
+    anschrift: "", // Zeilenumbruch mit \n, z. B. "Musterstraße 1\n12345 Musterstadt"
+    kontakt: "",
+    berufsbezeichnung: "",
+    registernummer: "", // Vermittlerregister
+    ihk: "", // zuständige IHK
+    status34d: "", // Status nach § 34d GewO
     ustId: "", // optional
-    // Status und Erlaubnis, z. B. "Versicherungsmakler mit Erlaubnis nach
-    // § 34d Abs. 1 GewO; Finanzanlagenvermittler mit Erlaubnis nach § 34f Abs. 1 GewO"
-    erlaubnisse: "",
-    registernummer: "", // Vermittlerregister, z. B. "D-XXXX-XXXXX-XX"
-    ihk: "", // zuständige IHK mit Anschrift (Erlaubnis- und Aufsichtsbehörde)
     // Angaben zu Beteiligungen über 10 % an oder von Versicherungsunternehmen
     beteiligungen: "",
     berufshaftpflicht: "", // optional: Versicherer und Geltungsbereich
@@ -92,8 +90,12 @@ export default {
   // Texte der Einwilligungen in den Formularen. Sie werden mit jeder Anfrage
   // an dein CRM übertragen, damit du die Einwilligung nachweisen kannst.
   einwilligung: {
-    leitfaden:
-      "Ich bin einverstanden, dass Darian Krauß mir den Leitfaden schickt und mich per E-Mail und WhatsApp zu Finanzthemen informiert (Tipps und Einladungen zur Beratung). Ich kann diese Einwilligung jederzeit widerrufen, zum Beispiel über den Abmeldelink in jeder Mail.",
+    // Leitfaden-Seite: zwei getrennte Häkchen. "leitfaden" ist Pflicht,
+    // "marketing" freiwillig (erscheint erst, wenn eine Handynummer eingetragen ist).
+    // Hinter "leitfaden" setzt die Seite: „Es gilt die Datenschutzerklärung.“
+    leitfaden: "Ich möchte den Leitfaden per E-Mail bekommen.",
+    marketing:
+      "Ihr dürft mir per E-Mail und WhatsApp Tipps und Einladungen zur Beratung schicken. Ich kann das jederzeit widerrufen.",
     finanzCheck:
       "Ich bin einverstanden, dass Darian Krauß mir Auswertung und Leitfaden schickt und mich per E-Mail und WhatsApp zu Finanzthemen informiert (Tipps und Einladungen zur Beratung). Ich kann diese Einwilligung jederzeit widerrufen, zum Beispiel über den Abmeldelink in jeder Mail.",
     termin:

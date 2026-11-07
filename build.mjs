@@ -163,16 +163,7 @@ function abgeleitet() {
     ],
     ...(site.kontakt.email ? { email: site.kontakt.email } : {}),
     ...(sameAs.length ? { sameAs } : {}),
-    ...(site.impressum.strasse && site.impressum.ort
-      ? {
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: site.impressum.strasse,
-            addressLocality: site.impressum.ort,
-            addressCountry: "DE",
-          },
-        }
-      : {}),
+    ...(gefuellt(site.impressum.anschrift) ? { address: site.impressum.anschrift.replace(/\n/g, ", ") } : {}),
   };
   const jsonLd = (obj) =>
     `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`;
@@ -260,6 +251,15 @@ async function bauen() {
 /* Prüft interne Links, Bilder und Sprungmarken, damit nichts ins Leere führt. */
 function pruefeLinks(seiten) {
   const fehler = [];
+  const hinweise = new Set();
+  // Bilder mit data-fallback dürfen fehlen (z. B. das Foto, solange es noch nicht da ist).
+  const optional = new Set();
+  for (const s of seiten.values()) {
+    for (const m of s.html.matchAll(/<img\b[^>]*\bdata-fallback\b[^>]*>/g)) {
+      const src = m[0].match(/\ssrc="([^"]+)"/);
+      if (src) optional.add(src[1]);
+    }
+  }
   const ids = new Map();
   for (const [pfad, s] of seiten) ids.set(pfad, new Set([...s.html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
 
@@ -281,11 +281,13 @@ function pruefeLinks(seiten) {
       if (seiten.has(nurPfad)) {
         if (hash && !ids.get(nurPfad).has(hash)) fehler.push(`${s.rel}: Sprungmarke ${ziel} fehlt auf ${nurPfad}`);
       } else if (!existsSync(join(OUT, nurPfad.slice(1))) || nurPfad.endsWith("/")) {
-        fehler.push(`${s.rel}: Link „${ziel}“ führt ins Leere`);
+        if (optional.has(ziel)) hinweise.add(ziel);
+        else fehler.push(`${s.rel}: Link „${ziel}“ führt ins Leere`);
       }
     }
   }
   if (fehler.length) throw new Error(`Defekte Links:\n  ${fehler.join("\n  ")}`);
+  for (const h of hinweise) console.log(`ℹ Foto fehlt noch: src/static${h} (bis dahin erscheint der DK-Kreis)`);
 }
 
 try {
