@@ -90,14 +90,16 @@ export default {
   // Texte der Einwilligungen in den Formularen. Sie werden mit jeder Anfrage
   // an dein CRM übertragen, damit du die Einwilligung nachweisen kannst.
   einwilligung: {
-    // Leitfaden-Seite: zwei getrennte Häkchen. "leitfaden" ist Pflicht,
-    // "marketing" freiwillig (erscheint erst, wenn eine Handynummer eingetragen ist).
-    // Hinter "leitfaden" setzt die Seite: „Es gilt die Datenschutzerklärung.“
+    // Leitfaden und Finanz-Check: je zwei getrennte Häkchen, keins ist vorausgewählt.
+    // "leitfaden" bzw. "finanzCheck" ist Pflicht, "marketing" freiwillig (erscheint erst,
+    // wenn eine Handynummer eingetragen ist). Hinter das Pflicht-Häkchen setzt die Seite:
+    // „Es gilt die Datenschutzerklärung.“
     leitfaden: "Ich möchte den Leitfaden per E-Mail bekommen.",
+    // Nennt ausdrücklich den GdB: Er ist ein Gesundheitsdatum (Art. 9 DSGVO).
+    finanzCheck:
+      "Ich möchte meine Auswertung und den Leitfaden per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen.",
     marketing:
       "Ihr dürft mir per E-Mail und WhatsApp Tipps und Einladungen zur Beratung schicken. Ich kann das jederzeit widerrufen.",
-    finanzCheck:
-      "Ich bin einverstanden, dass Darian Krauß mir Auswertung und Leitfaden schickt und mich per E-Mail und WhatsApp zu Finanzthemen informiert (Tipps und Einladungen zur Beratung). Ich kann diese Einwilligung jederzeit widerrufen, zum Beispiel über den Abmeldelink in jeder Mail.",
     termin:
       "Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, um mit mir einen Termin abzustimmen, und mich dazu per E-Mail und WhatsApp kontaktiert. Ich kann diese Einwilligung jederzeit widerrufen.",
   },

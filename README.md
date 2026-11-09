@@ -143,7 +143,7 @@ Die ausführliche Liste mit allem, was Darian prüfen, entscheiden oder liefern 
 
 - [ ] Impressum und Erstinformation vollständig (`site.config.mjs` → `impressum`), rechtlich geprüft
 - [ ] „Makler“ und die Beratungsthemen passen zu den Erlaubnissen (§ 34d, § 34f, § 34i, § 34c GewO)
-- [ ] Finanz-Check: Variante A oder B entschieden, Einwilligung für den GdB und getrennte Häkchen geklärt
+- [ ] Wortlaut der Einwilligungen (Finanz-Check mit GdB, Leitfaden, Termin) rechtlich geprüft
 - [ ] Datenschutzerklärung ergänzt (`datenschutz`: CRM, Kalender, Video-Call, Aufsichtsbehörde), rechtlich geprüft
 - [ ] E-Mail-Adresse und WhatsApp-Nummer eingetragen
 - [ ] Kalender-Link eingetragen (`kalender.url`) und im Kalender die WhatsApp-Bestätigung aktiv
@@ -168,5 +168,4 @@ tools/eingebettet.mjs  Deploy ohne Datei-Upload (Weg C), mit worker/eingebettet.
 tools/marmor.py     Erzeugt die Marmor-Texturen (optional, braucht numpy und Pillow)
 test/               Tests für Build und Lead-API (npm test)
 docs/FREIGABE.md    Was vor dem Livegang geprüft, entschieden oder geliefert werden muss
-docs/screenshots/   Screenshots für die Prüfung im Pull Request
 ```

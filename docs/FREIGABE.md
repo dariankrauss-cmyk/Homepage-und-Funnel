@@ -1,6 +1,6 @@
 # Freigabe-Liste vor dem Livegang
 
-Stand: 9. November 2026, Pull Request #2. **Nichts davon ist veröffentlicht.** Die Live-Seite zeigt noch die alte Version.
+Stand: 9. November 2026, Pull Request #2 (nach Variante A für den Finanz-Check). **Nichts davon ist veröffentlicht.** Die Live-Seite zeigt noch die alte Version.
 
 Hier steht alles, was Darian vor dem Livegang **prüfen**, **entscheiden** oder **liefern** muss.
 
@@ -62,26 +62,33 @@ In `site.config.mjs` unter `datenschutz`, bis dahin gelb markiert:
 - Zuständige Datenschutz-Aufsichtsbehörde
 - Online-Kalender: Der Abschnitt erscheint erst, wenn ein Kalender-Link eingetragen ist. Dann den Anbieter nennen.
 
-### 1.5 Finanz-Check fragt nach dem Grad der Behinderung (GdB) · Pflicht
+### 1.5 Finanz-Check: Grad der Behinderung (GdB) · umgesetzt, Wortlaut prüfen lassen
 
-- Der GdB gilt als **Gesundheitsdatum** (Art. 9 DSGVO). Dafür gelten strengere Regeln.
-- Heute gehen die Antworten an dein CRM, wenn die Person danach ein Formular abschickt. Das gilt auch für das
-  Leitfaden- und das Terminformular im selben Browser-Tab.
-- Wenn die Antworten an dein CRM gehen, braucht es wahrscheinlich eine **ausdrückliche Einwilligung**, die den GdB
-  nennt, und einen Hinweis in der Datenschutzerklärung.
-- Das hängt mit deiner Entscheidung **A oder B** zusammen (Punkt 3.1).
+Du hast **Variante A** gewählt. So ist es jetzt umgesetzt:
 
-### 1.6 Einwilligung im Finanz-Check ist gekoppelt · Pflicht
+- Die Antworten gehen **nur mit dem Finanz-Check-Formular** an dein CRM, nie mit dem Leitfaden- oder dem
+  Terminformular. Nach dem Absenden werden sie im Browser gelöscht.
+- Unter der Überschrift steht ehrlich: „Deine Antworten bleiben auf deinem Gerät. Nur wenn du am Ende das Formular
+  abschickst, bekomme ich sie für deine Auswertung.“
+- Der GdB gilt als **Gesundheitsdatum** (Art. 9 DSGVO). Das Pflicht-Häkchen nennt ihn deshalb ausdrücklich
+  (siehe 1.6).
+- Der Abschnitt „Finanz-Check“ in der Datenschutzerklärung beschreibt das jetzt, mit Art. 9 Abs. 2 lit. a DSGVO.
 
-Der Text heute: „Ich bin einverstanden, dass Darian Krauß mir Auswertung und Leitfaden schickt und mich per E-Mail
-und WhatsApp zu Finanzthemen informiert (Tipps und Einladungen zur Beratung). …“
+**Bitte prüfen lassen:** den Wortlaut des Pflicht-Häkchens und den neuen Abschnitt in der Datenschutzerklärung.
 
-- Wer die Auswertung haben will, muss auch Tipps und Einladungen annehmen. Das kann gegen das Kopplungsverbot
-  verstoßen (Art. 7 Abs. 4 DSGVO).
-- **Vorschlag:** zwei Häkchen wie beim Leitfaden.
-  - Pflicht: „Ich möchte die Auswertung und den Leitfaden per E-Mail bekommen.“
-  - Freiwillig: Tipps und Einladungen per E-Mail und WhatsApp.
-- Ich ändere das erst nach deiner Freigabe, weil der Text als Nachweis an dein CRM geht.
+### 1.6 Einwilligung im Finanz-Check: zwei Häkchen · umgesetzt, Wortlaut prüfen lassen
+
+Wie beim Leitfaden gibt es jetzt zwei getrennte Häkchen. **Keins ist vorausgewählt.**
+
+- **Pflicht:** „Ich möchte meine Auswertung und den Leitfaden per E-Mail bekommen. Dafür darf Darian Krauß meine
+  Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das
+  jederzeit widerrufen. Es gilt die Datenschutzerklärung.“
+- **Freiwillig** (erscheint, sobald eine Handynummer dasteht): „Ihr dürft mir per E-Mail und WhatsApp Tipps und
+  Einladungen zur Beratung schicken. Ich kann das jederzeit widerrufen.“
+- Die Handynummer ist jetzt freiwillig, wie beim Leitfaden. Für die Auswertung per E-Mail braucht es sie nicht.
+- An dein CRM gehen die Felder `consent_finanzcheck` und `consent_marketing`, jeweils mit Wortlaut und Zeitpunkt.
+  Das alte Feld `einwilligung` gibt es beim Finanz-Check nicht mehr. Bitte die Zuordnung im CRM anpassen
+  (siehe `FUNNEL.md`).
 
 ### 1.7 Einwilligung beim Termin · Bestätigen
 
@@ -93,8 +100,9 @@ Bitte prüfen lassen, ob das so passt. Die Datenschutzerklärung nennt für den 
 
 ### 1.8 Double-Opt-In · Pflicht
 
-Die Datenschutzerklärung verspricht eine Bestätigungsmail (Double-Opt-In) für Tipps und Einladungen und beim
-Finanz-Check. Das muss **in deinem CRM eingerichtet** sein, bevor die Seite live geht. Sonst stimmt der Text nicht.
+Die Datenschutzerklärung verspricht eine Bestätigungsmail (Double-Opt-In), bevor Tipps und Einladungen kommen.
+Das gilt für das freiwillige Häkchen bei Leitfaden und Finanz-Check (`consent_marketing = true`). Das muss
+**in deinem CRM eingerichtet** sein, bevor die Seite live geht. Sonst stimmt der Text nicht.
 
 ### 1.9 Hinweis in der Fußzeile · Entscheiden
 
@@ -132,14 +140,9 @@ Bitte vor dem Livegang noch einmal auf Änderungen prüfen.
 
 ## 3. Deine Entscheidungen · Entscheiden
 
-### 3.1 Finanz-Check: A oder B
+### 3.1 Finanz-Check: A oder B · entschieden
 
-- **A:** Die Antworten gehen nur mit dem Finanz-Check-Formular an dein CRM. Dazu kommt ein ehrlicher Hinweis und
-  die ausdrückliche Einwilligung für den GdB (Punkt 1.5).
-- **B:** Die Antworten gehen nie an dein CRM. Dann kann der Satz stehen: „Deine Antworten bleiben auf deinem Gerät.“
-  Du siehst die Antworten dann aber nicht.
-
-Heute gehen die Antworten auch mit dem Leitfaden- und dem Terminformular mit. Beide Varianten ändern das.
+Variante A, umgesetzt (Punkte 1.5 und 1.6).
 
 ### 3.2 Leitfaden-Mail: sofort oder erst nach Bestätigung?
 
@@ -159,9 +162,11 @@ Gewünscht ist `www.darian-krauß-finanzen.de`. Es ist noch nichts registriert u
 **Tipp:** Sichere auch die Schreibweise mit „ss“ (`darian-krauss-finanzen.de`). Viele Tastaturen und Programme
 tippen kein ß oder wandeln es um.
 
-### 3.6 Screenshots im Pull Request
+### 3.6 Screenshots im Pull Request · erledigt
 
-Der Ordner `docs/screenshots/` ist nur für die Prüfung da. Vor dem Mergen löschen oder behalten?
+Die reinen Prüf-Screenshots sind aus dem Branch entfernt. Die Beschreibung des Pull Requests zeigt sie weiter über
+einen festen Link auf den letzten Stand mit Screenshots. **Tipp:** Beim Mergen „Squash and merge“ wählen, dann landen
+die Bilder gar nicht erst in der Historie von `main`.
 
 ---
 
@@ -184,7 +189,9 @@ Der Ordner `docs/screenshots/` ist nur für die Prüfung da. Vor dem Mergen lös
 
 ## 5. Bewusst nicht geändert
 
-- Impressum, Datenschutzerklärung, Einwilligungstexte und der Fußzeilen-Hinweis: Der Wortlaut ist unverändert.
+- Impressum, der Fußzeilen-Hinweis und die Einwilligungen bei Leitfaden und Termin: Der Wortlaut ist unverändert.
+- Nach deiner Entscheidung geändert: die Einwilligung im Finanz-Check und der Abschnitt „Finanz-Check“ in der
+  Datenschutzerklärung (Punkte 1.5 und 1.6). Bitte prüfen lassen.
 - Das Wort „Makler“.
 - Die Zahlen 2.840 € und 7.400 €.
 - Formulare, `/api/lead`, Worker, Cloudflare-Einstellungen und die Domain.

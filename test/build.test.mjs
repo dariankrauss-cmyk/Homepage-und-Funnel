@@ -86,24 +86,44 @@ test("Formulare: Quelle, Danke-Seite, Beschriftungen und Einwilligungstext", () 
     for (const m of html.matchAll(/<input\b[^>]*\sid="([^"]+)"/g)) {
       assert.ok(html.includes(`for="${m[1]}"`), `${name}: Feld #${m[1]} ohne Beschriftung`);
     }
-    const haekchen = name.startsWith("leitfaden/") ? ["consent_leitfaden", "consent_marketing"] : ["einwilligung"];
+    const haekchen = {
+      "leitfaden/index.html": ["consent_leitfaden", "consent_marketing"],
+      "finanz-check/index.html": ["consent_finanzcheck", "consent_marketing"],
+      "termin/index.html": ["einwilligung"],
+    }[name];
     for (const feld of ["vorname", "email", "phone", "hinweisfeld", ...haekchen]) {
       assert.ok(html.includes(`name="${feld}"`), `${name}: Feld ${feld} fehlt`);
     }
   }
 });
 
-test("Leitfaden: Nummer freiwillig, zwei getrennte Häkchen, Tipps erst mit Nummer", () => {
-  const html = seiten["leitfaden/index.html"];
-  const telefon = html.match(/<input\b[^>]*id="phone"[^>]*>/)[0];
-  assert.equal(/\srequired\b/.test(telefon), false, "Handynummer darf hier nicht required sein");
-  assert.match(html, /<input id="consent_leitfaden" name="consent_leitfaden" type="checkbox" required>/);
-  assert.match(html, /<div class="consent" data-braucht="phone" hidden>\s*<input id="consent_marketing" name="consent_marketing" type="checkbox">/);
-  assert.ok(html.includes(esc(site.einwilligung.marketing)), "Text der Tipps-Einwilligung");
-  for (const andere of ["finanz-check/index.html", "termin/index.html"]) {
-    const t = seiten[andere].match(/<input\b[^>]*id="phone"[^>]*>/)[0];
-    assert.match(t, /\srequired\b/, `${andere}: Handynummer bleibt Pflicht`);
+test("Leitfaden und Finanz-Check: Nummer freiwillig, zwei getrennte Häkchen, Tipps erst mit Nummer", () => {
+  for (const [name, pflicht] of [["leitfaden/index.html", "consent_leitfaden"], ["finanz-check/index.html", "consent_finanzcheck"]]) {
+    const html = seiten[name];
+    const telefon = html.match(/<input\b[^>]*id="phone"[^>]*>/)[0];
+    assert.equal(/\srequired\b/.test(telefon), false, `${name}: Handynummer darf hier nicht required sein`);
+    assert.match(html, new RegExp(`<input id="${pflicht}" name="${pflicht}" type="checkbox" required>`), name);
+    assert.match(html, /<div class="consent" data-braucht="phone" hidden>\s*<input id="consent_marketing" name="consent_marketing" type="checkbox">/, name);
+    assert.ok(html.includes(esc(site.einwilligung.marketing)), `${name}: Text der Tipps-Einwilligung`);
   }
+  const t = seiten["termin/index.html"].match(/<input\b[^>]*id="phone"[^>]*>/)[0];
+  assert.match(t, /\srequired\b/, "Termin: Handynummer bleibt Pflicht");
+});
+
+test("Kein Häkchen und keine Auswahl ist vorausgewählt", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    for (const m of html.matchAll(/<input\b[^>]*>/g)) assert.equal(/\schecked\b/.test(m[0]), false, `${name}: ${m[0]}`);
+  }
+});
+
+test("Finanz-Check Variante A: ehrlicher Hinweis, GdB ausdrücklich in der Einwilligung, Antworten nur mit diesem Formular", () => {
+  const html = seiten["finanz-check/index.html"];
+  assert.ok(html.includes("Deine Antworten bleiben auf deinem Gerät. Nur wenn du am Ende das Formular abschickst, bekomme ich sie für deine Auswertung."));
+  assert.match(site.einwilligung.finanzCheck, /Grad der Behinderung \(GdB\)/);
+  assert.equal(/WhatsApp|Tipps|Einladungen/.test(site.einwilligung.finanzCheck), false, "Pflicht-Häkchen ohne Werbung (Kopplungsverbot)");
+  const js = readFileSync(join(DIST, "assets", "main.js"), "utf8");
+  assert.match(js, /if \(daten\.quelle === "finanz-check"\) \{\s*var check = lesen\("finanzcheck"\)/, "Antworten nur beim Finanz-Check-Formular");
+  assert.match(seiten["datenschutz/index.html"], /Art\. 9 Abs\. 2 lit\. a DSGVO/);
 });
 
 test("„ohne Fachchinesisch“ steht nur noch im Hero der Startseite", () => {

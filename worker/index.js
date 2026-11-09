@@ -9,9 +9,9 @@
 */
 import site from "../site.config.mjs";
 
-// Jede Quelle hat ein Pflicht-Häkchen. Der Leitfaden hat zusätzlich ein freiwilliges
-// (consent_marketing), und dort ist die Handynummer freiwillig. Gespeichert wird der
-// Wortlaut, den die Person auf der Seite gesehen hat.
+// Jede Quelle hat ein Pflicht-Häkchen. Leitfaden und Finanz-Check haben zusätzlich ein
+// freiwilliges (consent_marketing, „tipps“), und dort ist die Handynummer freiwillig.
+// Kein Häkchen ist vorausgewählt. Gespeichert wird der Wortlaut, den die Person gesehen hat.
 const DATENSCHUTZ_SATZ = " Es gilt die Datenschutzerklärung.";
 const QUELLEN = {
   leitfaden: {
@@ -19,8 +19,17 @@ const QUELLEN = {
     pflicht: "consent_leitfaden",
     text: site.einwilligung.leitfaden + DATENSCHUTZ_SATZ,
     telefonFreiwillig: true,
+    tipps: true,
   },
-  "finanz-check": { tag: "finanz-check", pflicht: "einwilligung", text: site.einwilligung.finanzCheck + DATENSCHUTZ_SATZ },
+  "finanz-check": {
+    tag: "finanz-check",
+    pflicht: "consent_finanzcheck",
+    text: site.einwilligung.finanzCheck + DATENSCHUTZ_SATZ,
+    telefonFreiwillig: true,
+    tipps: true,
+    // Variante A: Nur hier werden die Antworten aus dem Finanz-Check angenommen.
+    antworten: true,
+  },
   termin: { tag: "termin-anfrage", pflicht: "einwilligung", text: site.einwilligung.termin + DATENSCHUTZ_SATZ },
 };
 const FINANZCHECK_FELDER = ["alter", "vorsorge", "gdb", "pauschbetrag", "kredit", "ziel"];
@@ -125,7 +134,7 @@ function pruefen(roh) {
   if (phone ? !telefonOk : !q?.telefonFreiwillig) felder.push("phone");
 
   if (q && roh[q.pflicht] !== true) felder.push(q.pflicht);
-  const marketing = quelle === "leitfaden" && roh.consent_marketing === true;
+  const marketing = Boolean(q?.tipps) && roh.consent_marketing === true;
 
   let thema = [];
   let sprache = "";
@@ -139,8 +148,9 @@ function pruefen(roh) {
     if (!sprache) felder.push("sprache");
   }
 
+  // Antworten aus dem Finanz-Check nur vom Finanz-Check-Formular (Variante A), sonst verwerfen.
   let finanzcheck;
-  if (roh.finanzcheck && typeof roh.finanzcheck === "object" && !Array.isArray(roh.finanzcheck)) {
+  if (q?.antworten && roh.finanzcheck && typeof roh.finanzcheck === "object" && !Array.isArray(roh.finanzcheck)) {
     for (const k of FINANZCHECK_FELDER) {
       const v = txt(roh.finanzcheck[k], 120);
       if (v) (finanzcheck ||= {})[k] = v;
@@ -166,18 +176,22 @@ function aufbereiten(d, roh, url) {
     zeitpunkt: jetzt,
   };
 
-  if (q.pflicht === "consent_leitfaden") {
+  if (q.tipps) {
     /*
-      HINWEIS DOUBLE-OPT-IN (im CRM umsetzen):
-      - consent_leitfaden = true: Die Person will nur den Leitfaden. Schicke ihn,
-        aber keine Tipps, keine Einladungen und keine Werbung per WhatsApp.
+      HINWEIS DOUBLE-OPT-IN (im CRM umsetzen), gilt für Leitfaden und Finanz-Check:
+      - consent_leitfaden bzw. consent_finanzcheck = true: Die Person will nur den Leitfaden
+        bzw. Auswertung und Leitfaden. Schicke sie, aber keine Tipps, keine Einladungen
+        und keine Werbung per WhatsApp.
       - consent_marketing = true: Das Häkchen allein reicht als Nachweis für E-Mail-Werbung
         nicht. Das CRM schickt zuerst eine Bestätigungsmail mit Link (Double-Opt-in).
         Erst nach dem Klick dürfen Tipps und Einladungen per E-Mail und WhatsApp kommen.
         Zeitpunkt der Bestätigung im CRM speichern, ebenso einen Widerruf.
+      - consent_finanzcheck schließt die ausdrückliche Einwilligung für die Angabe zum GdB ein
+        (Gesundheitsdatum, Art. 9 DSGVO). Die Antworten nur für die Auswertung nutzen und bei
+        einem Widerruf löschen.
     */
-    eintrag.consent_leitfaden = true;
-    eintrag.consent_leitfaden_text = q.text;
+    eintrag[q.pflicht] = true;
+    eintrag[`${q.pflicht}_text`] = q.text;
     eintrag.consent_marketing = d.marketing;
     if (d.marketing) eintrag.consent_marketing_text = site.einwilligung.marketing;
     eintrag.consent_zeitpunkt = jetzt;

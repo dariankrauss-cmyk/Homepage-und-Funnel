@@ -53,10 +53,11 @@ Jedes Formular schickt per `POST` ein JSON an `LEAD_WEBHOOK_URL`. Die Felder sin
 | `quelle` | `tag` | Zusätzliche Felder |
 |---|---|---|
 | `leitfaden` | `leitfaden-2027` | `consent_leitfaden` (immer `true`), `consent_marketing` (`true`/`false`), Texte dazu in `consent_leitfaden_text` / `consent_marketing_text`, `consent_zeitpunkt`. Kein Feld `einwilligung`. Handynummer freiwillig: `phone` fehlt, wenn leer. |
-| `finanz-check` | `finanz-check` | `finanzcheck_alter`, `finanzcheck_vorsorge`, `finanzcheck_gdb`, `finanzcheck_pauschbetrag`, `finanzcheck_kredit`, `finanzcheck_ziel` |
+| `finanz-check` | `finanz-check` | `consent_finanzcheck` (immer `true`, schließt die ausdrückliche Einwilligung für die Angabe zum GdB ein), `consent_marketing` (`true`/`false`), Texte dazu in `consent_finanzcheck_text` / `consent_marketing_text`, `consent_zeitpunkt`. Dazu die Antworten: `finanzcheck_alter`, `finanzcheck_vorsorge`, `finanzcheck_gdb`, `finanzcheck_pauschbetrag`, `finanzcheck_kredit`, `finanzcheck_ziel`. Kein Feld `einwilligung`. Handynummer freiwillig: `phone` fehlt, wenn leer. |
 | `termin` | `termin-anfrage` | `thema`, `sprache` |
 
-Hat jemand vorher den Finanz-Check gemacht, kommen dessen Antworten auch bei Leitfaden und Termin mit.
+Die Antworten aus dem Finanz-Check kommen **nur mit dem Finanz-Check-Formular** an (Variante A), nie mit Leitfaden oder Termin.
+Sie enthalten den GdB, ein Gesundheitsdatum (Art. 9 DSGVO): Im CRM nur für die Auswertung nutzen und bei einem Widerruf löschen.
 
 ## Automationen im CRM
 
@@ -65,7 +66,7 @@ CRM. Vorlagen dafür muss Meta einmal freigeben.
 
 ### Leitfaden und Finanz-Check (`leitfaden-2027`, `finanz-check`)
 
-**Wichtig beim Leitfaden:** Die Seite hat zwei getrennte Häkchen. Mit `consent_marketing = false` bekommt die Person nur den Leitfaden, sonst nichts. Tipps, Einladungen und WhatsApp-Werbung nur bei `consent_marketing = true` und erst nach der Bestätigung (Double-Opt-In).
+**Wichtig bei Leitfaden und Finanz-Check:** Beide Seiten haben zwei getrennte Häkchen, keins ist vorausgewählt. Mit `consent_marketing = false` bekommt die Person nur den Leitfaden (beim Finanz-Check: Auswertung und Leitfaden), sonst nichts. Tipps, Einladungen und WhatsApp-Werbung nur bei `consent_marketing = true` und erst nach der Bestätigung (Double-Opt-In).
 
 **1. Sofort: Bestätigung (Double-Opt-In, Pflicht für E-Mail-Werbung)**
 

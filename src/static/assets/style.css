@@ -303,6 +303,9 @@ img.fehlt{display:none !important}
 .formats{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
 .formats li{display:inline-flex;align-items:center;gap:.45rem;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.45rem .95rem .45rem .8rem;font-size:1rem;font-weight:600}
 .formats .ic{color:var(--bronze)}
+/* Finanz-Check: ehrlicher Hinweis, was mit den Antworten passiert */
+.geraet-hinweis{display:flex;align-items:flex-start;gap:.65rem;max-width:40rem;margin-top:1.25rem;padding:.85rem 1.05rem;border:1px solid var(--gold-line);border-radius:.9rem;background:var(--gold-soft);color:var(--ink);font-size:1rem;line-height:1.55}
+.geraet-hinweis .ic{color:var(--bronze);margin-top:.1rem}
 .funnel section{padding:3.75rem 0}
 .funnel .hero{padding:3.75rem 0 2.75rem}
 

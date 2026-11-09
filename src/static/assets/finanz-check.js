@@ -1,7 +1,7 @@
 /* Darian Krauß · Finanz-Check: sechs Fragen, ein Klick pro Frage.
-   Die Antworten liegen im Sitzungsspeicher dieses Browser-Tabs. main.js schickt sie
-   mit, wenn danach in diesem Tab ein Formular abgesendet wird (Finanz-Check,
-   Leitfaden oder Termin). Beim Beantworten selbst wird nichts gesendet. */
+   Die Antworten liegen im Sitzungsspeicher dieses Browser-Tabs. main.js schickt sie nur
+   mit dem Finanz-Check-Formular mit, wenn die Person es abschickt (Variante A), danach
+   werden sie gelöscht. Beim Beantworten selbst wird nichts gesendet. */
 (function () {
   "use strict";
 

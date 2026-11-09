@@ -51,7 +51,8 @@ const leitfaden = {
   t: 9000,
 };
 const termin = { ...leitfaden, quelle: "termin", consent_leitfaden: undefined, consent_marketing: undefined, einwilligung: true };
-const finanzCheck = { ...termin, quelle: "finanz-check" };
+const finanzCheck = { ...leitfaden, quelle: "finanz-check", consent_leitfaden: undefined, consent_finanzcheck: true, seite: "/finanz-check/" };
+const ANTWORTEN = { alter: "25–39", vorsorge: "Nur gesetzliche Rente", gdb: "Ja, GdB 100", pauschbetrag: "Nein", kredit: "Nein", ziel: "Steuern sparen" };
 const DS = " Es gilt die Datenschutzerklärung.";
 
 async function senden(body, e = env(), headers) {
@@ -106,15 +107,52 @@ test("Leitfaden ohne Pflicht-Häkchen wird abgelehnt", async () => {
   assert.equal(gesendet.length, 0);
 });
 
-test("Termin und Finanz-Check: Handynummer bleibt Pflicht, kein Tipps-Feld", async () => {
-  for (const basis of [{ ...termin, thema: ["Vorsorge"], sprache: "Chat" }, finanzCheck]) {
-    const { status, json } = await senden({ ...basis, phone: "" });
-    assert.equal(status, 422, basis.quelle);
-    assert.deepEqual(json.felder, ["phone"], basis.quelle);
-  }
-  await senden({ ...finanzCheck, consent_marketing: true });
+test("Termin: Handynummer bleibt Pflicht, kein Tipps-Feld", async () => {
+  const basis = { ...termin, thema: ["Vorsorge"], sprache: "Chat" };
+  const { status, json } = await senden({ ...basis, phone: "" });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["phone"]);
+  await senden({ ...basis, consent_marketing: true });
   assert.equal("consent_marketing" in gesendet[0].body, false);
   assert.equal(gesendet[0].body.einwilligung, true);
+});
+
+test("Finanz-Check: zwei getrennte Einwilligungen mit Wortlaut, Nummer freiwillig", async () => {
+  const { status } = await senden({ ...finanzCheck, phone: "", finanzcheck: ANTWORTEN });
+  assert.equal(status, 200);
+  const b = gesendet[0].body;
+  assert.equal(b.tag, "finanz-check");
+  assert.equal(b.consent_finanzcheck, true);
+  assert.equal(b.consent_finanzcheck_text, site.einwilligung.finanzCheck + DS);
+  assert.match(b.consent_finanzcheck_text, /Grad der Behinderung/);
+  assert.equal(b.consent_marketing, false);
+  assert.equal("consent_marketing_text" in b, false);
+  assert.equal("einwilligung" in b, false, "kein altes Sammel-Feld mehr");
+  assert.equal("phone" in b, false);
+  assert.ok(!Number.isNaN(Date.parse(b.consent_zeitpunkt)));
+  await senden({ ...finanzCheck, consent_marketing: true });
+  assert.equal(gesendet[1].body.consent_marketing, true);
+  assert.equal(gesendet[1].body.consent_marketing_text, site.einwilligung.marketing);
+});
+
+test("Finanz-Check ohne Pflicht-Häkchen wird abgelehnt, auch mit Tipps-Häkchen", async () => {
+  const { status, json } = await senden({ ...finanzCheck, consent_finanzcheck: false, consent_marketing: true, finanzcheck: ANTWORTEN });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["consent_finanzcheck"]);
+  assert.equal(gesendet.length, 0);
+  const alt = await senden({ ...finanzCheck, consent_finanzcheck: undefined, einwilligung: true });
+  assert.deepEqual(alt.json.felder, ["consent_finanzcheck"], "das alte Sammel-Häkchen reicht nicht mehr");
+});
+
+test("Variante A: Antworten aus dem Finanz-Check kommen nur mit dem Finanz-Check-Formular an", async () => {
+  await senden({ ...leitfaden, finanzcheck: ANTWORTEN });
+  await senden({ ...termin, thema: ["Vorsorge"], sprache: "Chat", finanzcheck: ANTWORTEN });
+  for (const g of gesendet) {
+    assert.equal("finanzcheck" in g.body, false, g.body.quelle);
+    assert.equal(Object.keys(g.body).some((k) => k.startsWith("finanzcheck_")), false, g.body.quelle);
+  }
+  await senden({ ...finanzCheck, finanzcheck: ANTWORTEN });
+  assert.equal(gesendet[2].body.finanzcheck_gdb, "Ja, GdB 100");
 });
 
 test("Terminanfrage braucht Thema und Sprache", async () => {

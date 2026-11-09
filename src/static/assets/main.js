@@ -12,6 +12,7 @@
   /* Sitzungsspeicher: gilt nur für diesen Tab und wird beim Schließen gelöscht */
   function lesen(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
   function merken(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* privates Fenster */ } }
+  function vergessen(k) { try { sessionStorage.removeItem(k); } catch (e) { /* egal */ } }
 
   /* 1. Menü auf kleinen Bildschirmen */
   var menuBtn = document.querySelector(".menu-btn");
@@ -155,9 +156,12 @@
       if (themen.length) daten.thema = themen;
       var sprache = form.querySelector('input[name="sprache"]:checked');
       if (sprache) daten.sprache = sprache.value;
-      /* Antworten aus dem Finanz-Check mitschicken */
-      var check = lesen("finanzcheck");
-      if (check) { try { daten.finanzcheck = JSON.parse(check); } catch (err) { /* ignorieren */ } }
+      /* Antworten aus dem Finanz-Check nur mit dem Finanz-Check-Formular (Variante A),
+         nie mit dem Leitfaden- oder Terminformular */
+      if (daten.quelle === "finanz-check") {
+        var check = lesen("finanzcheck");
+        if (check) { try { daten.finanzcheck = JSON.parse(check); } catch (err) { /* ignorieren */ } }
+      }
       var utm = kampagne();
       if (utm) daten.utm = utm;
 
@@ -165,6 +169,8 @@
         merken("vorname", daten.vorname);
         merken("email", daten.email);
         merken("quelle", daten.quelle);
+        /* Abgeschickt: Die Antworten werden im Browser nicht mehr gebraucht */
+        if (daten.quelle === "finanz-check") vergessen("finanzcheck");
         location.href = form.getAttribute("data-danke");
       };
 

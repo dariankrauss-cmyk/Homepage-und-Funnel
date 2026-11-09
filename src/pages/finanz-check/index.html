@@ -4,6 +4,7 @@ ogTitle: Finanz-Check: Wo lässt du Geld liegen?
 description: Sechs Fragen, 90 Sekunden: Finde heraus, wo du bei Steuern, Vorsorge und Absicherung wahrscheinlich Geld liegen lässt.
 headerCta: Leitfaden kostenlos holen
 headerCtaLink: /leitfaden/#anfordern
+telefonFreiwillig: true
 disclaimer: Der Finanz-Check gibt eine erste Orientierung und ersetzt keine individuelle Steuer- oder Finanzberatung. Pauschbeträge nach § 33b EStG, Stand November 2026, ohne Gewähr.
 ---
 {{> head}}
@@ -15,6 +16,8 @@ disclaimer: Der Finanz-Check gibt eine erste Orientierung und ersetzt keine indi
       <p class="badge">Finanz-Check · 90 Sekunden</p>
       <h1>Wo lässt du <span>Geld liegen?</span></h1>
       <p class="lead">Sechs kurze Fragen, ein Klick pro Frage. Danach siehst du deine wichtigsten Hebel bei Steuern, Vorsorge und Absicherung.</p>
+      <!-- Stimmt so (Variante A): Antworten liegen nur im Tab, gesendet werden sie nur mit dem Formular unten. -->
+      <p class="geraet-hinweis"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><path d="M10.5 18h3"/></svg><span>Deine Antworten bleiben auf deinem Gerät. Nur wenn du am Ende das Formular abschickst, bekomme ich sie für deine Auswertung.</span></p>
 
       <div class="progress" aria-hidden="true"><i id="balken"></i></div>
       <div id="fragen">
@@ -32,9 +35,14 @@ disclaimer: Der Finanz-Check gibt eine erste Orientierung und ersetzt keine indi
           <form class="lead-form" data-quelle="finanz-check" data-danke="/leitfaden/danke/" novalidate>
             {{> lead-felder}}
             <div class="consent">
-              <input id="einwilligung" name="einwilligung" type="checkbox" required>
-              <label for="einwilligung">{{site.einwilligung.finanzCheck}} Es gilt die <a href="/datenschutz/">Datenschutzerklärung</a>.</label>
-              <p class="msg" id="einwilligung-msg">Bitte bestätige kurz die Einwilligung.</p>
+              <input id="consent_finanzcheck" name="consent_finanzcheck" type="checkbox" required>
+              <label for="consent_finanzcheck">{{site.einwilligung.finanzCheck}} Es gilt die <a href="/datenschutz/">Datenschutzerklärung</a>.</label>
+              <p class="msg" id="consent_finanzcheck-msg">Bitte setz hier das Häkchen. Sonst kann ich dir die Auswertung nicht schicken.</p>
+            </div>
+            <!-- Freiwillig. Erscheint erst, wenn oben eine Handynummer steht (main.js, data-braucht). -->
+            <div class="consent" data-braucht="phone" hidden>
+              <input id="consent_marketing" name="consent_marketing" type="checkbox">
+              <label for="consent_marketing">{{site.einwilligung.marketing}}</label>
             </div>
             <button class="btn full" type="submit">Auswertung per E-Mail erhalten</button>
             {{> lead-fuss}}
