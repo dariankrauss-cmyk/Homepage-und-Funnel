@@ -29,6 +29,7 @@ test("alle erwarteten Seiten werden gebaut", () => {
     "leitfaden/index.html",
     "leitfaden/danke/index.html",
     "finanz-check/index.html",
+    "finanz-check/danke/index.html",
     "termin/index.html",
     "termin/danke/index.html",
     "impressum/index.html",
@@ -73,8 +74,8 @@ test("passt zur Content-Security-Policy: keine Inline-Skripte, -Styles oder -Han
 
 test("Formulare: Quelle, Danke-Seite, Beschriftungen und Einwilligungstext", () => {
   const erwartet = {
-    "leitfaden/index.html": ["leitfaden", "/leitfaden/danke/", site.einwilligung.leitfaden],
-    "finanz-check/index.html": ["finanz-check", "/leitfaden/danke/", site.einwilligung.finanzCheck],
+    ...(site.zusagen.leitfaden ? { "leitfaden/index.html": ["leitfaden", "/leitfaden/danke/", site.einwilligung.leitfaden] } : {}),
+    "finanz-check/index.html": ["finanz-check", "/finanz-check/danke/", site.einwilligung.finanzCheck],
     "termin/index.html": ["termin", "/termin/danke/", site.einwilligung.termin],
   };
   for (const [name, [quelle, danke, text]] of Object.entries(erwartet)) {
@@ -86,9 +87,256 @@ test("Formulare: Quelle, Danke-Seite, Beschriftungen und Einwilligungstext", () 
     for (const m of html.matchAll(/<input\b[^>]*\sid="([^"]+)"/g)) {
       assert.ok(html.includes(`for="${m[1]}"`), `${name}: Feld #${m[1]} ohne Beschriftung`);
     }
-    for (const feld of ["vorname", "email", "phone", "einwilligung", "hinweisfeld"]) {
+    const haekchen = {
+      "leitfaden/index.html": ["consent_leitfaden", "consent_marketing"],
+      "finanz-check/index.html": ["consent_finanzcheck", "consent_marketing"],
+      "termin/index.html": ["einwilligung"],
+    }[name];
+    for (const feld of ["vorname", "email", "phone", "hinweisfeld", ...haekchen]) {
       assert.ok(html.includes(`name="${feld}"`), `${name}: Feld ${feld} fehlt`);
     }
+  }
+});
+
+test("Leitfaden und Finanz-Check: Nummer freiwillig, zwei getrennte Häkchen, Tipps erst mit Nummer", () => {
+  const formulare = [["finanz-check/index.html", "consent_finanzcheck"], ...(site.zusagen.leitfaden ? [["leitfaden/index.html", "consent_leitfaden"]] : [])];
+  for (const [name, pflicht] of formulare) {
+    const html = seiten[name];
+    const telefon = html.match(/<input\b[^>]*id="phone"[^>]*>/)[0];
+    assert.equal(/\srequired\b/.test(telefon), false, `${name}: Handynummer darf hier nicht required sein`);
+    assert.match(html, new RegExp(`<input id="${pflicht}" name="${pflicht}" type="checkbox" required>`), name);
+    assert.match(html, /<div class="consent" data-braucht="phone" hidden>\s*<input id="consent_marketing" name="consent_marketing" type="checkbox">/, name);
+    assert.ok(html.includes(esc(site.einwilligung.marketing)), `${name}: Text der Tipps-Einwilligung`);
+  }
+  const t = seiten["termin/index.html"].match(/<input\b[^>]*id="phone"[^>]*>/)[0];
+  assert.match(t, /\srequired\b/, "Termin: Handynummer bleibt Pflicht");
+});
+
+test("Kein Häkchen und keine Auswahl ist vorausgewählt", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    for (const m of html.matchAll(/<input\b[^>]*>/g)) assert.equal(/\schecked\b/.test(m[0]), false, `${name}: ${m[0]}`);
+  }
+});
+
+test("Finanz-Check Variante A: ehrlicher Hinweis, GdB ausdrücklich in der Einwilligung, Antworten nur mit diesem Formular", () => {
+  const html = seiten["finanz-check/index.html"];
+  assert.ok(html.includes("Deine Antworten bleiben auf deinem Gerät. Nur wenn du am Ende das Formular abschickst, bekomme ich sie für deine Auswertung."));
+  assert.match(site.einwilligung.finanzCheck, /Grad der Behinderung \(GdB\)/);
+  assert.equal(/WhatsApp|Tipps|Einladungen/.test(site.einwilligung.finanzCheck), false, "Pflicht-Häkchen ohne Werbung (Kopplungsverbot)");
+  const js = readFileSync(join(DIST, "assets", "main.js"), "utf8");
+  assert.match(js, /if \(daten\.quelle === "finanz-check"\) \{\s*var check = lesen\("finanzcheck"\)/, "Antworten nur beim Finanz-Check-Formular");
+  assert.match(seiten["datenschutz/index.html"], /Art\. 9 Abs\. 2 lit\. a DSGVO/);
+});
+
+test("„ohne Fachchinesisch“ steht nur noch im Hero der Startseite", () => {
+  const treffer = Object.entries(seiten).flatMap(([name, html]) => (html.match(/ohne Fachchinesisch/gi) || []).map(() => name));
+  assert.deepEqual(treffer, ["index.html"]);
+  assert.match(seiten["index.html"], /<p class="hero-lead">Ich bin gehörlos[^<]*ohne Fachchinesisch/);
+  assert.equal(/Fachchinesisch/.test(readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8")), false);
+});
+
+test("Finanz-Check: Alter zuerst, GdB an dritter Stelle, überall „Sechs Fragen“", () => {
+  const js = readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8");
+  const felder = [...js.matchAll(/\{ feld: "(\w+)"/g)].map((m) => m[1]);
+  assert.deepEqual(felder, ["alter", "vorsorge", "gdb", "pauschbetrag", "kredit", "ziel"]);
+  for (const [name, html] of Object.entries(seiten)) assert.equal(/Fünf (kurze )?Fragen/.test(html), false, name);
+});
+
+test("Foto nur, wenn die Datei da ist, sonst der DK-Kreis ohne Bild-Platzhalter", () => {
+  const fotoDa = existsSync(join(ROOT, "src", "static", "img", "darian.jpg"));
+  const start = seiten["index.html"];
+  const fotos = start.match(/<img\b[^>]*src="\/img\/darian\.jpg"[^>]*>/g) || [];
+  assert.equal(fotos.length, fotoDa && !site.videos.startseite.src ? 1 : 0);
+  for (const img of fotos) {
+    assert.match(img, /\sdata-fallback\b/);
+    assert.match(img, /\salt="[^"]{8,}"/);
+    assert.equal(/\sonerror=/.test(img), false, "kein Inline-Handler (CSP)");
+  }
+  if (!fotoDa) {
+    for (const [name, html] of Object.entries(seiten)) assert.equal(html.includes("/img/darian.jpg"), false, `${name}: Foto-Link ohne Datei`);
+  }
+  if (!site.videos.startseite.src) assert.match(start, /<span class="monogramm" aria-hidden="true">DK<\/span>/);
+});
+
+test("Selbstbeschreibung: gehörlos, zwei Cochlea-Implantate (CI), DGS und Lautsprache", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/hörgeschädigt/i.test(html), false, `${name}: „hörgeschädigt“`);
+    assert.equal(/\(CIs\)/.test(html), false, `${name}: Schreibweise wie von Darian vorgegeben: (CI)`);
+  }
+  const start = seiten["index.html"];
+  // Darians eigener Satz, wörtlich
+  assert.ok(
+    start.includes("Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS), deutscher Lautsprache und schriftlich."),
+    "Darians Satz im Abschnitt Über mich",
+  );
+  // Darians Text für „Über mich“, wörtlich
+  assert.ok(
+    start.includes("Mir ist wichtig, Finanzthemen verständlich und zugänglich zu erklären. Außerdem produziere ich regelmäßig Podcasts."),
+    "Darians Text im Abschnitt Über mich",
+  );
+  assert.match(start, /<p class="hero-lead">Ich bin gehörlos und trage zwei Cochlea-Implantate \(CI\)\./);
+  for (const name of ["termin/index.html", ...(site.zusagen.leitfaden ? ["leitfaden/index.html"] : [])]) {
+    assert.match(seiten[name], /Gehörlos, mit zwei Cochlea-Implantaten \(CI\)\. Er kommuniziert in Deutscher Gebärdensprache \(DGS\), deutscher Lautsprache und schriftlich\./, name);
+  }
+});
+
+test("Keine falschen Video-Vorschauen: Video-Kasten nur mit eingetragenem Video", () => {
+  const plaetze = {
+    "index.html": site.videos.startseite.src,
+    "termin/index.html": site.videos.termin.src,
+    "termin/danke/index.html": site.videos.terminDanke.src,
+    "leitfaden/index.html": site.videos.leitfaden.src,
+    "leitfaden/danke/index.html": site.videos.leitfadenDanke.src,
+  };
+  for (const [name, src] of Object.entries(plaetze)) {
+    assert.equal(/class="video\b/.test(seiten[name]), Boolean(src), `${name}: Video-Kasten`);
+  }
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/folgt in Kürze|class="ph"|class="play"/.test(html), false, `${name}: Platzhalter`);
+  }
+});
+
+test("Podcast: keine erfundenen Folgen, Gäste, Formate oder Links", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    const ohneKommentare = html.replace(/<!--[\s\S]*?-->/g, "");
+    assert.equal(/Gäste|Gästen|Community|Jede Woche|Kundengeschichte|Frag Darian|Episode|Folge \d/i.test(ohneKommentare), false, name);
+  }
+  const start = seiten["index.html"];
+  const podcast = start.slice(start.indexOf('id="podcast"'), start.indexOf('id="fragen"'));
+  for (const [dienst, url] of [["youtube", site.social.youtube], ["spotify", site.social.spotify]]) {
+    if (!url) assert.equal(new RegExp(dienst, "i").test(podcast), false, `${dienst}: Link ohne Eintrag`);
+  }
+  const dt = [...podcast.matchAll(/<dt>([^<]+)<\/dt>/g)].map((m) => m[1]);
+  assert.deepEqual(dt, ["Sprachen", "Themen", "Neue Folgen", "Für wen"]);
+  assert.equal(/Frag Darian/.test(readFileSync(join(ROOT, "build.mjs"), "utf8")), false, "kein erfundener Formatname in den Nachrichten-Vorlagen");
+});
+
+test("Icons als feine Linien wie auf der Startseite, keine bunten Emojis", () => {
+  const emoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
+  for (const [name, html] of Object.entries(seiten)) assert.equal(emoji.test(html), false, name);
+  assert.equal(emoji.test(readFileSync(join(DIST, "assets", "main.js"), "utf8")), false, "main.js");
+});
+
+test("Funnel-Kopf: Knopf nur, wo die Seite einen hat, und dann mit Platz für den Namen", () => {
+  for (const name of ["leitfaden/index.html", "finanz-check/index.html", "leitfaden/danke/index.html"]) {
+    assert.match(seiten[name], /<header class="top mit-knopf">/, name);
+  }
+  for (const name of ["termin/index.html", "termin/danke/index.html"]) {
+    assert.match(seiten[name], /<header class="top">/, name);
+  }
+});
+
+test("Persönliche Marke: Name im Hero, Person statt Finanzdienstleister", () => {
+  const start = seiten["index.html"];
+  assert.match(start, /<h1 id="hero-titel" class="hero-marke"><span class="marke-name">Darian Krauß<\/span>/);
+  const ld = JSON.parse(start.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+  assert.equal(ld["@type"], "Person");
+  assert.equal(ld.name, "Darian Krauß");
+  assert.equal("address" in ld || "jobTitle" in ld || "hasCredential" in ld, false, "keine Anschrift, Berufsbezeichnung oder Erlaubnis im Datensatz");
+  assert.equal(site.untertitel, "Finanzwissen in Laut- und Gebärdensprache");
+});
+
+test("Keine Berufs-, Erlaubnis- oder Beratungsangaben, solange vermittler aus ist", () => {
+  if (site.vermittler) return;
+  const verboten = /Makler|Finanzberater|Finanzberatung in|Beratung (?:per|in)|Erstinformation|Vermittler|§\s?34|34[cdfhi] GewO|VersVermV|FinVermV|ehrliche Einschätzung|Einladungen zur Beratung|FinSuites/i;
+  for (const [name, html] of Object.entries(seiten)) {
+    const treffer = html.match(verboten);
+    assert.equal(treffer, null, `${name}: „${treffer && treffer[0]}“`);
+    assert.equal(html.includes("<!--"), false, `${name}: HTML-Kommentar veröffentlicht`);
+  }
+  assert.equal(/id="erstinformation"/.test(seiten["impressum/index.html"]), false);
+  assert.match(site.einwilligung.marketing, /^Darian Krauß darf mir /);
+});
+
+test("Startseite: Themen-Karten führen zum Termin, das Thema gibt es im Formular", () => {
+  const start = seiten["index.html"];
+  const termin = seiten["termin/index.html"];
+  const themen = [...start.matchAll(/href="\/termin\/\?thema=([^"]+)"/g)].map((m) => decodeURIComponent(m[1]));
+  assert.equal(themen.length, 6);
+  for (const t of themen) assert.ok(termin.includes(`name="thema" value="${t}"`), `Thema ${t} fehlt im Terminformular`);
+});
+
+test("Knöpfe heißen überall gleich: unverbindliches Kennenlernen und Leitfaden", () => {
+  let termin = 0;
+  for (const [name, html] of Object.entries(seiten)) {
+    for (const m of html.matchAll(/<a class="(?:btn\b[^"]*|text-link)" href="\/(termin|leitfaden)\/">([^<]+)<\/a>/g)) {
+      const soll = m[1] === "termin" ? "Unverbindlich kennenlernen" : "Leitfaden kostenlos holen";
+      assert.equal(m[2], soll, `${name}: Knopf zu /${m[1]}/`);
+      if (m[1] === "termin") termin++;
+    }
+    assert.equal(/Kostenlosen Termin wählen/.test(html), false, `${name}: alter Knopftext`);
+  }
+  assert.ok(termin >= 8, `nur ${termin} Termin-Knöpfe gefunden`);
+});
+
+test("Leitfaden in Vorbereitung: keine Anforderung, ehrliche Hinweise, Finanz-Check ohne Leitfaden-Versprechen", () => {
+  if (site.zusagen.leitfaden) return;
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/Leitfaden kostenlos holen|data-quelle="leitfaden"/.test(html), false, `${name}: Leitfaden wird angeboten`);
+    if (name !== "leitfaden/danke/index.html") {
+      assert.equal(/<a class="(?:btn|alt-card|wissen-karte)[^"]*" href="\/leitfaden\/"/.test(html), false, `${name}: Link zum Leitfaden`);
+    }
+  }
+  const leitfaden = seiten["leitfaden/index.html"];
+  assert.match(leitfaden, /<p class="badge">In Vorbereitung<\/p>/);
+  assert.match(leitfaden, /Der Leitfaden ist noch in Arbeit\./);
+  assert.match(seiten["index.html"], /<div class="wissen-karte vorbereitung" data-reveal>/);
+  assert.equal(/Leitfaden/.test(site.einwilligung.finanzCheck), false, "Einwilligung im Finanz-Check ohne Leitfaden");
+  assert.match(seiten["finanz-check/index.html"], /data-leitfaden="nein"/);
+  assert.equal(/Leitfaden/.test(seiten["finanz-check/danke/index.html"].replace(/<footer[\s\S]*$/, "")), false, "Danke-Seite ohne Leitfaden");
+});
+
+test("Live geht erst mit geprüften Formularen", async () => {
+  const { writeFileSync, mkdtempSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const ordner = mkdtempSync(join(tmpdir(), "konfig-"));
+  const datei = join(ordner, "site.config.mjs");
+  writeFileSync(datei, `import basis from ${JSON.stringify(join(ROOT, "site.config.mjs"))};\nexport default { ...basis, live: true, formulareGeprueft: false };\n`);
+  const { spawnSync } = await import("node:child_process");
+  const r = spawnSync(process.execPath, ["build.mjs"], { cwd: ROOT, env: { ...process.env, SITE_CONFIG: datei }, encoding: "utf8" });
+  rmSync(ordner, { recursive: true, force: true });
+  assert.equal(r.status, 1, "Build hätte abbrechen müssen");
+  assert.match(r.stderr, /formulareGeprueft/);
+  assert.ok(existsSync(join(DIST, "index.html")), "dist bleibt unangetastet");
+});
+
+test("Keine Zusagen, die noch nicht eingerichtet sind", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    if (!site.zusagen.bestaetigungVideo) {
+      assert.equal(/kurzes Video|Video von mir/i.test(html), false, `${name}: Bestätigung mit DGS-Video versprochen`);
+    }
+    if (!site.zusagen.leitfadenVideo) {
+      assert.equal(/DGS-Video|Video in (?:Deutscher )?Gebärdensprache|Große Untertitel|erklärt in Gebärdensprache/i.test(html), false, `${name}: Leitfaden-Video versprochen`);
+    }
+    if (!site.kalender.url) assert.equal(/direkt in den Kalender|deinen Termin im Kalender/i.test(html), false, `${name}: Kalender versprochen`);
+  }
+});
+
+test("Behinderten-Pauschbetrag sachlich: Spanne, Merkzeichen, Steuersatz, keine Übertreibung", () => {
+  const start = seiten["index.html"];
+  const karte = start.slice(start.indexOf("<h3>Steuervorteile bei Behinderung</h3>"), start.indexOf('href="/termin/?thema=Steuervorteile"'));
+  for (const teil of ["384&nbsp;€ bei GdB 20", "2.840&nbsp;€ bei GdB 100 im Jahr", "Merkzeichen H, Bl oder TBl sind es 7.400&nbsp;€", "zu versteuernde Einkommen", "Steuersatz"]) {
+    assert.ok(karte.includes(teil), `fehlt: ${teil}`);
+  }
+  const js = readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8");
+  assert.match(js, /"Ja, GdB 20 bis 40": "384 bis 860\\u00a0€"/);
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/Geld liegen(?! bleibt)|lassen dieses Geld|bares Geld|schnellste Hebel|in zehn Minuten|als man denkt/i.test(html), false, name);
+  }
+  assert.equal(/geht er verloren|stehen dir/i.test(js), false, "Finanz-Check-Texte sachlich");
+});
+
+test("Schriften liegen auf dem eigenen Server und werden vorab geladen", () => {
+  const css = readFileSync(join(DIST, "assets", "style.css"), "utf8");
+  const dateien = [...css.matchAll(/url\((\/assets\/fonts\/[^)]+\.woff2)\)/g)].map((m) => m[1]);
+  assert.equal(dateien.length, 3);
+  for (const d of dateien) assert.ok(existsSync(join(DIST, d)), `${d} fehlt`);
+  assert.equal(/url\((["']?)https?:/.test(css), false, "keine externen Dateien im CSS");
+  for (const lizenz of ["OFL-Fraunces.txt", "OFL-Atkinson-Hyperlegible-Next.txt", "OFL-Inter.txt"]) {
+    assert.ok(existsSync(join(DIST, "assets", "fonts", lizenz)), `${lizenz} fehlt`);
+  }
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal((html.match(/<link rel="preload" href="\/assets\/fonts\/[^"]+" as="font" type="font\/woff2" crossorigin>/g) || []).length, 2, name);
   }
 });
 

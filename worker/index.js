@@ -4,17 +4,35 @@
   - Alle Seiten, Bilder und Skripte kommen direkt aus dist/ (Static Assets).
   - POST /api/lead nimmt die Formulare entgegen (Leitfaden, Finanz-Check,
     Termin), prüft sie und leitet sie an deinen CRM-Webhook weiter.
-    Die Adresse steht im Secret LEAD_WEBHOOK_URL (z. B. FinSuites),
+    Die Adresse steht im Secret LEAD_WEBHOOK_URL,
     mehrere Adressen mit Komma trennen.
 */
 import site from "../site.config.mjs";
 
+// Jede Quelle hat ein Pflicht-Häkchen. Leitfaden und Finanz-Check haben zusätzlich ein
+// freiwilliges (consent_marketing, „tipps“), und dort ist die Handynummer freiwillig.
+// Kein Häkchen ist vorausgewählt. Gespeichert wird der Wortlaut, den die Person gesehen hat.
+const DATENSCHUTZ_SATZ = " Es gilt die Datenschutzerklärung.";
 const QUELLEN = {
-  leitfaden: { tag: "leitfaden-2027", einwilligung: site.einwilligung.leitfaden },
-  "finanz-check": { tag: "finanz-check", einwilligung: site.einwilligung.finanzCheck },
-  termin: { tag: "termin-anfrage", einwilligung: site.einwilligung.termin },
+  leitfaden: {
+    tag: "leitfaden-2027",
+    pflicht: "consent_leitfaden",
+    text: site.einwilligung.leitfaden + DATENSCHUTZ_SATZ,
+    telefonFreiwillig: true,
+    tipps: true,
+  },
+  "finanz-check": {
+    tag: "finanz-check",
+    pflicht: "consent_finanzcheck",
+    text: site.einwilligung.finanzCheck + DATENSCHUTZ_SATZ,
+    telefonFreiwillig: true,
+    tipps: true,
+    // Variante A: Nur hier werden die Antworten aus dem Finanz-Check angenommen.
+    antworten: true,
+  },
+  termin: { tag: "termin-anfrage", pflicht: "einwilligung", text: site.einwilligung.termin + DATENSCHUTZ_SATZ },
 };
-const FINANZCHECK_FELDER = ["gdb", "pauschbetrag", "vorsorge", "kredit", "ziel"];
+const FINANZCHECK_FELDER = ["alter", "vorsorge", "gdb", "pauschbetrag", "kredit", "ziel"];
 const KAMPAGNE = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
 const MAX_BYTES = 16 * 1024;
 const MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -100,7 +118,8 @@ function txt(v, max) {
 function pruefen(roh) {
   const felder = [];
   const quelle = txt(roh.quelle, 40);
-  if (!Object.hasOwn(QUELLEN, quelle)) felder.push("quelle");
+  const q = Object.hasOwn(QUELLEN, quelle) ? QUELLEN[quelle] : null;
+  if (!q) felder.push("quelle");
 
   const vorname = txt(roh.vorname, 80);
   if (!vorname) felder.push("vorname");
@@ -108,11 +127,14 @@ function pruefen(roh) {
   const email = txt(roh.email, 254);
   if (!MAIL.test(email)) felder.push("email");
 
+  // Handynummer: Pflicht außer beim Leitfaden. Steht eine da, muss sie stimmen.
   const phone = txt(roh.phone, 40);
   const ziffern = phone.replace(/\D/g, "");
-  if (ziffern.length < 7 || ziffern.length > 15 || /[^\d\s+()\-/.]/.test(phone)) felder.push("phone");
+  const telefonOk = ziffern.length >= 7 && ziffern.length <= 15 && !/[^\d\s+()\-/.]/.test(phone);
+  if (phone ? !telefonOk : !q?.telefonFreiwillig) felder.push("phone");
 
-  if (roh.einwilligung !== true) felder.push("einwilligung");
+  if (q && roh[q.pflicht] !== true) felder.push(q.pflicht);
+  const marketing = Boolean(q?.tipps) && roh.consent_marketing === true;
 
   let thema = [];
   let sprache = "";
@@ -126,35 +148,58 @@ function pruefen(roh) {
     if (!sprache) felder.push("sprache");
   }
 
+  // Antworten aus dem Finanz-Check nur vom Finanz-Check-Formular (Variante A), sonst verwerfen.
   let finanzcheck;
-  if (roh.finanzcheck && typeof roh.finanzcheck === "object" && !Array.isArray(roh.finanzcheck)) {
+  if (q?.antworten && roh.finanzcheck && typeof roh.finanzcheck === "object" && !Array.isArray(roh.finanzcheck)) {
     for (const k of FINANZCHECK_FELDER) {
       const v = txt(roh.finanzcheck[k], 120);
       if (v) (finanzcheck ||= {})[k] = v;
     }
   }
 
-  return { felder, daten: { quelle, vorname, email, phone, thema, sprache, finanzcheck } };
+  return { felder, daten: { quelle, vorname, email, phone, marketing, thema, sprache, finanzcheck } };
 }
 
 /* Flache Felder, damit sie sich im CRM leicht zuordnen lassen */
 function aufbereiten(d, roh, url) {
   const jetzt = new Date().toISOString();
   const seite = txt(roh.seite, 200);
+  const q = QUELLEN[d.quelle];
   const eintrag = {
     vorname: d.vorname,
     first_name: d.vorname,
     email: d.email,
-    phone: d.phone,
-    telefon_international: international(d.phone),
+    ...(d.phone ? { phone: d.phone, telefon_international: international(d.phone) } : {}),
     quelle: d.quelle,
-    tag: QUELLEN[d.quelle].tag,
-    einwilligung: true,
-    einwilligung_text: QUELLEN[d.quelle].einwilligung,
-    einwilligung_zeitpunkt: jetzt,
+    tag: q.tag,
     seite: seite.startsWith("/") ? new URL(seite, url.origin).href : url.origin + "/",
     zeitpunkt: jetzt,
   };
+
+  if (q.tipps) {
+    /*
+      HINWEIS DOUBLE-OPT-IN (im CRM umsetzen), gilt für Leitfaden und Finanz-Check:
+      - consent_leitfaden bzw. consent_finanzcheck = true: Die Person will nur den Leitfaden
+        bzw. Auswertung und Leitfaden. Schicke sie, aber keine Tipps, keine Einladungen
+        und keine Werbung per WhatsApp.
+      - consent_marketing = true: Das Häkchen allein reicht als Nachweis für E-Mail-Werbung
+        nicht. Das CRM schickt zuerst eine Bestätigungsmail mit Link (Double-Opt-in).
+        Erst nach dem Klick dürfen Tipps und Einladungen per E-Mail und WhatsApp kommen.
+        Zeitpunkt der Bestätigung im CRM speichern, ebenso einen Widerruf.
+      - consent_finanzcheck schließt die ausdrückliche Einwilligung für die Angabe zum GdB ein
+        (Gesundheitsdatum, Art. 9 DSGVO). Die Antworten nur für die Auswertung nutzen und bei
+        einem Widerruf löschen.
+    */
+    eintrag[q.pflicht] = true;
+    eintrag[`${q.pflicht}_text`] = q.text;
+    eintrag.consent_marketing = d.marketing;
+    if (d.marketing) eintrag.consent_marketing_text = site.einwilligung.marketing;
+    eintrag.consent_zeitpunkt = jetzt;
+  } else {
+    eintrag.einwilligung = true;
+    eintrag.einwilligung_text = q.text;
+    eintrag.einwilligung_zeitpunkt = jetzt;
+  }
   if (d.thema.length) eintrag.thema = d.thema.join(", ");
   if (d.sprache) eintrag.sprache = d.sprache;
   if (d.finanzcheck) {

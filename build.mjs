@@ -25,7 +25,8 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const SRC = join(ROOT, "src");
 const OUT = join(ROOT, "dist");
 
-const site = (await import(pathToFileURL(join(ROOT, "site.config.mjs")).href)).default;
+// SITE_CONFIG nur für Tests: eine andere Konfigurationsdatei prüfen, ohne die echte zu ändern.
+const site = (await import(pathToFileURL(process.env.SITE_CONFIG || join(ROOT, "site.config.mjs")).href)).default;
 site.url = String(site.url || "").replace(/\/+$/, "");
 
 const offen = new Map(); // leere Pflichtangaben: Schlüssel -> Hinweistext
@@ -133,11 +134,11 @@ function abgeleitet() {
   const mail = site.kontakt.email ? `mailto:${site.kontakt.email}` : "";
   const link = {
     whatsapp: wa(site.kontakt.whatsappText),
-    whatsappTermin: wa("Hallo Darian, ich möchte gern einen Termin für meine ehrliche Einschätzung."),
-    whatsappFrage: wa("Hallo Darian, ich habe eine Frage für „Frag Darian“: "),
+    whatsappTermin: wa("Hallo Darian, ich möchte gern einen Termin für ein Kennenlerngespräch."),
+    whatsappFrage: wa("Hallo Darian, ich habe eine Frage für deinen Podcast: "),
     whatsappNummer: ziffern ? `+${ziffern}` : "",
     email: mail,
-    emailFrage: mail ? `${mail}?subject=${encodeURIComponent("Frage für „Frag Darian“")}` : "",
+    emailFrage: mail ? `${mail}?subject=${encodeURIComponent("Frage für deinen Podcast")}` : "",
   };
   link.frage = link.whatsappFrage || link.emailFrage || "/termin/";
   link.schreiben = link.whatsapp || link.email;
@@ -146,33 +147,26 @@ function abgeleitet() {
   const flags = {
     social: [s.instagram, s.tiktok, s.youtube, s.spotify].some(gefuellt),
     podcastLinks: gefuellt(s.youtube) || gefuellt(s.spotify),
+    // Das Foto erscheint erst, wenn die Datei da ist. Bis dahin steht dort der DK-Kreis, ohne Bild-Platzhalter.
+    foto: existsSync(join(SRC, "static", "img", "darian.jpg")),
   };
 
   const sameAs = [s.instagram, s.tiktok, s.youtube, s.spotify].filter(gefuellt);
+  // Die persönliche Marke steht im Mittelpunkt: eine Person, kein Finanzdienstleister.
+  // Bewusst ohne Berufsbezeichnung, Erlaubnis oder Anschrift.
   const startseite = {
     "@context": "https://schema.org",
-    "@type": "FinancialService",
+    "@type": "Person",
     name: site.name,
-    description: `${site.untertitel}: Altersvorsorge, Geldanlage, Absicherung und Steuervorteile bei Behinderung, per Video-Call, Chat oder WhatsApp.`,
+    description: `${site.untertitel}: Altersvorsorge, Geldanlage, Absicherung und Steuervorteile bei Behinderung verständlich erklärt.`,
     url: `${site.url}/`,
     image: `${site.url}/og-image.png`,
-    areaServed: { "@type": "Country", name: "Deutschland" },
     knowsLanguage: [
       { "@type": "Language", name: "Deutsch", alternateName: "de" },
       { "@type": "Language", name: "Deutsche Gebärdensprache", alternateName: "gsg" },
     ],
     ...(site.kontakt.email ? { email: site.kontakt.email } : {}),
     ...(sameAs.length ? { sameAs } : {}),
-    ...(site.impressum.strasse && site.impressum.ort
-      ? {
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: site.impressum.strasse,
-            addressLocality: site.impressum.ort,
-            addressCountry: "DE",
-          },
-        }
-      : {}),
   };
   const jsonLd = (obj) =>
     `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`;
@@ -184,6 +178,12 @@ function abgeleitet() {
 
 async function bauen() {
   const start = Date.now();
+  // Sicherung: Live gehen nur, wenn die Formulare wirklich ankommen (siehe site.config.mjs).
+  if (site.live && !site.formulareGeprueft) {
+    throw new Error(
+      "live: true geht erst, wenn formulareGeprueft: true ist. Vorher LEAD_WEBHOOK_URL in Cloudflare setzen und eine Test-Anfrage im CRM prüfen.",
+    );
+  }
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
   if (existsSync(join(SRC, "static"))) {
@@ -223,7 +223,8 @@ async function bauen() {
     page.disclaimer ||=
       "Allgemeine Informationen, keine individuelle Steuer- oder Finanzberatung. Investieren bietet Chancen, aber keine Garantie.";
 
-    const html = rendern(einbinden(inhalt, bausteine, rel), { site, page, asset, ...extra }, rel);
+    // HTML-Kommentare sind Notizen für die Pflege der Seite und werden nicht veröffentlicht.
+    const html = rendern(einbinden(inhalt, bausteine, rel), { site, page, asset, ...extra }, rel).replace(/<!--[\s\S]*?-->\n?/g, "");
     const ziel = join(OUT, rel);
     await mkdir(dirname(ziel), { recursive: true });
     await writeFile(ziel, html);
@@ -251,6 +252,9 @@ async function bauen() {
   // Zusammenfassung
   console.log(`✓ ${seiten.size} Seiten gebaut nach dist/ (${Date.now() - start} ms)`);
   if (!site.live) console.log("ℹ Vorschau-Modus (live: false): Hinweisleiste an, Suchmaschinen ausgesperrt.");
+  if (!extra.flags.foto) console.log("ℹ Foto fehlt noch: src/static/img/darian.jpg (bis dahin erscheint der DK-Kreis)");
+  const ohneVideo = Object.entries(site.videos || {}).filter(([, v]) => !gefuellt(v?.src)).map(([k]) => k);
+  if (ohneVideo.length) console.log(`ℹ Noch kein Video eingetragen (dort erscheint kein Video-Kasten): ${ohneVideo.join(", ")}`);
   if (offen.size) {
     console.log(`${site.live ? "⚠ ACHTUNG, live geschaltet und" : "ℹ"} noch offen in site.config.mjs (gelb markiert):`);
     for (const [k, hinweis] of offen) console.log(`   - ${k}: ${hinweis}`);
@@ -260,6 +264,15 @@ async function bauen() {
 /* Prüft interne Links, Bilder und Sprungmarken, damit nichts ins Leere führt. */
 function pruefeLinks(seiten) {
   const fehler = [];
+  const hinweise = new Set();
+  // Bilder mit data-fallback dürfen fehlen (z. B. das Foto, solange es noch nicht da ist).
+  const optional = new Set();
+  for (const s of seiten.values()) {
+    for (const m of s.html.matchAll(/<img\b[^>]*\bdata-fallback\b[^>]*>/g)) {
+      const src = m[0].match(/\ssrc="([^"]+)"/);
+      if (src) optional.add(src[1]);
+    }
+  }
   const ids = new Map();
   for (const [pfad, s] of seiten) ids.set(pfad, new Set([...s.html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])));
 
@@ -281,11 +294,13 @@ function pruefeLinks(seiten) {
       if (seiten.has(nurPfad)) {
         if (hash && !ids.get(nurPfad).has(hash)) fehler.push(`${s.rel}: Sprungmarke ${ziel} fehlt auf ${nurPfad}`);
       } else if (!existsSync(join(OUT, nurPfad.slice(1))) || nurPfad.endsWith("/")) {
-        fehler.push(`${s.rel}: Link „${ziel}“ führt ins Leere`);
+        if (optional.has(ziel)) hinweise.add(ziel);
+        else fehler.push(`${s.rel}: Link „${ziel}“ führt ins Leere`);
       }
     }
   }
   if (fehler.length) throw new Error(`Defekte Links:\n  ${fehler.join("\n  ")}`);
+  for (const h of hinweise) console.log(`ℹ Foto fehlt noch: src/static${h} (bis dahin erscheint der DK-Kreis)`);
 }
 
 try {

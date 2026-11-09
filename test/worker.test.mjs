@@ -44,18 +44,23 @@ const leitfaden = {
   vorname: "Lea",
   email: "lea@example.de",
   phone: "0176 1234567",
-  einwilligung: true,
+  consent_leitfaden: true,
+  consent_marketing: false,
   hinweisfeld: "",
   seite: "/leitfaden/",
   t: 9000,
 };
+const termin = { ...leitfaden, quelle: "termin", consent_leitfaden: undefined, consent_marketing: undefined, einwilligung: true };
+const finanzCheck = { ...leitfaden, quelle: "finanz-check", consent_leitfaden: undefined, consent_finanzcheck: true, seite: "/finanz-check/" };
+const ANTWORTEN = { alter: "25–39", vorsorge: "Nur gesetzliche Rente", gdb: "Ja, GdB 100", pauschbetrag: "Nein", kredit: "Nein", ziel: "Steuern sparen" };
+const DS = " Es gilt die Datenschutzerklärung.";
 
 async function senden(body, e = env(), headers) {
   const r = await worker.fetch(post(body, headers), e);
   return { status: r.status, json: await r.json() };
 }
 
-test("gültiger Leitfaden-Lead geht mit Tag und Einwilligung an den Webhook", async () => {
+test("gültiger Leitfaden-Lead geht mit Tag und beiden Einwilligungen getrennt an den Webhook", async () => {
   const { status, json } = await senden(leitfaden);
   assert.equal(status, 200);
   assert.deepEqual(json, { ok: true });
@@ -67,34 +72,113 @@ test("gültiger Leitfaden-Lead geht mit Tag und Einwilligung an den Webhook", as
   assert.equal(b.tag, "leitfaden-2027");
   assert.equal(b.quelle, "leitfaden");
   assert.equal(b.telefon_international, "+491761234567");
-  assert.equal(b.einwilligung, true);
-  assert.equal(b.einwilligung_text, site.einwilligung.leitfaden);
+  assert.equal(b.consent_leitfaden, true);
+  assert.equal(b.consent_leitfaden_text, site.einwilligung.leitfaden + DS);
+  assert.equal(b.consent_marketing, false);
+  assert.equal("consent_marketing_text" in b, false);
+  assert.equal("einwilligung" in b, false, "beim Leitfaden kein altes Sammel-Feld mehr");
   assert.equal(b.seite, `${ORIGIN}/leitfaden/`);
-  assert.ok(!Number.isNaN(Date.parse(b.einwilligung_zeitpunkt)));
+  assert.ok(!Number.isNaN(Date.parse(b.consent_zeitpunkt)));
   assert.equal("hinweisfeld" in b, false);
 });
 
+test("Leitfaden: Tipps-Einwilligung wird mit Wortlaut übertragen", async () => {
+  await senden({ ...leitfaden, consent_marketing: true });
+  const b = gesendet[0].body;
+  assert.equal(b.consent_marketing, true);
+  assert.equal(b.consent_marketing_text, site.einwilligung.marketing);
+});
+
+test("Leitfaden: Handynummer ist freiwillig, aber wenn sie dasteht, muss sie stimmen", async () => {
+  const ohne = await senden({ ...leitfaden, phone: "" });
+  assert.equal(ohne.status, 200);
+  const b = gesendet[0].body;
+  assert.equal("phone" in b, false);
+  assert.equal("telefon_international" in b, false);
+  const falsch = await senden({ ...leitfaden, phone: "12" });
+  assert.equal(falsch.status, 422);
+  assert.deepEqual(falsch.json.felder, ["phone"]);
+});
+
+test("Leitfaden ohne Pflicht-Häkchen wird abgelehnt", async () => {
+  const { status, json } = await senden({ ...leitfaden, consent_leitfaden: false, consent_marketing: true });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["consent_leitfaden"]);
+  assert.equal(gesendet.length, 0);
+});
+
+test("Termin: Handynummer bleibt Pflicht, kein Tipps-Feld", async () => {
+  const basis = { ...termin, thema: ["Vorsorge"], sprache: "Chat" };
+  const { status, json } = await senden({ ...basis, phone: "" });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["phone"]);
+  await senden({ ...basis, consent_marketing: true });
+  assert.equal("consent_marketing" in gesendet[0].body, false);
+  assert.equal(gesendet[0].body.einwilligung, true);
+});
+
+test("Finanz-Check: zwei getrennte Einwilligungen mit Wortlaut, Nummer freiwillig", async () => {
+  const { status } = await senden({ ...finanzCheck, phone: "", finanzcheck: ANTWORTEN });
+  assert.equal(status, 200);
+  const b = gesendet[0].body;
+  assert.equal(b.tag, "finanz-check");
+  assert.equal(b.consent_finanzcheck, true);
+  assert.equal(b.consent_finanzcheck_text, site.einwilligung.finanzCheck + DS);
+  assert.match(b.consent_finanzcheck_text, /Grad der Behinderung/);
+  assert.equal(b.consent_marketing, false);
+  assert.equal("consent_marketing_text" in b, false);
+  assert.equal("einwilligung" in b, false, "kein altes Sammel-Feld mehr");
+  assert.equal("phone" in b, false);
+  assert.ok(!Number.isNaN(Date.parse(b.consent_zeitpunkt)));
+  await senden({ ...finanzCheck, consent_marketing: true });
+  assert.equal(gesendet[1].body.consent_marketing, true);
+  assert.equal(gesendet[1].body.consent_marketing_text, site.einwilligung.marketing);
+});
+
+test("Finanz-Check ohne Pflicht-Häkchen wird abgelehnt, auch mit Tipps-Häkchen", async () => {
+  const { status, json } = await senden({ ...finanzCheck, consent_finanzcheck: false, consent_marketing: true, finanzcheck: ANTWORTEN });
+  assert.equal(status, 422);
+  assert.deepEqual(json.felder, ["consent_finanzcheck"]);
+  assert.equal(gesendet.length, 0);
+  const alt = await senden({ ...finanzCheck, consent_finanzcheck: undefined, einwilligung: true });
+  assert.deepEqual(alt.json.felder, ["consent_finanzcheck"], "das alte Sammel-Häkchen reicht nicht mehr");
+});
+
+test("Variante A: Antworten aus dem Finanz-Check kommen nur mit dem Finanz-Check-Formular an", async () => {
+  await senden({ ...leitfaden, finanzcheck: ANTWORTEN });
+  await senden({ ...termin, thema: ["Vorsorge"], sprache: "Chat", finanzcheck: ANTWORTEN });
+  for (const g of gesendet) {
+    assert.equal("finanzcheck" in g.body, false, g.body.quelle);
+    assert.equal(Object.keys(g.body).some((k) => k.startsWith("finanzcheck_")), false, g.body.quelle);
+  }
+  await senden({ ...finanzCheck, finanzcheck: ANTWORTEN });
+  assert.equal(gesendet[2].body.finanzcheck_gdb, "Ja, GdB 100");
+});
+
 test("Terminanfrage braucht Thema und Sprache", async () => {
-  const { status, json } = await senden({ ...leitfaden, quelle: "termin" });
+  const { status, json } = await senden(termin);
   assert.equal(status, 422);
   assert.deepEqual(json.felder, ["thema", "sprache"]);
   assert.equal(gesendet.length, 0);
 });
 
 test("Terminanfrage mit Thema und Sprache", async () => {
-  const { status } = await senden({ ...leitfaden, quelle: "termin", thema: ["Vorsorge", "Geldanlage"], sprache: "Gebärdensprache" });
+  const { status } = await senden({ ...termin, thema: ["Vorsorge", "Geldanlage"], sprache: "Gebärdensprache" });
   assert.equal(status, 200);
   const b = gesendet[0].body;
   assert.equal(b.tag, "termin-anfrage");
   assert.equal(b.thema, "Vorsorge, Geldanlage");
   assert.equal(b.sprache, "Gebärdensprache");
-  assert.equal(b.einwilligung_text, site.einwilligung.termin);
+  assert.equal(b.einwilligung, true);
+  assert.equal(b.einwilligung_text, site.einwilligung.termin + DS);
 });
 
 test("fehlende oder falsche Angaben werden benannt", async () => {
-  const { status, json } = await senden({ quelle: "leitfaden", vorname: " ", email: "lea@", phone: "123", einwilligung: "ja" });
+  const { status, json } = await senden({ quelle: "leitfaden", vorname: " ", email: "lea@", phone: "123", consent_leitfaden: "ja" });
   assert.equal(status, 422);
-  assert.deepEqual(json.felder, ["vorname", "email", "phone", "einwilligung"]);
+  assert.deepEqual(json.felder, ["vorname", "email", "phone", "consent_leitfaden"]);
+  const t = await senden({ quelle: "termin", vorname: "Lea", email: "lea@example.de", phone: "0176 1234567", einwilligung: "ja", thema: ["Vorsorge"], sprache: "Chat" });
+  assert.deepEqual(t.json.felder, ["einwilligung"]);
 });
 
 test("unbekannte Quelle wird abgelehnt", async () => {
@@ -172,14 +256,14 @@ test("mehrere Webhooks, einer davon kaputt: trotzdem ok", async () => {
 
 test("Finanz-Check- und Kampagnen-Felder werden gefiltert", async () => {
   await senden({
-    ...leitfaden,
-    quelle: "finanz-check",
-    finanzcheck: { gdb: "Ja, GdB 100", ziel: "Steuern sparen", boese: "x" },
+    ...finanzCheck,
+    finanzcheck: { alter: "25–39", gdb: "Ja, GdB 100", ziel: "Steuern sparen", boese: "x" },
     utm: { utm_source: "instagram", utm_campaign: "leitfaden-2027", boese: "x" },
   });
   const b = gesendet[0].body;
   assert.equal(b.tag, "finanz-check");
-  assert.deepEqual(b.finanzcheck, { gdb: "Ja, GdB 100", ziel: "Steuern sparen" });
+  assert.deepEqual(b.finanzcheck, { alter: "25–39", gdb: "Ja, GdB 100", ziel: "Steuern sparen" });
+  assert.equal(b.finanzcheck_alter, "25–39");
   assert.equal(b.finanzcheck_gdb, "Ja, GdB 100");
   assert.equal(b.utm_source, "instagram");
   assert.equal(b.utm_campaign, "leitfaden-2027");

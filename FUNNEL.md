@@ -9,11 +9,18 @@ Nirgends muss jemand anrufen, Kontakt läuft über Video, Chat und WhatsApp.
 |---|---|---|
 | 1 · Sehen | Bester Clip als Anzeige, an neue Menschen | `/leitfaden/` (Freebie) oder Profil |
 | 2 · Vertrauen | Kundengeschichte oder Partner-Folge, an Video-Zuschauer | `/finanz-check/` oder `/leitfaden/` |
-| 3 · Termin | „Ehrliche Einschätzung zu deinen Finanzen: 20 Minuten per Video-Call“, an Interessierte | `/termin/` |
-| Bio-Link | „Termin für deine ehrliche Einschätzung, Link in meiner Bio“ | `/termin/` |
+| 3 · Termin | „Kostenloses Kennenlerngespräch: 20 Minuten per Video-Call“, an Interessierte | `/termin/` |
+| Bio-Link | „Termin für ein Kennenlerngespräch, Link in meiner Bio“ | `/termin/` |
 | Podcast-Beschreibung | YouTube und Spotify | `/leitfaden/` |
 
-Alle Wege enden beim Termin: Die Leitfaden-Danke-Seite und jede Mail laden zur ehrlichen Einschätzung ein.
+Alle Wege enden beim Termin: Die Danke-Seiten und jede Mail laden zum Kennenlerngespräch ein.
+
+**Stand:** Der Leitfaden ist in Vorbereitung (`LEITFADEN_FERTIG = false`). Bis dahin gibt es kein Leitfaden-Formular,
+und Anzeigen sollten auf `/finanz-check/` oder `/termin/` zeigen, nicht auf `/leitfaden/`. Der Finanz-Check hat eine
+eigene Danke-Seite (`/finanz-check/danke/`) und verspricht nur die Auswertung.
+
+**Wichtig für alle Texte, auch in Anzeigen und Mails:** keine Berufsbezeichnung, Erlaubnis oder Qualifikation nennen
+und keine individuelle Beratung versprechen. Finanzthemen werden allgemein und verständlich erklärt.
 
 ### Kampagnen-Kennungen anhängen
 
@@ -43,7 +50,7 @@ Jedes Formular schickt per `POST` ein JSON an `LEAD_WEBHOOK_URL`. Die Felder sin
   "einwilligung": true,
   "einwilligung_text": "Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, …",
   "einwilligung_zeitpunkt": "2026-11-05T18:02:11.000Z",
-  "seite": "https://darian-krauss.misty-hat-6afe.workers.dev/termin/",
+  "seite": "https://homepage.darian-krauss.workers.dev/termin/",
   "zeitpunkt": "2026-11-05T18:02:11.000Z",
   "utm_source": "instagram",
   "utm_campaign": "stufe-3-termin"
@@ -52,11 +59,12 @@ Jedes Formular schickt per `POST` ein JSON an `LEAD_WEBHOOK_URL`. Die Felder sin
 
 | `quelle` | `tag` | Zusätzliche Felder |
 |---|---|---|
-| `leitfaden` | `leitfaden-2027` | |
-| `finanz-check` | `finanz-check` | `finanzcheck_gdb`, `finanzcheck_pauschbetrag`, `finanzcheck_vorsorge`, `finanzcheck_kredit`, `finanzcheck_ziel` |
+| `leitfaden` | `leitfaden-2027` | `consent_leitfaden` (immer `true`), `consent_marketing` (`true`/`false`), Texte dazu in `consent_leitfaden_text` / `consent_marketing_text`, `consent_zeitpunkt`. Kein Feld `einwilligung`. Handynummer freiwillig: `phone` fehlt, wenn leer. |
+| `finanz-check` | `finanz-check` | `consent_finanzcheck` (immer `true`, schließt die ausdrückliche Einwilligung für die Angabe zum GdB ein), `consent_marketing` (`true`/`false`), Texte dazu in `consent_finanzcheck_text` / `consent_marketing_text`, `consent_zeitpunkt`. Dazu die Antworten: `finanzcheck_alter`, `finanzcheck_vorsorge`, `finanzcheck_gdb`, `finanzcheck_pauschbetrag`, `finanzcheck_kredit`, `finanzcheck_ziel`. Kein Feld `einwilligung`. Handynummer freiwillig: `phone` fehlt, wenn leer. |
 | `termin` | `termin-anfrage` | `thema`, `sprache` |
 
-Hat jemand vorher den Finanz-Check gemacht, kommen dessen Antworten auch bei Leitfaden und Termin mit.
+Die Antworten aus dem Finanz-Check kommen **nur mit dem Finanz-Check-Formular** an (Variante A), nie mit Leitfaden oder Termin.
+Sie enthalten den GdB, ein Gesundheitsdatum (Art. 9 DSGVO): Im CRM nur für die Auswertung nutzen und bei einem Widerruf löschen.
 
 ## Automationen im CRM
 
@@ -64,6 +72,8 @@ WhatsApp-Nachrichten, die du automatisch verschickst, laufen über die WhatsApp 
 CRM. Vorlagen dafür muss Meta einmal freigeben.
 
 ### Leitfaden und Finanz-Check (`leitfaden-2027`, `finanz-check`)
+
+**Wichtig bei Leitfaden und Finanz-Check:** Beide Seiten haben zwei getrennte Häkchen, keins ist vorausgewählt. Mit `consent_marketing = false` bekommt die Person nur den Leitfaden (beim Finanz-Check: Auswertung und Leitfaden), sonst nichts. Tipps, Einladungen und WhatsApp-Werbung nur bei `consent_marketing = true` und erst nach der Bestätigung (Double-Opt-In).
 
 **1. Sofort: Bestätigung (Double-Opt-In, Pflicht für E-Mail-Werbung)**
 
@@ -79,13 +89,13 @@ CRM. Vorlagen dafür muss Meta einmal freigeben.
 >
 > Hi {vorname}, schön, dass du da bist! Hier ist dein Finanz-Leitfaden 2027:
 > 📄 PDF zum Nachlesen: {link-pdf}
-> 🤟 Video in Gebärdensprache mit Untertiteln: {link-video}
+> 🤟 Video in Gebärdensprache mit Untertiteln: {link-video} *(erst, wenn es das Video gibt; dann auf der Website `zusagen.leitfadenVideo: true`)*
 >
-> Mein Tipp: Fang mit Kapitel 1 an. Der Behinderten-Pauschbetrag ist für viele der schnellste Hebel, oft in zehn Minuten erledigt.
+> Mein Tipp: Fang mit Kapitel 1 an. Dort steht, wie der Behinderten-Pauschbetrag funktioniert.
 >
 > Fragen? Antworte einfach auf diese Mail oder schreib mir per WhatsApp. Telefonieren musst du nicht.
 >
-> Wenn du magst, schauen wir gemeinsam auf deine Finanzen: 20 Minuten per Video-Call, in Gebärdensprache,
+> Wenn du magst, lernen wir uns kennen: 20 Minuten per Video-Call, in Gebärdensprache,
 > Lautsprache oder per Chat. Kostenlos und unverbindlich: {url}/termin/
 >
 > Viele Grüße, Darian
@@ -96,17 +106,17 @@ Beim Finanz-Check kannst du mit `finanzcheck_ziel` verzweigen und das passende K
 
 **3. Zwei bis drei Tage später: Einladung zum Termin**
 
-> Hi {vorname}, hast du schon in Kapitel 1 geschaut? Viele merken dabei, dass sie Jahr für Jahr Geld liegen lassen.
-> Wenn du wissen willst, was bei dir drin ist: 20 Minuten per Video-Call, in deiner Sprache. {url}/termin/
+> Hi {vorname}, hast du schon in Kapitel 1 geschaut? Dort steht, wie der Behinderten-Pauschbetrag funktioniert.
+> Du hast Fragen dazu? Lern mich kennen: 20 Minuten per Video-Call, in deiner Sprache. {url}/termin/
 
 ### Terminanfrage (`termin-anfrage`)
 
-**Termin gebucht: Bestätigung per WhatsApp** (Text und kurzes Video in DGS, 20 Sekunden)
+**Termin gebucht: Bestätigung per E-Mail oder WhatsApp** (als Text. Ein kurzes Video in DGS erst, wenn es eingerichtet ist; dann auf der Website `zusagen.bestaetigungVideo: true`)
 
 > Hi {vorname}, dein Termin steht ✅
 > {datum}, {uhrzeit} Uhr per Video-Call.
 > Du entscheidest: Gebärdensprache, Lautsprache oder Chat.
-> [Video: Darian begrüßt dich in DGS]
+> [später, wenn eingerichtet: Video, Darian begrüßt dich in DGS]
 
 **Erinnerung, eine Stunde vorher**
 
@@ -114,7 +124,7 @@ Beim Finanz-Check kannst du mit `finanzcheck_ziel` verzweigen und das passende K
 
 **Kein Termin nach 24 Stunden gebucht**
 
-> Hi {vorname}, du wolltest dir eine ehrliche Einschätzung zu deinen Finanzen holen. Hat mit dem Kalender alles geklappt?
+> Hi {vorname}, du wolltest einen Termin für ein Kennenlerngespräch. Hat mit dem Kalender alles geklappt?
 > Wenn du magst, schick ich dir zwei Terminvorschläge.
 
 ## Was wir messen

@@ -1,6 +1,7 @@
 /* Darian Krauß · Website-Skript
-   Menü auf dem Handy, Videos mit Untertiteln, Formulare an /api/lead und
-   persönliche Ansprache auf den Danke-Seiten. Keine Cookies, kein Tracking. */
+   Menü auf dem Handy, Videos mit Untertiteln, Formulare an /api/lead,
+   persönliche Ansprache auf den Danke-Seiten, feine Einblend-Animation und
+   Termin-Leiste auf dem Handy (Startseite). Keine Cookies, kein Tracking. */
 (function () {
   "use strict";
 
@@ -11,6 +12,7 @@
   /* Sitzungsspeicher: gilt nur für diesen Tab und wird beim Schließen gelöscht */
   function lesen(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
   function merken(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* privates Fenster */ } }
+  function vergessen(k) { try { sessionStorage.removeItem(k); } catch (e) { /* egal */ } }
 
   /* 1. Menü auf kleinen Bildschirmen */
   var menuBtn = document.querySelector(".menu-btn");
@@ -28,7 +30,7 @@
   }
 
   /* 2. Videos: starten stumm mit Untertiteln, „Ton an“ schaltet den Ton zu.
-     Ohne data-src bleibt der Platzhalter stehen. */
+     Den Video-Kasten gibt es nur, wenn in site.config.mjs ein Video eingetragen ist. */
   document.querySelectorAll(".video").forEach(function (box) {
     var src = box.getAttribute("data-src");
     if (!src) return;
@@ -48,8 +50,6 @@
       v.appendChild(spur);
     }
     box.insertBefore(v, box.firstChild);
-    var ph = box.querySelector(".ph");
-    if (ph) ph.remove();
     var ton = box.querySelector(".ton");
     if (ton) {
       ton.hidden = false;
@@ -58,7 +58,7 @@
         if (!v.muted) v.currentTime = 0;
         var p = v.play();
         if (p && p.catch) p.catch(function () {});
-        ton.textContent = v.muted ? "🔈 Ton an" : "🔇 Ton aus";
+        ton.textContent = v.muted ? "Ton an" : "Ton aus";
       });
     }
   });
@@ -133,9 +133,12 @@
       });
       pruefe(f.vorname, !!f.vorname.value.trim());
       pruefe(f.email, MAIL.test(f.email.value.trim()));
+      /* Handynummer: Pflicht nur mit required (Leitfaden: freiwillig). Wenn sie dasteht, muss sie stimmen. */
       var ziffern = f.phone.value.replace(/\D/g, "");
-      pruefe(f.phone, ziffern.length >= 7 && ziffern.length <= 15);
-      pruefe(f.einwilligung, f.einwilligung.checked);
+      var telLeer = !f.phone.value.trim();
+      pruefe(f.phone, (telLeer && !f.phone.required) || (ziffern.length >= 7 && ziffern.length <= 15));
+      /* Pflicht-Häkchen haben required, freiwillige nicht */
+      form.querySelectorAll(".consent input[type=checkbox][required]").forEach(function (c) { pruefe(c, c.checked); });
       if (fehler.length) { fehler[0].focus(); return; }
 
       var daten = {
@@ -143,18 +146,22 @@
         vorname: f.vorname.value.trim(),
         email: f.email.value.trim(),
         phone: f.phone.value.trim(),
-        einwilligung: true,
         hinweisfeld: f.hinweisfeld ? f.hinweisfeld.value : "",
         seite: location.pathname,
         t: Date.now() - START
       };
+      /* Jedes Häkchen getrennt senden: einwilligung bzw. consent_leitfaden und consent_marketing */
+      form.querySelectorAll(".consent input[type=checkbox]").forEach(function (c) { daten[c.name] = c.checked; });
       var themen = [].map.call(form.querySelectorAll('input[name="thema"]:checked'), function (i) { return i.value; });
       if (themen.length) daten.thema = themen;
       var sprache = form.querySelector('input[name="sprache"]:checked');
       if (sprache) daten.sprache = sprache.value;
-      /* Antworten aus dem Finanz-Check mitschicken */
-      var check = lesen("finanzcheck");
-      if (check) { try { daten.finanzcheck = JSON.parse(check); } catch (err) { /* ignorieren */ } }
+      /* Antworten aus dem Finanz-Check nur mit dem Finanz-Check-Formular (Variante A),
+         nie mit dem Leitfaden- oder Terminformular */
+      if (daten.quelle === "finanz-check") {
+        var check = lesen("finanzcheck");
+        if (check) { try { daten.finanzcheck = JSON.parse(check); } catch (err) { /* ignorieren */ } }
+      }
       var utm = kampagne();
       if (utm) daten.utm = utm;
 
@@ -162,6 +169,8 @@
         merken("vorname", daten.vorname);
         merken("email", daten.email);
         merken("quelle", daten.quelle);
+        /* Abgeschickt: Die Antworten werden im Browser nicht mehr gebraucht */
+        if (daten.quelle === "finanz-check") vergessen("finanzcheck");
         location.href = form.getAttribute("data-danke");
       };
 
@@ -198,7 +207,83 @@
     var zuruecksetzen = function (e) { if (e.target.name) setFehler(e.target, false); };
     form.addEventListener("input", zuruecksetzen);
     form.addEventListener("change", zuruecksetzen);
+
+    /* Bereiche, die erst erscheinen, wenn ein Feld ausgefüllt ist (data-braucht="phone").
+       Verschwindet die Nummer wieder, wird das Häkchen darin zurückgesetzt. */
+    form.querySelectorAll("[data-braucht]").forEach(function (box) {
+      var feld = f[box.getAttribute("data-braucht")];
+      if (!feld) return;
+      var zeigen = function () {
+        var an = feld.value.trim() !== "";
+        box.hidden = !an;
+        if (!an) box.querySelectorAll("input[type=checkbox]").forEach(function (c) { c.checked = false; });
+      };
+      feld.addEventListener("input", zeigen);
+      feld.addEventListener("change", zeigen);
+      window.addEventListener("pageshow", zeigen);
+      zeigen();
+    });
   });
+
+  /* 5. Fotos: Fehlt die Datei, wird das Bild ausgeblendet und der DK-Kreis darunter bleibt sichtbar.
+     (onerror direkt im HTML würde die Content-Security-Policy blockieren.) */
+  document.querySelectorAll("img[data-fallback]").forEach(function (img) {
+    var fehlt = function () { img.classList.add("fehlt"); };
+    if (img.complete && img.naturalWidth === 0) fehlt();
+    else img.addEventListener("error", fehlt);
+  });
+
+  /* 6. Feine Einblend-Animation: nur für Elemente unterhalb des ersten Bildschirms und nur,
+     wenn das Gerät keine reduzierte Bewegung wünscht. Ohne JavaScript ist alles sofort sichtbar. */
+  var ruhigeBewegung = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!ruhigeBewegung && "IntersectionObserver" in window) {
+    var einblenden = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("sichtbar");
+        einblenden.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.08 });
+    document.querySelectorAll("[data-reveal]").forEach(function (el) {
+      if (el.getBoundingClientRect().top < window.innerHeight) return; /* schon zu sehen: nichts verstecken */
+      el.classList.add("reveal");
+      einblenden.observe(el);
+    });
+  }
+
+  /* 7. Handy: Termin-Leiste am unteren Rand. Sie erscheint, sobald die Knöpfe im Hero nach oben
+     aus dem Bild gescrollt sind, und verschwindet beim Kontakt-Abschnitt und in der Fußzeile. */
+  var leiste = document.querySelector("[data-mobil-cta]");
+  var heroKnoepfe = document.querySelector(".start-hero .cta-row");
+  if (leiste && heroKnoepfe && "IntersectionObserver" in window) {
+    var heroVorbei = false;
+    var endeSichtbar = {};
+    var leisteZeigen = function () {
+      var amEnde = Object.keys(endeSichtbar).some(function (k) { return endeSichtbar[k]; });
+      var an = heroVorbei && !amEnde;
+      leiste.classList.toggle("an", an);
+      document.documentElement.classList.toggle("mit-leiste", an);
+    };
+    new IntersectionObserver(function (eintraege) {
+      var e = eintraege[eintraege.length - 1];
+      heroVorbei = !e.isIntersecting && e.boundingClientRect.top < 0;
+      leisteZeigen();
+    }).observe(heroKnoepfe);
+    var endeBeobachter = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e) { endeSichtbar[e.target.id || e.target.className] = e.isIntersecting; });
+      leisteZeigen();
+    });
+    document.querySelectorAll("#kontakt, footer").forEach(function (el) { endeBeobachter.observe(el); });
+  }
+
+  /* 8. Terminformular: Thema aus dem Link vorauswählen, z. B. /termin/?thema=Vorsorge
+     (die Themen-Karten der Startseite verlinken so) */
+  var themaAusLink = new URLSearchParams(location.search).get("thema");
+  if (themaAusLink) {
+    document.querySelectorAll('form.lead-form input[name="thema"]').forEach(function (i) {
+      if (i.value === themaAusLink) i.checked = true;
+    });
+  }
 
   /* Zurück-Knopf des Browsers holt die Seite aus dem Cache: Absende-Knopf wieder freigeben */
   window.addEventListener("pageshow", function (e) {

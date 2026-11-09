@@ -1,6 +1,6 @@
 ---
 title: Fast geschafft: Wähl deine Uhrzeit | Darian Krauß
-description: Deine Anfrage ist angekommen. Wähl jetzt deine Uhrzeit für die ehrliche Einschätzung per Video-Call.
+description: Deine Anfrage ist angekommen. Wähl jetzt deine Uhrzeit für das Kennenlerngespräch per Video-Call.
 robots: noindex, nofollow
 sitemap: false
 ---
@@ -15,43 +15,49 @@ sitemap: false
       <h1 data-vorname="Fast geschafft, {vorname}! Wähl jetzt deine Uhrzeit.">Fast geschafft! Wähl jetzt deine Uhrzeit.</h1>
       <p class="lead">Deine Angaben sind angekommen. Such dir im Kalender eine freie Uhrzeit für unseren Video-Call aus. Das dauert eine Minute.</p>
       <a class="btn" href="{{site.kalender.url}}" data-kalender {{#site.kalender.vorbefuellen}}data-vorbefuellen{{/site.kalender.vorbefuellen}}>Uhrzeit im Kalender wählen</a>
-      <p class="kalender-hinweis">Du wechselst dafür zu meinem Online-Kalender{{#site.kalender.anbieter}} bei {{site.kalender.anbieter}}{{/site.kalender.anbieter}}. Danach bekommst du die Bestätigung per WhatsApp und E-Mail.</p>
+      <p class="kalender-hinweis">Du wechselst dafür zu meinem Online-Kalender{{#site.kalender.anbieter}} bei {{site.kalender.anbieter}}{{/site.kalender.anbieter}}. Danach bekommst du eine Bestätigung per E-Mail.</p>
       {{/site.kalender.url}}
       {{^site.kalender.url}}
-      <div class="done-ic" aria-hidden="true">✓</div>
+      <div class="done-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h1 data-vorname="Danke, {vorname}! Deine Anfrage ist angekommen.">Danke! Deine Anfrage ist angekommen.</h1>
       <p class="lead">Ich melde mich in Kürze per WhatsApp oder E-Mail bei dir, und wir finden gemeinsam einen Termin für unseren Video-Call. Telefonieren musst du nicht.</p>
       {{/site.kalender.url}}
 
       <ol class="steps">
-        <li><b>Bestätigung per WhatsApp</b><span>Du bekommst deinen Termin als Text und als kurzes Video von mir in Gebärdensprache.</span></li>
-        <li><b>Erinnerung mit Link</b><span>Kurz vor dem Termin kommt die Erinnerung mit dem Link zum Video-Call.</span></li>
-        <li><b>20 Minuten, in deiner Sprache</b><span>Gebärdensprache, Lautsprache oder Chat. Du brauchst nur ein Handy, Tablet oder einen Computer mit Kamera.</span></li>
+        <li><b>Bestätigung</b><span>Du bekommst deinen Termin schriftlich, per E-Mail oder WhatsApp.{{#site.zusagen.bestaetigungVideo}} Dazu kommt ein kurzes Video von mir in Gebärdensprache.{{/site.zusagen.bestaetigungVideo}}</span></li>
+        <li><b>Link zum Video-Call</b><span>Den Link bekommst du rechtzeitig vor dem Termin.</span></li>
+        <li><b>20&nbsp;Minuten, in deiner Sprache</b><span>Gebärdensprache, Lautsprache oder Chat. Du brauchst nur ein Handy, Tablet oder einen Computer mit Kamera.</span></li>
       </ol>
 
-      <div class="video" data-src="{{site.videos.terminDanke.src}}" data-poster="{{site.videos.terminDanke.poster}}" data-untertitel="{{site.videos.terminDanke.untertitel}}" data-label="Darian sagt Danke, in Gebärdensprache mit Untertiteln">
+      {{#site.videos.terminDanke.src}}
+      <div class="video" data-src="{{site.videos.terminDanke.src}}" data-poster="{{site.videos.terminDanke.poster}}" data-untertitel="{{site.videos.terminDanke.untertitel}}" data-label="Darian sagt Danke und erklärt, wie es weitergeht, in Gebärdensprache mit Untertiteln">
         <span class="dgs">DGS · Untertitel · Ton</span>
-        <div class="ph">
-          <div class="play" aria-hidden="true">▶</div>
-          <b>Darian sagt Danke und erklärt, wie es weitergeht</b>
-          <small>Video in Gebärdensprache folgt in Kürze</small>
-        </div>
-        <button class="ton" type="button" hidden>🔈 Ton an</button>
+        <button class="ton" type="button" hidden>Ton an</button>
       </div>
+      {{/site.videos.terminDanke.src}}
 
       {{#link.whatsappTermin}}
       <p class="kalender-hinweis">Lieber direkt schreiben? <a href="{{link.whatsappTermin}}">Schick mir eine WhatsApp-Nachricht</a>.</p>
       {{/link.whatsappTermin}}
 
       <div class="alts">
+        {{#site.zusagen.leitfaden}}
         <a class="alt-card" href="/leitfaden/">
           <b>Zur Vorbereitung: der Finanz-Leitfaden</b>
-          <span>Sechs Kapitel als PDF und als Video in Gebärdensprache, kostenlos per E-Mail.</span>
-          <em>Leitfaden holen →</em>
+          <span>Sechs Kapitel als PDF{{#site.zusagen.leitfadenVideo}} und als Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}, kostenlos per E-Mail.</span>
+          <em>Leitfaden kostenlos holen →</em>
         </a>
+        {{/site.zusagen.leitfaden}}
+        {{^site.zusagen.leitfaden}}
+        <a class="alt-card" href="/#podcast">
+          <b>Mein Podcast</b>
+          <span>Regelmäßig Geldthemen in Laut- und Gebärdensprache, einfach erklärt.</span>
+          <em>Zum Podcast →</em>
+        </a>
+        {{/site.zusagen.leitfaden}}
         <a class="alt-card" href="/finanz-check/">
-          <b>Der Finanz-Check in 90 Sekunden</b>
-          <span>Fünf Fragen, sofort dein Ergebnis. Gute Grundlage für unser Gespräch.</span>
+          <b>Der Finanz-Check in 90&nbsp;Sekunden</b>
+          <span>Sechs Fragen, sofort dein Ergebnis. Gute Grundlage für unser Gespräch.</span>
           <em>Check starten →</em>
         </a>
       </div>

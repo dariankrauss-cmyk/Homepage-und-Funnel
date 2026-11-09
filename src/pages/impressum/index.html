@@ -1,6 +1,6 @@
 ---
-title: Impressum und Erstinformation | Darian Krauß
-description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krauß, Finanzberatung in Laut- und Gebärdensprache.
+title: Impressum | Darian Krauß
+description: Impressum von Darian Krauß, Finanzwissen in Laut- und Gebärdensprache.
 ---
 {{> head}}
 <body>
@@ -9,30 +9,34 @@ description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krau�
   <section class="legal">
     <div class="wrap narrow">
       <h1>Impressum</h1>
-      {{^site.live}}<div class="todo-box"><b>Entwurf:</b> Gelb markierte Angaben bitte in <code>site.config.mjs</code> eintragen und das Impressum vor dem Livegang rechtlich prüfen lassen.</div>{{/site.live}}
+      {{^site.live}}<div class="todo-box"><b>Entwurf:</b> Gelb markierte Pflichtangaben bitte in <code>site.config.mjs</code> eintragen. Vor der Veröffentlichung rechtlich prüfen lassen, ob weitere Pflichtangaben nötig sind.</div>{{/site.live}}
 
       <h2>Angaben gemäß § 5 DDG</h2>
-      <p>{{site.name}}{{#site.impressum.firma}}<br>{{site.impressum.firma}}{{/site.impressum.firma}}<br>{{? site.impressum.strasse | Straße und Hausnummer}}<br>{{? site.impressum.ort | PLZ und Ort}}</p>
-
-      <h2>Kontakt</h2>
-      <p>E-Mail: {{#link.email}}<a href="{{link.email}}">{{site.kontakt.email}}</a>{{/link.email}}{{^link.email}}{{? site.kontakt.email | E-Mail-Adresse}}{{/link.email}}{{#site.kontakt.telefon}}<br>Telefon: {{site.kontakt.telefon}}{{/site.kontakt.telefon}}{{#link.whatsappNummer}}<br>WhatsApp: <a href="{{link.whatsapp}}">{{link.whatsappNummer}}</a>{{/link.whatsappNummer}}<br>Video-Call: nach Vereinbarung über <a href="/termin/">die Terminanfrage</a></p>
+      <!-- PLATZHALTER-BLOCK: Werte bewusst leer, bis die Angaben rechtlich geklärt sind.
+           Eintragen in site.config.mjs unter "impressum". -->
+      <dl class="angaben">
+        <dt>Name</dt><dd>{{? site.impressum.name | noch offen}}</dd>
+        <dt>Anschrift</dt><dd>{{? site.impressum.anschrift | noch offen}}</dd>
+        <dt>Kontakt</dt><dd>{{? site.impressum.kontakt | noch offen}}</dd>
+        {{#site.vermittler}}
+        <dt>Berufsbezeichnung</dt><dd>{{? site.impressum.berufsbezeichnung | noch offen}}</dd>
+        <dt>Registernummer (Vermittlerregister)</dt><dd>{{? site.impressum.registernummer | noch offen}}</dd>
+        <dt>Zuständige IHK</dt><dd>{{? site.impressum.ihk | noch offen}}</dd>
+        <dt>Status nach § 34d GewO</dt><dd>{{? site.impressum.status34d | noch offen}}</dd>
+        {{/site.vermittler}}
+      </dl>
 
       {{#site.impressum.ustId}}
       <h2>Umsatzsteuer-ID</h2>
       <p>Umsatzsteuer-Identifikationsnummer nach § 27a Umsatzsteuergesetz: {{site.impressum.ustId}}</p>
       {{/site.impressum.ustId}}
 
+      <!-- Erscheint nur mit vermittler: true in site.config.mjs -->
+      {{#site.vermittler}}
       <h2 id="erstinformation">Erstinformation und Angaben zur Vermittlertätigkeit</h2>
       <p>Diese Angaben gelten auch als Erstinformation nach § 15 der Versicherungsvermittlungsverordnung (VersVermV) und § 12 der Finanzanlagenvermittlungsverordnung (FinVermV).</p>
 
-      <h3>Status und Erlaubnis</h3>
-      <p>{{? site.impressum.erlaubnisse | Art der Tätigkeit und Erlaubnis, z. B. Versicherungsmakler mit Erlaubnis nach § 34d Abs. 1 GewO, Finanzanlagenvermittler mit Erlaubnis nach § 34f Abs. 1 GewO}}</p>
-
-      <h3>Zuständige Erlaubnis- und Aufsichtsbehörde</h3>
-      <p>{{? site.impressum.ihk | Name und Anschrift der zuständigen IHK}}</p>
-
-      <h3>Eintragung im Vermittlerregister</h3>
-      <p>Registrierungsnummer: {{? site.impressum.registernummer | Registrierungsnummer, z. B. D-XXXX-XXXXX-XX}}</p>
+      <h3>Vermittlerregister</h3>
       <p>Gemeinsame Stelle: Deutscher Industrie- und Handelskammertag (DIHK) e. V., Breite Straße 29, 10178 Berlin. Die Eintragung kannst du unter <a href="https://www.vermittlerregister.info">www.vermittlerregister.info</a> prüfen.</p>
 
       <h3>Berufsrechtliche Regelungen</h3>
@@ -53,9 +57,10 @@ description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krau�
         <li>Ombudsmann Private Kranken- und Pflegeversicherung, Postfach 06 02 22, 10052 Berlin, <a href="https://www.pkv-ombudsmann.de">www.pkv-ombudsmann.de</a></li>
       </ul>
       {{#site.impressum.weitereSchlichtung}}<p>{{site.impressum.weitereSchlichtung}}</p>{{/site.impressum.weitereSchlichtung}}
+      {{/site.vermittler}}
 
       <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
-      <p>{{site.name}}, Anschrift wie oben</p>
+      <p>{{? site.impressum.name | noch offen}}, Anschrift wie oben</p>
 
       <h2>Hinweis zu den Inhalten</h2>
       <p>Die Inhalte dieser Website, des Finanz-Checks und des Leitfadens sind allgemeine Informationen und ersetzen keine individuelle Steuer-, Rechts- oder Finanzberatung. Investieren bietet Chancen, aber keine Garantie.</p>

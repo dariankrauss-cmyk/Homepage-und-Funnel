@@ -1,6 +1,6 @@
 # Für lokale Tests nach .dev.vars kopieren (wird nicht eingecheckt).
 # Bei Cloudflare trägst du den Wert als Secret ein, siehe README.
 
-# Webhook deines CRM (z. B. FinSuites), an den alle Formulare gehen.
+# Webhook deines CRM, an den alle Formulare gehen.
 # Mehrere Adressen mit Komma trennen.
 LEAD_WEBHOOK_URL=

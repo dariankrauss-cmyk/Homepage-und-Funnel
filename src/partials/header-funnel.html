@@ -1,6 +1,6 @@
 <a class="skip" href="#inhalt">Zum Inhalt springen</a>
 {{> vorschau}}
-<header class="top">
+<header class="top{{#page.headerCta}} mit-knopf{{/page.headerCta}}">
   <div class="wrap">
     {{> marke}}
     {{#page.headerCta}}<a class="btn-sm" href="{{page.headerCtaLink}}">{{page.headerCta}}</a>{{/page.headerCta}}

@@ -8,18 +8,30 @@
     als gelb markierter Platzhalter, und der Build listet sie dir auf.
   - Nach jeder Änderung baut Cloudflare die Seite beim nächsten Push neu.
 */
+
+// Der Finanz-Leitfaden 2027: erst auf true stellen, wenn das PDF fertig ist und die Mail damit
+// wirklich verschickt wird. Solange false, zeigt die Seite den Leitfaden als „in Vorbereitung“,
+// ohne Anforderungsformular, und der Finanz-Check verspricht nur die Auswertung.
+const LEITFADEN_FERTIG = false;
+
 export default {
   // Adresse der Website, ohne Schrägstrich am Ende. Wenn du eine eigene Domain
   // verbindest (z. B. https://www.darian-krauss.de), trag sie hier ein.
-  url: "https://darian-krauss.misty-hat-6afe.workers.dev",
+  url: "https://homepage.darian-krauss.workers.dev",
 
   // Live-Modus. Solange false: Vorschau-Hinweis oben auf jeder Seite und
   // Suchmaschinen dürfen die Seite nicht aufnehmen (noindex).
   // Erst auf true stellen, wenn Impressum und Datenschutz vollständig sind.
   live: false,
 
+  // Formulare erst live schalten, wenn Anfragen wirklich ankommen: LEAD_WEBHOOK_URL ist in
+  // Cloudflare gesetzt und eine Test-Anfrage ist im CRM angekommen. Solange false, lässt der
+  // Build live: true nicht zu, damit keine Anfrage verloren geht.
+  formulareGeprueft: false,
+
   name: "Darian Krauß",
-  untertitel: "Finanzberatung in Laut- und Gebärdensprache",
+  // Unter dem Namen im Kopf und in der Fußzeile. Bewusst ohne Berufs- oder Erlaubnisangabe.
+  untertitel: "Finanzwissen in Laut- und Gebärdensprache",
 
   kontakt: {
     email: "", // z. B. "hallo@darian-krauss.de"
@@ -30,8 +42,8 @@ export default {
     telefon: "", // optional, erscheint nur im Impressum
   },
 
-  // Dein Online-Kalender für die „ehrliche Einschätzung in 20 Minuten“
-  // (z. B. Calendly, Cal.com oder der Kalender aus FinSuites).
+  // Dein Online-Kalender für das kostenlose Kennenlerngespräch (20 Minuten),
+  // z. B. Calendly oder Cal.com.
   // Leer = nach der Anfrage meldest du dich selbst mit Terminvorschlägen.
   kalender: {
     url: "",
@@ -50,7 +62,7 @@ export default {
   // Videos in Gebärdensprache. MP4-Dateien in src/static/videos/ ablegen
   // (höchstens 25 MB pro Datei) und hier den Pfad eintragen, z. B.
   // "/videos/vorstellung.mp4". Untertitel als WebVTT-Datei (.vtt).
-  // Leer = an der Stelle steht „Video folgt in Kürze“.
+  // Leer = an der Stelle erscheint nichts, auch keine Video-Vorschau.
   videos: {
     startseite: { src: "", poster: "", untertitel: "" },
     leitfaden: { src: "", poster: "", untertitel: "" },
@@ -59,22 +71,34 @@ export default {
     terminDanke: { src: "", poster: "", untertitel: "" },
   },
 
-  // Porträtfoto, z. B. "/bilder/darian.jpg" (Datei in src/static/bilder/).
-  // Leer = Platzhalter mit deinen Initialen.
-  portrait: "",
+  // Zusagen, die erst stimmen, wenn sie eingerichtet sind. Erst auf true stellen, wenn es
+  // wirklich so funktioniert. Solange false, verspricht die Seite das nicht.
+  zusagen: {
+    leitfaden: LEITFADEN_FERTIG, // Finanz-Leitfaden als PDF per E-Mail (oben einstellen)
+    leitfadenVideo: false, // Leitfaden zusätzlich als Video in DGS mit Untertiteln
+    bestaetigungVideo: false, // Terminbestätigung zusätzlich als kurzes Video in DGS
+  },
 
-  // Pflichtangaben für das Impressum (§ 5 DDG) und die Erstinformation
-  // als Vermittler. Bitte vollständig ausfüllen und rechtlich prüfen lassen.
+  // Foto von Darian: als src/static/img/darian.jpg ablegen. Solange die Datei
+  // fehlt, zeigen Startseite und „Über mich“ den DK-Kreis.
+
+  // Angaben zu einer Vermittlertätigkeit im Impressum: Berufsbezeichnung, Registernummer,
+  // IHK, Status und Erstinformation. Nur einschalten, wenn diese Angaben rechtlich geprüft sind.
+  // Solange false, erscheint dazu nichts auf der Website, auch kein Platzhalter.
+  vermittler: false,
+
+  // Pflichtangaben für das Impressum. Werte bewusst leer: Sie werden nach der
+  // rechtlichen Klärung eingetragen und erscheinen bis dahin als gelber Platzhalter.
+  // Die Felder ab „berufsbezeichnung“ erscheinen nur mit vermittler: true.
   impressum: {
-    firma: "", // optional, z. B. Firmenname oder Marke
-    strasse: "",
-    ort: "", // PLZ und Ort
+    name: "",
+    anschrift: "", // Zeilenumbruch mit \n, z. B. "Musterstraße 1\n12345 Musterstadt"
+    kontakt: "",
+    berufsbezeichnung: "",
+    registernummer: "", // Vermittlerregister
+    ihk: "", // zuständige IHK
+    status34d: "", // Status nach § 34d GewO
     ustId: "", // optional
-    // Status und Erlaubnis, z. B. "Versicherungsmakler mit Erlaubnis nach
-    // § 34d Abs. 1 GewO; Finanzanlagenvermittler mit Erlaubnis nach § 34f Abs. 1 GewO"
-    erlaubnisse: "",
-    registernummer: "", // Vermittlerregister, z. B. "D-XXXX-XXXXX-XX"
-    ihk: "", // zuständige IHK mit Anschrift (Erlaubnis- und Aufsichtsbehörde)
     // Angaben zu Beteiligungen über 10 % an oder von Versicherungsunternehmen
     beteiligungen: "",
     berufshaftpflicht: "", // optional: Versicherer und Geltungsbereich
@@ -83,7 +107,7 @@ export default {
 
   // Dienstleister für die Datenschutzerklärung (Name und Anschrift).
   datenschutz: {
-    crm: "", // z. B. FinSuites: Anbieter, Anschrift
+    crm: "", // Anbieter deines CRM: Name, Anschrift
     kalender: "", // Anbieter des Online-Kalenders, Anschrift
     videoCall: "", // z. B. Zoom, Microsoft Teams oder Google Meet: Anbieter, Anschrift
     aufsicht: "", // Datenschutz-Aufsichtsbehörde deines Bundeslandes
@@ -92,10 +116,15 @@ export default {
   // Texte der Einwilligungen in den Formularen. Sie werden mit jeder Anfrage
   // an dein CRM übertragen, damit du die Einwilligung nachweisen kannst.
   einwilligung: {
-    leitfaden:
-      "Ich bin einverstanden, dass Darian Krauß mir den Leitfaden schickt und mich per E-Mail und WhatsApp zu Finanzthemen informiert (Tipps und Einladungen zur Beratung). Ich kann diese Einwilligung jederzeit widerrufen, zum Beispiel über den Abmeldelink in jeder Mail.",
-    finanzCheck:
-      "Ich bin einverstanden, dass Darian Krauß mir Auswertung und Leitfaden schickt und mich per E-Mail und WhatsApp zu Finanzthemen informiert (Tipps und Einladungen zur Beratung). Ich kann diese Einwilligung jederzeit widerrufen, zum Beispiel über den Abmeldelink in jeder Mail.",
+    // Leitfaden und Finanz-Check: je zwei getrennte Häkchen, keins ist vorausgewählt.
+    // "leitfaden" bzw. "finanzCheck" ist Pflicht, "marketing" freiwillig (erscheint erst,
+    // wenn eine Handynummer eingetragen ist). Hinter das Pflicht-Häkchen setzt die Seite:
+    // „Es gilt die Datenschutzerklärung.“
+    leitfaden: "Ich möchte den Leitfaden per E-Mail bekommen.",
+    // Nennt ausdrücklich den GdB: Er ist ein Gesundheitsdatum (Art. 9 DSGVO).
+    finanzCheck: `Ich möchte meine Auswertung${LEITFADEN_FERTIG ? " und den Leitfaden" : ""} per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen.`,
+    marketing:
+      "Darian Krauß darf mir per E-Mail und WhatsApp Tipps zu Finanzthemen und Einladungen zu Gesprächen schicken. Ich kann das jederzeit widerrufen.",
     termin:
       "Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, um mit mir einen Termin abzustimmen, und mich dazu per E-Mail und WhatsApp kontaktiert. Ich kann diese Einwilligung jederzeit widerrufen.",
   },

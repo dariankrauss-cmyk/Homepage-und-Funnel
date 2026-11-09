@@ -1,9 +1,9 @@
 ---
 title: Dein Leitfaden ist unterwegs | Darian Krauß
-description: Danke! In den nächsten Minuten kommt eine E-Mail mit dem Finanz-Leitfaden 2027 als PDF und dem Link zum Video in Gebärdensprache.
+description: Danke! In den nächsten Minuten kommt eine E-Mail mit dem Finanz-Leitfaden 2027 als PDF.
 robots: noindex, nofollow
 sitemap: false
-headerCta: Termin wählen
+headerCta: Unverbindlich kennenlernen
 headerCtaLink: /termin/
 ---
 {{> head}}
@@ -12,48 +12,45 @@ headerCtaLink: /termin/
 <main id="inhalt">
   <section class="hero">
     <div class="wrap narrow">
-      <div class="done-ic" aria-hidden="true">✓</div>
-      <h1 data-vorname="Danke, {vorname}! Dein Leitfaden ist unterwegs." data-vorname-finanz-check="Danke, {vorname}! Deine Auswertung und dein Leitfaden sind unterwegs.">Danke! Dein Leitfaden ist unterwegs.</h1>
-      <p class="lead">In den nächsten Minuten kommt eine E-Mail mit dem PDF und dem Link zum Video in Gebärdensprache.</p>
+      <div class="done-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h1 data-vorname="Danke, {vorname}! Dein Leitfaden ist unterwegs.">Danke! Dein Leitfaden ist unterwegs.</h1>
+      <p class="lead">In den nächsten Minuten kommt eine E-Mail mit dem PDF{{#site.zusagen.leitfadenVideo}} und dem Link zum Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}.</p>
 
       <ol class="steps">
-        <li><b>Postfach öffnen</b><span>Absender: {{site.name}}. Betreff: „Dein Finanz-Leitfaden 2027“. Bitte bestätige darin kurz deine E-Mail-Adresse.</span></li>
+        <li><b>Postfach öffnen</b><span>Absender: {{site.name}}. Betreff: „Dein Finanz-Leitfaden 2027“.</span></li>
         <li><b>Nichts da? Im Spam nachsehen</b><span>Markier die Mail als „kein Spam“, dann kommen auch die nächsten Tipps sicher an.</span></li>
-        <li><b>Kapitel 1 zuerst lesen</b><span>Der Pauschbetrag ist für viele der schnellste Hebel, oft in zehn Minuten erledigt.</span></li>
+        <li><b>Mit Kapitel 1 anfangen</b><span>Dort steht, wie der Behinderten-Pauschbetrag funktioniert.</span></li>
       </ol>
 
-      <div class="video" data-src="{{site.videos.leitfadenDanke.src}}" data-poster="{{site.videos.leitfadenDanke.poster}}" data-untertitel="{{site.videos.leitfadenDanke.untertitel}}" data-label="Darian sagt Danke, in Gebärdensprache mit Untertiteln">
+      {{#site.videos.leitfadenDanke.src}}
+      <div class="video" data-src="{{site.videos.leitfadenDanke.src}}" data-poster="{{site.videos.leitfadenDanke.poster}}" data-untertitel="{{site.videos.leitfadenDanke.untertitel}}" data-label="Darian sagt Danke und erklärt den nächsten Schritt, in Gebärdensprache mit Untertiteln">
         <span class="dgs">DGS · Untertitel · Ton</span>
-        <div class="ph">
-          <div class="play" aria-hidden="true">▶</div>
-          <b>Darian sagt Danke und erklärt den nächsten Schritt</b>
-          <small>Video in Gebärdensprache folgt in Kürze</small>
-        </div>
-        <button class="ton" type="button" hidden>🔈 Ton an</button>
+        <button class="ton" type="button" hidden>Ton an</button>
       </div>
+      {{/site.videos.leitfadenDanke.src}}
 
       <div class="cta-box" id="termin">
         <p class="kicker">Nächster Schritt</p>
-        <h2>Deine ehrliche Einschätzung in 20 Minuten</h2>
-        <p>Wir schauen gemeinsam auf deine Finanzen: was gut läuft, wo Geld liegen bleibt und was du als Erstes angehen solltest. Kostenlos und unverbindlich.</p>
+        <h2>Lern mich kennen: 20&nbsp;Minuten per Video-Call</h2>
+        <p>Du stellst deine Fragen zu Geldthemen. Ich erkläre dir die Grundlagen, verständlich und in deiner Sprache. Kostenlos und unverbindlich.</p>
         <ul class="opts" aria-label="So können wir sprechen">
-          <li><span aria-hidden="true">🤟</span> Gebärdensprache</li>
-          <li><span aria-hidden="true">🗣️</span> Lautsprache</li>
-          <li><span aria-hidden="true">💬</span> Chat</li>
-          <li><span aria-hidden="true">🎥</span> Per Video-Call</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11V5a1.5 1.5 0 0 1 3 0v6"/><path d="M14 11.5V7a1.5 1.5 0 0 1 3 0v7c0 3.9-2.6 7-6.4 7-2.3 0-3.8-1-5-2.9L4 15.2a1.5 1.5 0 0 1 2.4-1.8L8 15.4"/></svg>Gebärdensprache</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c.6-3.4 3-5.5 5.5-5.5s4.9 2.1 5.5 5.5"/><path d="M16.5 6.3c1.1 1.1 1.1 3 0 4.1"/><path d="M19 4.3c2.2 2.2 2.2 5.9 0 8.1"/></svg>Lautsprache</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v10.5H9.5L5 19.5V16H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg>Chat</li>
+          <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6.5" width="12.5" height="11" rx="2"/><path d="M15.5 10.5l5-3v9l-5-3"/></svg>Per Video-Call</li>
         </ul>
-        <a class="btn" href="/termin/">Termin wählen</a>
+        <a class="btn" href="/termin/">Unverbindlich kennenlernen</a>
       </div>
 
       <div class="alts">
         <a class="alt-card" href="/#podcast">
-          <b>Reinhören in den Podcast</b>
-          <span>Finanzen in Laut- und Gebärdensprache, mit Gästen aus der Community.</span>
+          <b>Mein Podcast</b>
+          <span>Regelmäßig Geldthemen in Laut- und Gebärdensprache, einfach erklärt.</span>
           <em>Zum Podcast →</em>
         </a>
         <a class="alt-card" href="/finanz-check/">
           <b>Noch nicht gemacht? Der Finanz-Check</b>
-          <span>Fünf Fragen, 90 Sekunden, sofort dein Ergebnis.</span>
+          <span>Sechs Fragen, 90&nbsp;Sekunden, sofort dein Ergebnis.</span>
           <em>Check starten →</em>
         </a>
       </div>

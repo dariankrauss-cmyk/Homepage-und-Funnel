@@ -1,8 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   // Name des Workers bei Cloudflare. Ohne eigene Domain ist die Seite unter
-  // https://darian-krauss.<deine-subdomain>.workers.dev erreichbar.
-  "name": "darian-krauss",
+  // https://homepage.darian-krauss.workers.dev erreichbar.
+  "name": "homepage",
   "main": "worker/index.js",
   "compatibility_date": "2026-10-20",
 
@@ -22,7 +22,7 @@
     "not_found_handling": "404-page"
   },
 
-  // Logs im Cloudflare-Dashboard (Workers > darian-krauss > Logs).
+  // Logs im Cloudflare-Dashboard (Workers > homepage > Logs).
   "observability": { "enabled": true },
 
   "workers_dev": true,

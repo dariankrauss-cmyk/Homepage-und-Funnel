@@ -1,7 +1,7 @@
 ---
-title: Darian Krauß · Finanzberatung in Laut- und Gebärdensprache
+title: Darian Krauß · Finanzwissen in Laut- und Gebärdensprache
 ogTitle: Finanzwissen, das man sehen kann. Darian Krauß
-description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Altersvorsorge, Geldanlage, Absicherung und Steuervorteile bei Behinderung. Per Video-Call, Chat oder WhatsApp, ohne Anruf.
+description: Darian Krauß erklärt Finanzthemen in Deutscher Gebärdensprache und Lautsprache: Altersvorsorge, Geldanlage, Absicherung und Steuervorteile bei Behinderung. Mit Podcast, Finanz-Check und Leitfaden. Kein Anruf nötig.
 ---
 {{> head}}
 <body class="home">
@@ -9,279 +9,280 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
 {{{schema.startseite}}}
 <main id="inhalt">
 
-  <!-- Hero -->
-  <section class="hero-home dark" aria-labelledby="hero-titel">
-    <div class="wrap">
-      <div class="hero-grid">
-        <div>
-          <p class="badge badge-dark">Finanzberatung in Laut- und Gebärdensprache</p>
-          <h1 id="hero-titel">Finanzwissen,<br> <span>das man sehen kann.</span></h1>
-          <p class="lead">Ich bin Darian Krauß, Finanzberater und Makler, selbst hörgeschädigt. Ich erkläre dir Geld, Vorsorge und Absicherung so, wie du kommunizierst: in Deutscher Gebärdensprache, in Lautsprache oder per Chat. Ohne Fachchinesisch und ohne Anruf.</p>
-          <div class="cta-row">
-            <a class="btn" href="/termin/">Ehrliche Einschätzung in 20 Minuten</a>
-            <a class="btn ghost-dark" href="/leitfaden/">Kostenloser Leitfaden</a>
-          </div>
-          <ul class="langs" aria-label="So können wir sprechen">
-            <li><span aria-hidden="true">🤟</span> Gebärdensprache</li>
-            <li><span aria-hidden="true">🗣️</span> Lautsprache</li>
-            <li><span aria-hidden="true">💬</span> Chat</li>
-            <li><span aria-hidden="true">🎥</span> Video-Call</li>
-          </ul>
+  <!-- Hero: klares Angebot, Person, zwei Wege -->
+  <section class="start-hero dark" aria-labelledby="hero-titel">
+    <div class="wrap start-hero-grid">
+      <div class="hero-text">
+        <p class="kicker">Finanzwissen, das man sehen kann.</p>
+        <h1 id="hero-titel" class="hero-marke"><span class="marke-name">Darian Krauß</span><span class="visually-hidden">: </span><span class="marke-claim">Finanzthemen verständlich erklärt, in <span class="akzent">Gebärden&shy;sprache</span> und Laut&shy;sprache</span></h1>
+        <p class="hero-lead">Ich bin gehörlos und trage zwei Cochlea-Implantate (CI). Ich erkläre dir Geld, Vorsorge und Absicherung. Klar, ehrlich und ohne Fachchinesisch.</p>
+        <div class="cta-row">
+          <a class="btn gold" href="/termin/">Unverbindlich kennenlernen</a>
+          {{#site.zusagen.leitfaden}}<a class="btn ghost-dark" href="/leitfaden/">Leitfaden kostenlos holen</a>{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}<a class="btn ghost-dark" href="/finanz-check/">Finanz-Check starten</a>{{/site.zusagen.leitfaden}}
         </div>
-        <div class="video hoch" data-src="{{site.videos.startseite.src}}" data-poster="{{site.videos.startseite.poster}}" data-untertitel="{{site.videos.startseite.untertitel}}" data-label="Darian stellt sich vor, in Gebärdensprache mit Untertiteln">
-          <span class="dgs">DGS · Untertitel · Ton</span>
-          <div class="ph">
-            <div class="play" aria-hidden="true">▶</div>
-            <b>Darian stellt sich vor</b>
-            <small>Video in Gebärdensprache folgt in Kürze</small>
-          </div>
-          <button class="ton" type="button" hidden>🔈 Ton an</button>
-        </div>
+        <ul class="hero-fakten" aria-label="Das erste Gespräch">
+          <li>Kostenlos und unverbindlich</li>
+          <li>20&nbsp;Minuten per Video-Call</li>
+          <li>Kein Anruf nötig</li>
+        </ul>
       </div>
+      {{^site.videos.startseite.src}}
+      <figure class="hero-portrait">
+        <div class="portrait-rahmen">
+          <span class="monogramm" aria-hidden="true">DK</span>
+          {{#flags.foto}}<img src="/img/darian.jpg" alt="Porträt von Darian Krauß" width="800" height="1000" fetchpriority="high" data-fallback>{{/flags.foto}}
+        </div>
+        <figcaption class="portrait-karte"><b>Darian Krauß</b><span>Finanzwissen in DGS und Lautsprache</span></figcaption>
+      </figure>
+      {{/site.videos.startseite.src}}
+      {{#site.videos.startseite.src}}
+      <div class="video hoch hero-video" data-src="{{site.videos.startseite.src}}" data-poster="{{site.videos.startseite.poster}}" data-untertitel="{{site.videos.startseite.untertitel}}" data-label="Darian stellt sich vor, in Gebärdensprache mit Untertiteln">
+        <span class="dgs">DGS · Untertitel</span>
+        <button class="ton" type="button" hidden>Ton an</button>
+      </div>
+      {{/site.videos.startseite.src}}
     </div>
-    <div class="wrap">
-      <div class="ways">
-        <div><span class="ic" aria-hidden="true">🤟</span><b>Gebärdensprache im Bild</b><span>für gehörlose Menschen</span></div>
-        <div><span class="ic" aria-hidden="true">💬</span><b>Große Untertitel</b><span>für schwerhörige Menschen</span></div>
-        <div><span class="ic" aria-hidden="true">🔈</span><b>Ton dabei</b><span>für alle anderen</span></div>
+  </section>
+
+  <!-- Über mich: Geschichte und Kommunikation -->
+  <section id="ueber-mich" class="alt start-ueber" aria-labelledby="ueber-titel">
+    <div class="wrap ueber-grid">
+      <div class="ueber-text" data-reveal>
+        <p class="kicker">Über mich</p>
+        <h2 id="ueber-titel">Hi, ich bin <span class="akzent">Darian.</span></h2>
+        <p class="ueber-intro">Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS), deutscher Lautsprache und schriftlich.</p>
+        <p>Mir ist wichtig, Finanzthemen verständlich und zugänglich zu erklären. Außerdem produziere ich regelmäßig Podcasts.</p>
+        <p>Viele Finanzgespräche laufen nur über Sprache. Wer nicht gut hört, bleibt dabei oft außen vor. Ich kenne diese Hürden aus eigener Erfahrung.</p>
+        <p>Deshalb erkläre ich Geld so, dass du es wirklich verstehst. Ohne Renditeversprechen. Und du bestimmst, wie wir sprechen.</p>
+      </div>
+      <div class="sprachen-karte" data-reveal>
+        <h3>So können wir sprechen</h3>
+        <p>Du entscheidest, wie wir sprechen.</p>
+        <ul class="sprachen">
+          <li>
+            <span class="sprache-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11V5a1.5 1.5 0 0 1 3 0v6"/><path d="M14 11.5V7a1.5 1.5 0 0 1 3 0v7c0 3.9-2.6 7-6.4 7-2.3 0-3.8-1-5-2.9L4 15.2a1.5 1.5 0 0 1 2.4-1.8L8 15.4"/></svg></span>
+            <div><b>Deutsche Gebärdensprache</b><span>Direkt in DGS, ohne Dolmetscher.</span></div>
+          </li>
+          <li>
+            <span class="sprache-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c.6-3.4 3-5.5 5.5-5.5s4.9 2.1 5.5 5.5"/><path d="M16.5 6.3c1.1 1.1 1.1 3 0 4.1"/><path d="M19 4.3c2.2 2.2 2.2 5.9 0 8.1"/></svg></span>
+            <div><b>Deutsche Lautsprache</b><span>Für alle, die lieber sprechen.</span></div>
+          </li>
+          <li>
+            <span class="sprache-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H9.5L5 19.5V16H4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span>
+            <div><b>Schriftlich</b><span>Per Chat, WhatsApp oder E-Mail.</span></div>
+          </li>
+          <li>
+            <span class="sprache-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6.5" width="12.5" height="11" rx="2"/><path d="M15.5 10.5l5-3v9l-5-3"/></svg></span>
+            <div><b>Per Video-Call</b><span>Bequem von zu Hause. Du musst nicht telefonieren.</span></div>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- Warum -->
-  <section id="warum" aria-labelledby="warum-titel">
+  <!-- Themen: allgemeine Informationen, keine erlaubnispflichtige Beratung -->
+  <section id="themen" aria-labelledby="themen-titel">
     <div class="wrap">
-      <p class="kicker">Warum zu mir</p>
-      <h2 id="warum-titel">Beratung, die du wirklich verstehst</h2>
-      <div class="grid g3">
-        <article class="card">
-          <span class="num">01</span>
-          <h3>Deine Sprache, nicht nur Untertitel</h3>
-          <p>Für viele gehörlose Menschen ist Deutsche Gebärdensprache die erste Sprache, Schriftdeutsch die zweite. Finanzthemen nur mit Untertiteln bleiben schwer. Ich erkläre sie dir direkt in DGS, ohne Dolmetscher.</p>
-        </article>
-        <article class="card">
-          <span class="num">02</span>
-          <h3>Selbst hörgeschädigt</h3>
-          <p>Die meisten Finanzgespräche laufen nur über Sprache. Meine nicht. Ich kenne die Hürden aus eigener Erfahrung, deshalb bestimmst bei mir du, wie wir sprechen.</p>
-        </article>
-        <article class="card">
-          <span class="num">03</span>
-          <h3>Kein Anruf, kein Druck</h3>
-          <p>Kontakt per WhatsApp, Chat, E-Mail oder Video-Call. Du bekommst eine ehrliche Einschätzung, keine Verkaufsshow und keine Renditeversprechen.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Themen -->
-  <section id="themen" class="alt" aria-labelledby="themen-titel">
-    <div class="wrap">
-      <div class="head">
+      <div class="abschnitt-kopf" data-reveal>
         <div>
-          <p class="kicker">Wobei ich dir helfe</p>
-          <h2 id="themen-titel">Die Geldthemen, die dich weiterbringen</h2>
+          <p class="kicker">Themen</p>
+          <h2 id="themen-titel">Sechs Geldthemen im Überblick</h2>
         </div>
-        <p class="lead">Schritt für Schritt und ohne Fachchinesisch. Du sagst mir, was dich gerade beschäftigt, und wir fangen genau dort an.</p>
+        <p class="lead">Schritt für Schritt und in einfachen Worten. So verstehst du die Grundlagen und kannst selbst gut entscheiden.</p>
       </div>
-      <div class="grid g3">
-        <article class="card">
-          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5L5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+      <div class="themen-grid">
+        <article class="thema-karte" data-reveal>
+          <div class="thema-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5L5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
           <h3>Steuervorteile bei Behinderung</h3>
-          <p>Beim Behinderten-Pauschbetrag sind es bei einem GdB von 100 jedes Jahr 2.840&nbsp;€ weniger zu versteuerndes Einkommen, mit Merkzeichen H, Bl oder TBl sogar 7.400&nbsp;€. Viele lassen dieses Geld liegen.</p>
+          <p>Der Behinderten-Pauschbetrag richtet sich nach dem Grad der Behinderung (GdB): von 384&nbsp;€ bei GdB 20 bis 2.840&nbsp;€ bei GdB 100 im Jahr. Mit Merkzeichen H, Bl oder TBl sind es 7.400&nbsp;€. Er senkt das zu versteuernde Einkommen. Wie viel Steuer du sparst, hängt von deinem Steuersatz ab.</p>
+          <a class="thema-link" href="/termin/?thema=Steuervorteile">Kennenlerngespräch zu diesem Thema<span class="visually-hidden">: Steuervorteile bei Behinderung</span></a>
         </article>
-        <article class="card">
-          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-          <h3>Altersvorsorge ohne Fachchinesisch</h3>
-          <p>Gesetzliche Rente, Betriebsrente und private Vorsorge im Überblick, und welche Zulagen vom Staat und Zuschüsse vom Arbeitgeber du mitnehmen kannst.</p>
+        <article class="thema-karte" data-reveal>
+          <div class="thema-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Altersvorsorge, einfach erklärt</h3>
+          <p>Gesetzliche Rente, Betriebsrente und private Vorsorge im Überblick. Dazu: Welche Zulagen vom Staat und Zuschüsse vom Arbeitgeber gibt es?</p>
+          <a class="thema-link" href="/termin/?thema=Vorsorge">Kennenlerngespräch zu diesem Thema<span class="visually-hidden">: Altersvorsorge</span></a>
         </article>
-        <article class="card">
-          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+        <article class="thema-karte" data-reveal>
+          <div class="thema-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
           <h3>Geld anlegen mit ETF</h3>
-          <p>Chancen, Risiken und Kosten verständlich erklärt, damit du selbst entscheiden kannst, ob und wie viel du anlegst. Investieren bietet Chancen, aber keine Garantie.</p>
+          <p>Chancen, Risiken und Kosten, verständlich erklärt. So kannst du selbst entscheiden, ob und wie viel du anlegst. Investieren bietet Chancen, aber keine Garantie.</p>
+          <a class="thema-link" href="/termin/?thema=Geldanlage">Kennenlerngespräch zu diesem Thema<span class="visually-hidden">: Geld anlegen mit ETF</span></a>
         </article>
-        <article class="card">
-          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.6-3.4 8-8 9-4.6-1-8-4.4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
-          <h3>Absicherung, die du wirklich brauchst</h3>
-          <p>Welche Versicherungen wichtig sind, welche oft doppelt bezahlt werden und worauf du beim Vertrag achten solltest.</p>
+        <article class="thema-karte" data-reveal>
+          <div class="thema-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.6-3.4 8-8 9-4.6-1-8-4.4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
+          <h3>Versicherungen verstehen</h3>
+          <p>Welche Versicherungen gibt es, und wofür sind sie da? Welche werden oft doppelt bezahlt? Und worauf achten viele beim Vertrag nicht?</p>
+          <a class="thema-link" href="/termin/?thema=Versicherung">Kennenlerngespräch zu diesem Thema<span class="visually-hidden">: Versicherungen verstehen</span></a>
         </article>
-        <article class="card">
-          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div>
+        <article class="thema-karte" data-reveal>
+          <div class="thema-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></div>
           <h3>Die erste eigene Immobilie</h3>
-          <p>Was du vor dem Kauf wissen solltest: Eigenkapital, Finanzierung und Absicherung, in Ruhe und in deiner Sprache erklärt.</p>
+          <p>Was du vor dem Kauf wissen solltest: Eigenkapital, Finanzierung und Absicherung. Alles in Ruhe und in deiner Sprache erklärt.</p>
+          <a class="thema-link" href="/termin/?thema=Immobilie">Kennenlerngespräch zu diesem Thema<span class="visually-hidden">: die erste eigene Immobilie</span></a>
         </article>
-        <article class="card">
-          <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg></div>
+        <article class="thema-karte" data-reveal>
+          <div class="thema-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg></div>
           <h3>Raus aus Dispo und Ratenkredit</h3>
-          <p>Dispozinsen gehören zu den teuersten Zinsen überhaupt. Wir schauen, wie du schneller rauskommst, bevor du ans Anlegen denkst.</p>
+          <p>Dispozinsen gehören zu den teuersten Zinsen überhaupt. Ich erkläre, warum es sich meist lohnt, zuerst Schulden abzubauen und erst dann anzulegen.</p>
+          <a class="thema-link" href="/termin/?thema=Schulden">Kennenlerngespräch zu diesem Thema<span class="visually-hidden">: raus aus Dispo und Ratenkredit</span></a>
         </article>
       </div>
-      <p class="note"><b>Gut zu wissen:</b> Ich bin Finanzberater, kein Steuerberater. Bei Steuerthemen zeige ich dir, welche Vorteile es gibt und worauf du achten solltest. Deine Steuererklärung machst du selbst oder mit einem Steuerberater oder Lohnsteuerhilfeverein.</p>
+      <p class="note"><b>Gut zu wissen:</b> Hier bekommst du allgemeine Informationen. Sie ersetzen keine individuelle Beratung. Ich bin kein Steuerberater: Deine Steuererklärung machst du selbst oder mit einem Steuerberater oder Lohnsteuerhilfeverein.</p>
     </div>
   </section>
 
   <!-- Ablauf -->
-  <section id="ablauf" aria-labelledby="ablauf-titel">
-    <div class="wrap ablauf-grid">
-      <div>
-        <p class="kicker">So läuft’s</p>
-        <h2 id="ablauf-titel">Barrierefrei vom ersten Klick bis zum Gespräch</h2>
-        <p class="lead">Nirgends musst du anrufen. Kontakt läuft über Video, Chat und WhatsApp, so wie du ohnehin kommunizierst.</p>
-        <ol class="steps">
-          <li><b>Drei kurze Fragen beantworten</b><span>Worum geht es dir, wie möchtest du sprechen und wie erreiche ich dich? Danach wählst du deinen Termin im Kalender.</span></li>
-          <li><b>Bestätigung per WhatsApp</b><span>Du bekommst deinen Termin als Text und als kurzes Video von mir in Gebärdensprache. Kurz vorher kommt die Erinnerung mit dem Link.</span></li>
-          <li><b>20 Minuten per Video-Call</b><span>Wir schauen gemeinsam auf deine Finanzen: was gut läuft, wo Geld liegen bleibt und was du als Erstes angehen solltest.</span></li>
-          <li><b>Du entscheidest</b><span>Kostenlos und unverbindlich. Ob und wie es weitergeht, entscheidest allein du.</span></li>
-        </ol>
-        <a class="btn" href="/termin/">Jetzt Termin wählen</a>
-      </div>
-      <figure class="phonebox">
-        <div class="phone" aria-hidden="true">
-          <div class="screen">
-            <div class="wa-top"><div class="av">DK</div><div><b>{{site.name}}</b><small>Finanzberatung</small></div></div>
-            <div class="wa">
-              <div class="bub">Hi Lea, dein Termin steht ✅<br><b>Do 12.11., 18:00 Uhr</b> per Video-Call.<br>Du entscheidest: Gebärdensprache, Lautsprache oder Chat.<span class="t">14:02</span></div>
-              <div class="bub vidb"><div class="vthumb">▶ 0:20<br>Darian begrüßt dich in DGS</div><span class="t">14:02</span></div>
-              <div class="bub me">Super, bis Donnerstag 👋<span class="t">14:05</span></div>
-              <div class="bub">Erinnerung: Heute 18:00 Uhr. Hier ist dein Link zum Video-Call.<span class="t">17:00</span></div>
-            </div>
-          </div>
-        </div>
-        <figcaption>So sieht deine Terminbestätigung per WhatsApp aus (Beispiel).</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- Selbst schauen -->
-  <section class="alt" aria-labelledby="selbst-titel">
+  <section id="ablauf" class="alt" aria-labelledby="ablauf-titel">
     <div class="wrap">
-      <p class="kicker">Noch nicht bereit für ein Gespräch?</p>
-      <h2 id="selbst-titel">Erst selbst schauen, ganz ohne Termin</h2>
-      <div class="grid g2">
-        <a class="teaser" href="/finanz-check/">
-          <span class="pill-gold">90 Sekunden</span>
-          <h3>Der Finanz-Check: Wo lässt du Geld liegen?</h3>
-          <p>Fünf Fragen, ein Klick pro Frage. Danach siehst du sofort deine wichtigsten Hebel bei Steuern, Vorsorge und Absicherung.</p>
-          <em>Check starten →</em>
-        </a>
-        <a class="teaser" href="/leitfaden/">
-          <span class="pill-gold">Kostenlos · PDF und DGS-Video</span>
-          <h3>Der Finanz-Leitfaden 2027</h3>
-          <p>Sechs Kapitel, die bares Geld wert sind: vom Behinderten-Pauschbetrag bis zu den fünf teuersten Geldfehlern. Per E-Mail, kein Anruf nötig.</p>
-          <em>Leitfaden holen →</em>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Über mich -->
-  <section id="ueber-mich" aria-labelledby="ueber-titel">
-    <div class="wrap about-grid">
-      <div class="portrait">
-        {{#site.portrait}}<img src="{{site.portrait}}" alt="Porträt von {{site.name}}" width="640" height="800" loading="lazy">{{/site.portrait}}
-        {{^site.portrait}}<div class="portrait-ph" aria-hidden="true">DK</div>{{/site.portrait}}
-      </div>
-      <div>
-        <p class="kicker">Über mich</p>
-        <h2 id="ueber-titel">Hi, ich bin Darian.</h2>
-        <p class="lead-sm">Finanzberater und Makler, und selbst hörgeschädigt.</p>
-        <p>Die meisten Finanzgespräche laufen nur über Sprache. Wer nicht gut hört, hat es da schwer. In der Beratung und in meinem Podcast erkläre ich Geldthemen deshalb in Laut- und Gebärdensprache, damit bei Finanzen niemand außen vor bleibt.</p>
-        <p>Mein Anspruch: ehrlich, verständlich und ohne Fachchinesisch. Du bekommst keine Renditeversprechen, sondern eine klare Einschätzung, mit der du selbst gut entscheiden kannst.</p>
-        <ul class="facts">
-          <li>Finanzberater und Makler</li>
-          <li>Selbst hörgeschädigt</li>
-          <li>Beratung in DGS, Lautsprache oder per Chat</li>
-          <li>Podcast in Laut- und Gebärdensprache</li>
-        </ul>
-        <a class="btn" href="/termin/">Lern mich im Video-Call kennen</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Podcast -->
-  <section id="podcast" class="dark" aria-labelledby="podcast-titel">
-    <div class="wrap">
-      <div class="head">
+      <div class="abschnitt-kopf" data-reveal>
         <div>
-          <p class="kicker">Der Podcast</p>
-          <h2 id="podcast-titel">Finanzen in Laut- und Gebärdensprache</h2>
+          <p class="kicker">So läuft’s</p>
+          <h2 id="ablauf-titel">Barrierefrei vom ersten Klick bis zum Gespräch</h2>
         </div>
-        <p class="lead">Ich spreche mit Kunden, Experten und Gästen aus der Community über Geld. Die ganze Folge läuft auf YouTube und Spotify, die besten Momente als kurze Clips auf Instagram, TikTok und YouTube Shorts.</p>
+        <p class="lead">Nirgends musst du anrufen. Kontakt läuft über Video, Chat und WhatsApp. So, wie du ohnehin kommunizierst.</p>
       </div>
-      <div class="grid g4">
-        <article class="card">
-          <span class="num">Kundengeschichten</span>
-          <h3>Echte Aha-Momente</h3>
-          <p>Kunden erzählen, welche Frage sie zu mir gebracht hat und was sich seitdem verändert hat. Nur mit ihrer Freigabe.</p>
-        </article>
-        <article class="card">
-          <span class="num">Experten</span>
-          <h3>Fachwissen, gut erklärt</h3>
-          <p>Mit Fachleuten wie Steuerberatern, Immobilienmaklern, Fachanwälten für Erbrecht, Gebärdensprachdolmetschern und Inklusionsberatern.</p>
-        </article>
-        <article class="card">
-          <span class="num">Community</span>
-          <h3>Gäste, die man kennt</h3>
-          <p>Gehörlose Creator, Vereine und Vorbilder aus der Community erzählen ihre Geschichte, und wir sprechen über Geld.</p>
-        </article>
-        <article class="card">
-          <span class="num">Frag Darian</span>
-          <h3>Deine Frage in 60 Sekunden</h3>
-          <p>Fragen aus Kommentaren und Nachrichten, kurz und klar beantwortet. Jede Woche neu.</p>
-        </article>
+      <ol class="ablauf-liste">
+        <li data-reveal>
+          <span class="schritt-nr" aria-hidden="true">01</span>
+          <h3>Drei kurze Fragen</h3>
+          <p>Worum geht es dir? Wie möchtest du sprechen? Wie erreiche ich dich? {{#site.kalender.url}}Danach wählst du deinen Termin im Kalender.{{/site.kalender.url}}{{^site.kalender.url}}Danach melde ich mich, und wir finden einen Termin.{{/site.kalender.url}}</p>
+        </li>
+        <li data-reveal>
+          <span class="schritt-nr" aria-hidden="true">02</span>
+          <h3>Bestätigung, wie du willst</h3>
+          <p>Du bekommst deinen Termin schriftlich, per E-Mail oder WhatsApp.{{#site.zusagen.bestaetigungVideo}} Dazu kommt ein kurzes Video von mir in Gebärdensprache.{{/site.zusagen.bestaetigungVideo}} Den Link zum Video-Call bekommst du vorher.</p>
+        </li>
+        <li data-reveal>
+          <span class="schritt-nr" aria-hidden="true">03</span>
+          <h3>20&nbsp;Minuten per Video-Call</h3>
+          <p>Wir lernen uns kennen. Du stellst deine Fragen zu Geldthemen. Ich erkläre dir die Grundlagen, verständlich und in deiner Sprache.</p>
+        </li>
+        <li data-reveal>
+          <span class="schritt-nr" aria-hidden="true">04</span>
+          <h3>Du entscheidest</h3>
+          <p>Kostenlos und unverbindlich. Ob und wie es weitergeht, entscheidest allein du.</p>
+        </li>
+      </ol>
+      <div class="cta-row ablauf-cta">
+        <a class="btn" href="/termin/">Unverbindlich kennenlernen</a>
       </div>
-      <p class="subhead">Themen, über die wir sprechen</p>
-      <ul class="pills">
-        <li>Geldmindset: warum Sparen allein nicht reicht</li>
-        <li>Behinderten-Pauschbetrag: Steuergeld, das viele liegen lassen</li>
-        <li>Altersvorsorge ohne Fachchinesisch</li>
-        <li>Die erste eigene Immobilie</li>
-        <li>ETF einfach erklärt: Chancen und Risiken</li>
-        <li>Welche Versicherung brauche ich wirklich?</li>
-        <li>Raus aus Dispo und Ratenkredit</li>
-        <li>Finanzgespräch mit Dolmetscher oder direkt in DGS?</li>
-      </ul>
-      <div class="cta-row">
-        {{#site.social.youtube}}<a class="btn" href="{{site.social.youtube}}">Auf YouTube ansehen</a>{{/site.social.youtube}}
-        {{#site.social.spotify}}<a class="btn ghost-dark" href="{{site.social.spotify}}">Auf Spotify hören</a>{{/site.social.spotify}}
-        {{#site.social.instagram}}<a class="btn ghost-dark" href="{{site.social.instagram}}">Clips auf Instagram</a>{{/site.social.instagram}}
-        <a class="btn ghost-dark" href="{{link.frage}}">Deine Frage für „Frag Darian“</a>
+    </div>
+  </section>
+
+  <!-- Finanzwissen -->
+  <section id="wissen" aria-labelledby="wissen-titel">
+    <div class="wrap">
+      <div class="abschnitt-kopf" data-reveal>
+        <div>
+          <p class="kicker">Finanzwissen</p>
+          <h2 id="wissen-titel">Erst selbst schauen, ganz ohne Termin</h2>
+        </div>
+        <p class="lead">Du willst dich erst selbst informieren? Gern. {{#site.zusagen.leitfaden}}Beides ist kostenlos und in einfachen Worten erklärt.{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}Der Finanz-Check ist kostenlos und in einfachen Worten erklärt. Der Leitfaden ist in Vorbereitung.{{/site.zusagen.leitfaden}}</p>
+      </div>
+      <div class="wissen-grid">
+        <a class="wissen-karte" href="/finanz-check/" data-reveal>
+          <span class="wissen-label">90&nbsp;Sekunden</span>
+          <h3>Der Finanz-Check: Welche Geldthemen sind für dich wichtig?</h3>
+          <p>Sechs Fragen, ein Klick pro Frage. Danach siehst du, welche Themen bei Steuern, Vorsorge und Absicherung für dich wichtig sein können.</p>
+          <span class="wissen-mehr">Check starten <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        {{#site.zusagen.leitfaden}}
+        <a class="wissen-karte" href="/leitfaden/" data-reveal>
+          <span class="wissen-label">Kostenlos · PDF{{#site.zusagen.leitfadenVideo}} und DGS-Video{{/site.zusagen.leitfadenVideo}} per E-Mail</span>
+          <h3>Der Finanz-Leitfaden 2027</h3>
+          <p>Sechs Kapitel mit den wichtigsten Grundlagen: vom Behinderten-Pauschbetrag bis zu den fünf teuersten Geldfehlern. <span class="nowrap">Per E-Mail</span>, kein Anruf nötig.</p>
+          <span class="wissen-mehr">Leitfaden kostenlos holen <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        {{/site.zusagen.leitfaden}}
+        {{^site.zusagen.leitfaden}}
+        <!-- Vorbereiteter Bereich: kein Link, keine Anforderung, bis der Leitfaden fertig ist -->
+        <div class="wissen-karte vorbereitung" data-reveal>
+          <span class="wissen-label">In Vorbereitung</span>
+          <h3>Der Finanz-Leitfaden 2027</h3>
+          <p>Die wichtigsten Grundlagen kompakt: vom Behinderten-Pauschbetrag bis zu den teuersten Geldfehlern. Sobald er fertig ist, kannst du ihn hier kostenlos per E-Mail anfordern.</p>
+          <span class="wissen-status"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Noch in Arbeit</span>
+        </div>
+        {{/site.zusagen.leitfaden}}
+      </div>
+    </div>
+  </section>
+
+  <!-- Podcast: keine erfundenen Folgen, Gäste oder Links. Die Knöpfe erscheinen erst, wenn die Links in site.config.mjs stehen. -->
+  <section id="podcast" class="dark start-podcast" aria-labelledby="podcast-titel">
+    <div class="wrap podcast-grid">
+      <div class="podcast-text" data-reveal>
+        <p class="kicker">Podcast</p>
+        <h2 id="podcast-titel">Finanzen in <span class="akzent">Laut- und Gebärden&shy;sprache</span></h2>
+        <p class="lead">In meinem Podcast erkläre ich regelmäßig Geldthemen. In Deutscher Gebärdensprache und in Lautsprache.</p>
+        <p>Damit bei Finanzen niemand außen vor bleibt.</p>
+        {{#flags.podcastLinks}}
+        <div class="cta-row">
+          {{#site.social.youtube}}<a class="btn gold" href="{{site.social.youtube}}">Auf YouTube ansehen</a>{{/site.social.youtube}}
+          {{#site.social.spotify}}<a class="btn ghost-dark" href="{{site.social.spotify}}">Auf Spotify hören</a>{{/site.social.spotify}}
+        </div>
+        {{/flags.podcastLinks}}
+        {{#link.schreiben}}<p class="podcast-frage">Du hast eine Frage für den Podcast? <a href="{{link.frage}}">Schreib sie mir.</a></p>{{/link.schreiben}}
+      </div>
+      <div class="podcast-karte" data-reveal>
+        <div class="podcast-kopf">
+          <div class="podcast-emblem" aria-hidden="true">
+            <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58"/><circle cx="60" cy="60" r="44"/><rect x="51" y="34" width="18" height="34" rx="9"/><path d="M42 58a18 18 0 0 0 36 0"/><path d="M60 76v10M50 86h20"/></svg>
+          </div>
+          <h3>Der Podcast auf einen Blick</h3>
+        </div>
+        <dl class="steckbrief">
+          <div><dt>Sprachen</dt><dd>Deutsche Gebärdensprache (DGS) und deutsche Lautsprache</dd></div>
+          <div><dt>Themen</dt><dd>Geld, Vorsorge und Absicherung, verständlich erklärt</dd></div>
+          <div><dt>Neue Folgen</dt><dd>Regelmäßig</dd></div>
+          <div><dt>Für wen</dt><dd>Für alle, die Geld besser verstehen wollen: gehörlos, schwerhörig oder hörend</dd></div>
+        </dl>
       </div>
     </div>
   </section>
 
   <!-- Häufige Fragen -->
   <section id="fragen" aria-labelledby="faq-titel">
-    <div class="wrap">
-      <p class="kicker">Häufige Fragen</p>
-      <h2 id="faq-titel">Gut zu wissen, bevor wir sprechen</h2>
+    <div class="wrap fragen-grid">
+      <div class="fragen-kopf" data-reveal>
+        <p class="kicker">Häufige Fragen</p>
+        <h2 id="faq-titel">Gut zu wissen, bevor wir sprechen</h2>
+        <div class="fragen-kontakt">
+          <b>Deine Frage ist nicht dabei?</b>
+          <p>Stell sie mir einfach im kostenlosen Kennenlerngespräch.{{#link.schreiben}} Oder schreib mir vorher.{{/link.schreiben}}</p>
+          <a class="text-link" href="/termin/">Unverbindlich kennenlernen</a>
+          {{#link.whatsapp}}<a class="text-link" href="{{link.whatsapp}}">Per WhatsApp schreiben</a>{{/link.whatsapp}}
+          {{#link.email}}<a class="text-link" href="{{link.email}}">Per E-Mail schreiben</a>{{/link.email}}
+        </div>
+      </div>
       <div class="faq">
         <details>
           <summary>Muss ich telefonieren?</summary>
-          <div><p>Nein. Du kannst mir per WhatsApp, Chat oder E-Mail schreiben. Unser Gespräch findet per Video-Call statt: in Gebärdensprache, in Lautsprache oder per Chat, so wie es für dich am besten passt.</p></div>
+          <div><p>Nein. Du kannst mir per WhatsApp, Chat oder E-Mail schreiben. Unser Gespräch ist ein Video-Call. Wir sprechen in Gebärdensprache, in Lautsprache oder per Chat. So, wie es für dich am besten passt.</p></div>
         </details>
         <details>
-          <summary>Was kostet die ehrliche Einschätzung?</summary>
-          <div><p>Nichts. Die 20 Minuten per Video-Call sind kostenlos und unverbindlich. Danach entscheidest du, ob und wie es weitergeht.</p></div>
+          <summary>Was kostet das Kennenlerngespräch?</summary>
+          <div><p>Nichts. Die 20&nbsp;Minuten per Video-Call sind kostenlos und unverbindlich.</p></div>
         </details>
         <details>
           <summary>Brauche ich einen Dolmetscher?</summary>
           <div><p>Nein. Wir können direkt in Deutscher Gebärdensprache sprechen, ohne Dolmetscher.</p></div>
         </details>
         <details>
-          <summary>Für wen ist die Beratung?</summary>
-          <div><p>Für alle, die ihre Finanzen verstehen und ordnen wollen. Besonders für gehörlose und schwerhörige Menschen, die Geldthemen endlich in ihrer Sprache erklärt bekommen möchten.</p></div>
+          <summary>Für wen ist das Angebot?</summary>
+          <div><p>Für alle, die ihre Finanzen besser verstehen wollen. Besonders für gehörlose und schwerhörige Menschen. Bei mir bekommen sie Geldthemen in ihrer Sprache erklärt.</p></div>
         </details>
         <details>
           <summary>Was brauche ich für den Video-Call?</summary>
-          <div><p>Ein Handy, Tablet oder einen Computer mit Kamera und Internet. Den Link bekommst du vorher per WhatsApp und E-Mail.</p></div>
+          <div><p>Ein Handy, Tablet oder einen Computer mit Kamera und Internet. Den Link bekommst du vorher per E-Mail oder WhatsApp.</p></div>
         </details>
         <details>
           <summary>Machst du auch meine Steuererklärung?</summary>
-          <div><p>Nein. Ich zeige dir, welche Steuervorteile es gibt, zum Beispiel den Behinderten-Pauschbetrag, und worauf du achten solltest. Für deine Steuererklärung sind Steuerberater oder Lohnsteuerhilfevereine zuständig.</p></div>
+          <div><p>Nein. Ich erkläre allgemein, welche Steuervorteile es gibt, zum Beispiel den Behinderten-Pauschbetrag. Für deine Steuererklärung sind Steuerberater oder Lohnsteuerhilfevereine zuständig.</p></div>
         </details>
         <details>
           <summary>Versprichst du mir eine Rendite?</summary>
-          <div><p>Nein. Investieren bietet Chancen, aber keine Garantie. Ich erkläre dir Chancen, Risiken und Kosten ehrlich, damit du selbst gut entscheiden kannst.</p></div>
+          <div><p>Nein. Investieren bietet Chancen, aber keine Garantie. Ich erkläre Chancen, Risiken und Kosten ehrlich und allgemein. So kannst du selbst gut entscheiden.</p></div>
         </details>
         <details>
           <summary>Was passiert mit meinen Daten?</summary>
@@ -291,27 +292,33 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
     </div>
   </section>
 
-  <!-- Abschluss -->
-  <section class="alt" aria-labelledby="cta-titel">
+  <!-- Kontakt und Termin -->
+  <section id="kontakt" class="alt start-kontakt" aria-labelledby="kontakt-titel">
     <div class="wrap">
-      <div class="cta-box">
-        <p class="kicker">Nächster Schritt</p>
-        <h2 id="cta-titel">Deine ehrliche Einschätzung in 20 Minuten</h2>
-        <p>Wir schauen gemeinsam auf deine Finanzen: was gut läuft, wo Geld liegen bleibt und was du als Erstes angehen solltest. Kostenlos und unverbindlich.</p>
-        <ul class="opts" aria-label="So können wir sprechen">
-          <li><span aria-hidden="true">🤟</span> Gebärdensprache</li>
-          <li><span aria-hidden="true">🗣️</span> Lautsprache</li>
-          <li><span aria-hidden="true">💬</span> Chat</li>
-          <li><span aria-hidden="true">🎥</span> Per Video-Call</li>
-        </ul>
-        <div class="cta-row">
-          <a class="btn" href="/termin/">Termin wählen</a>
+      <div class="kontakt-box dark" data-reveal>
+        <div class="kontakt-text">
+          <p class="kicker">Nächster Schritt</p>
+          <h2 id="kontakt-titel">Lern mich kennen: 20&nbsp;Minuten per Video-Call</h2>
+          <p>Du stellst deine Fragen zu Geldthemen. Ich erkläre dir die Grundlagen, verständlich und in deiner Sprache.</p>
+          <ul class="kontakt-fakten" aria-label="Gut zu wissen">
+            <li>Kostenlos und unverbindlich</li>
+            <li>In DGS, Lautsprache oder per Chat</li>
+            <li>Kein Anruf nötig</li>
+          </ul>
+        </div>
+        <div class="kontakt-aktionen">
+          <a class="btn gold" href="/termin/">Unverbindlich kennenlernen</a>
           {{#link.whatsapp}}<a class="btn ghost-dark" href="{{link.whatsapp}}">Lieber erst schreiben: WhatsApp</a>{{/link.whatsapp}}
-          {{^link.whatsapp}}{{#link.email}}<a class="btn ghost-dark" href="{{link.email}}">Lieber erst schreiben: E-Mail</a>{{/link.email}}{{/link.whatsapp}}
+          {{#link.email}}<a class="btn ghost-dark" href="{{link.email}}">Lieber erst schreiben: E-Mail</a>{{/link.email}}
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Auf dem Handy: Termin-Knopf am unteren Rand, sobald der Hero aus dem Bild ist (main.js) -->
+  <div class="mobil-cta" data-mobil-cta>
+    <a class="btn gold" href="/termin/">Unverbindlich kennenlernen</a>
+  </div>
 
 </main>
 {{> footer}}

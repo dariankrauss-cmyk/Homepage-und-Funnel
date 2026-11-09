@@ -1,9 +1,10 @@
 ---
-title: Finanz-Leitfaden 2027 kostenlos, erklärt in Gebärdensprache | Darian Krauß
-ogTitle: Der Finanz-Leitfaden 2027, erklärt in Gebärdensprache
-description: Steuervorteile bei Behinderung, Altersvorsorge, Geldanlage und Absicherung: der kostenlose Finanz-Leitfaden 2027 als PDF und als Video in Deutscher Gebärdensprache.
+title: Finanz-Leitfaden 2027 | Darian Krauß
+ogTitle: Der Finanz-Leitfaden 2027, verständlich erklärt
+description: Der Finanz-Leitfaden 2027 von Darian Krauß: Steuervorteile bei Behinderung, Altersvorsorge, Geldanlage und Absicherung, verständlich erklärt.
 headerCta: Finanz-Check starten
 headerCtaLink: /finanz-check/
+telefonFreiwillig: true
 disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt keine individuelle Steuer- oder Finanzberatung. Alle Werte Stand November 2026, ohne Gewähr. Investieren bietet Chancen, aber keine Garantie.
 ---
 {{> head}}
@@ -12,51 +13,55 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
 <main id="inhalt">
   <section class="hero">
     <div class="wrap">
-      <p class="badge">Kostenloser Leitfaden · auch in DGS</p>
-      <h1>Der Finanz-Leitfaden 2027, <span>erklärt in Gebärdensprache</span></h1>
-      <p class="lead">Die wichtigsten Geldthemen kompakt und ohne Fachchinesisch: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Als PDF zum Nachlesen und als Video in Deutscher Gebärdensprache mit Untertiteln. Ich schicke dir beides direkt per E-Mail.</p>
+      {{#site.zusagen.leitfaden}}<p class="badge">Kostenloser Leitfaden · {{#site.zusagen.leitfadenVideo}}auch in DGS{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}per E-Mail{{/site.zusagen.leitfadenVideo}}</p>{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}<p class="badge">In Vorbereitung</p>{{/site.zusagen.leitfaden}}
+      <h1>Der Finanz-Leitfaden 2027, <span>{{#site.zusagen.leitfadenVideo}}erklärt in Gebärdensprache{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}verständlich erklärt{{/site.zusagen.leitfadenVideo}}</span></h1>
+      {{#site.zusagen.leitfaden}}<p class="lead">Die wichtigsten Geldthemen kompakt und einfach erklärt: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Als PDF zum Nachlesen{{#site.zusagen.leitfadenVideo}} und als Video in Deutscher Gebärdensprache mit Untertiteln{{/site.zusagen.leitfadenVideo}}. Ich schicke {{#site.zusagen.leitfadenVideo}}dir beides{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}ihn dir{{/site.zusagen.leitfadenVideo}} direkt per E-Mail.</p>{{/site.zusagen.leitfaden}}
+      {{^site.zusagen.leitfaden}}<p class="lead">Die wichtigsten Geldthemen kompakt und einfach erklärt: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Der Leitfaden ist noch in Arbeit. Sobald er fertig ist, kannst du ihn hier kostenlos als PDF per E-Mail anfordern.</p>{{/site.zusagen.leitfaden}}
 
+      {{#site.videos.leitfaden.src}}
       <div class="video" data-src="{{site.videos.leitfaden.src}}" data-poster="{{site.videos.leitfaden.poster}}" data-untertitel="{{site.videos.leitfaden.untertitel}}" data-label="Darian stellt den Leitfaden vor, in Gebärdensprache mit Untertiteln">
         <span class="dgs">DGS · Untertitel · Ton</span>
-        <div class="ph">
-          <div class="play" aria-hidden="true">▶</div>
-          <b>Darian stellt den Leitfaden vor</b>
-          <small>Video in Gebärdensprache folgt in Kürze</small>
-        </div>
-        <button class="ton" type="button" hidden>🔈 Ton an</button>
+        <button class="ton" type="button" hidden>Ton an</button>
       </div>
+      {{/site.videos.leitfaden.src}}
 
-      <a class="btn" href="#anfordern">Leitfaden kostenlos erhalten</a>
+      {{#site.zusagen.leitfaden}}<a class="btn" href="#anfordern">Leitfaden kostenlos holen</a>{{/site.zusagen.leitfaden}}
+      {{^site.zusagen.leitfaden}}<div class="cta-row"><a class="btn" href="/finanz-check/">Finanz-Check starten</a><a class="btn ghost" href="/termin/">Unverbindlich kennenlernen</a></div>{{/site.zusagen.leitfaden}}
     </div>
   </section>
 
   <section class="alt" aria-labelledby="kapitel-titel">
     <div class="wrap">
-      <p class="kicker">Das erwartet dich</p>
-      <h2 id="kapitel-titel">Sechs Kapitel, die bares Geld wert sind</h2>
+      <p class="kicker">{{#site.zusagen.leitfaden}}Das erwartet dich{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}Geplante Inhalte{{/site.zusagen.leitfaden}}</p>
+      <h2 id="kapitel-titel">{{#site.zusagen.leitfaden}}Sechs Kapitel, kompakt und klar{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}Darum wird es gehen{{/site.zusagen.leitfaden}}</h2>
       <ul class="list">
-        <li><b>Der Behinderten-Pauschbetrag</b><span>2.840&nbsp;€ im Jahr weniger zu versteuerndes Einkommen bei einem GdB von 100, mit Merkzeichen H, Bl oder TBl sogar 7.400&nbsp;€. So trägst du ihn richtig ein, und warum sich auch ein Blick auf frühere Jahre lohnen kann.</span></li>
+        <li><b>Der Behinderten-Pauschbetrag</b><span>Er richtet sich nach dem Grad der Behinderung: von 384&nbsp;€ bei GdB 20 bis 2.840&nbsp;€ bei GdB 100 im Jahr, mit Merkzeichen H, Bl oder TBl 7.400&nbsp;€. Er senkt das zu versteuernde Einkommen. Wo du ihn einträgst und wann er auch für frühere Jahre gelten kann.</span></li>
         <li><b>Weitere Steuerhebel, die viele übersehen</b><span>Fahrtkosten-Pauschale, Hilfsmittel und Pflege: wann dir zusätzlich etwas zusteht und welche Nachweise du brauchst.</span></li>
-        <li><b>Altersvorsorge ohne Fachchinesisch</b><span>Gesetzliche Rente, Betriebsrente und private Vorsorge im Überblick, und welche Zulagen du mitnehmen kannst.</span></li>
+        <li><b>Altersvorsorge, einfach erklärt</b><span>Gesetzliche Rente, Betriebsrente und private Vorsorge im Überblick, und welche Zulagen du mitnehmen kannst.</span></li>
         <li><b>Geld anlegen mit ETF</b><span>Chancen, Risiken und Kosten verständlich erklärt. Investieren bietet Chancen, aber keine Garantie.</span></li>
-        <li><b>Absicherung, die du wirklich brauchst</b><span>Welche Versicherungen wichtig sind, welche oft doppelt bezahlt werden und worauf du beim Vertrag achtest.</span></li>
+        <li><b>Versicherungen verstehen</b><span>Welche Versicherungen es gibt, welche oft doppelt bezahlt werden und worauf viele beim Vertrag nicht achten.</span></li>
         <li><b>Die fünf teuersten Geldfehler</b><span>Vom Dispo bis zum Ratenkredit: woran du sie erkennst und wie du sie vermeidest.</span></li>
       </ul>
+      {{#site.zusagen.leitfaden}}
       <ul class="formats" aria-label="Formate">
-        <li><span aria-hidden="true">📄</span> PDF zum Nachlesen</li>
-        <li><span aria-hidden="true">🤟</span> Video in Deutscher Gebärdensprache</li>
-        <li><span aria-hidden="true">💬</span> Große Untertitel</li>
-        <li><span aria-hidden="true">✉️</span> Per E-Mail, kein Anruf nötig</li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5H14l4 4v13H6.5z"/><path d="M14 3.5v4h4"/><path d="M9.5 12.5h5M9.5 15.5h5"/></svg>PDF zum Nachlesen</li>
+        {{#site.zusagen.leitfadenVideo}}
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11V5a1.5 1.5 0 0 1 3 0v6"/><path d="M14 11.5V7a1.5 1.5 0 0 1 3 0v7c0 3.9-2.6 7-6.4 7-2.3 0-3.8-1-5-2.9L4 15.2a1.5 1.5 0 0 1 2.4-1.8L8 15.4"/></svg>Video in Deutscher Gebärdensprache</li>
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M7 11h10M7 14.5h4M13 14.5h4"/></svg>Große Untertitel</li>
+        {{/site.zusagen.leitfadenVideo}}
+        <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>Per E-Mail, kein Anruf nötig</li>
       </ul>
+      {{/site.zusagen.leitfaden}}
     </div>
   </section>
 
+  {{#site.zusagen.leitfaden}}
   <section id="anfordern" aria-labelledby="anfordern-titel">
     <div class="wrap form-wrap">
       <div class="side">
         <p class="kicker">Kostenlos per E-Mail</p>
         <h2 id="anfordern-titel">Jetzt den Finanz-Leitfaden anfordern</h2>
-        <p>Trag deinen Vornamen, deine E-Mail und deine Handynummer ein. Du bekommst den Leitfaden sofort per Mail. Mit der Nummer kann ich dir bei Fragen per WhatsApp oder Chat antworten. Telefonieren musst du nicht.</p>
+        <p>Trag deinen Vornamen und deine E-Mail ein. Du bekommst den Leitfaden sofort per Mail. Die Handynummer ist freiwillig. Mit ihr kann ich dir bei Fragen per WhatsApp oder Chat antworten. Telefonieren musst du nicht.</p>
         {{> ueber-darian}}
       </div>
 
@@ -64,30 +69,36 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
         <form class="lead-form" data-quelle="leitfaden" data-danke="/leitfaden/danke/" novalidate>
           {{> lead-felder}}
           <div class="consent">
-            <input id="einwilligung" name="einwilligung" type="checkbox" required>
-            <label for="einwilligung">{{site.einwilligung.leitfaden}} Es gilt die <a href="/datenschutz/">Datenschutzerklärung</a>.</label>
-            <p class="msg" id="einwilligung-msg">Bitte bestätige kurz die Einwilligung.</p>
+            <input id="consent_leitfaden" name="consent_leitfaden" type="checkbox" required>
+            <label for="consent_leitfaden">{{site.einwilligung.leitfaden}} Es gilt die <a href="/datenschutz/">Datenschutzerklärung</a>.</label>
+            <p class="msg" id="consent_leitfaden-msg">Bitte setz hier das Häkchen. Sonst kann ich dir den Leitfaden nicht schicken.</p>
           </div>
-          <button class="btn full" type="submit">Leitfaden per E-Mail erhalten</button>
+          <!-- Freiwillig. Erscheint erst, wenn oben eine Handynummer steht (main.js, data-braucht). -->
+          <div class="consent" data-braucht="phone" hidden>
+            <input id="consent_marketing" name="consent_marketing" type="checkbox">
+            <label for="consent_marketing">{{site.einwilligung.marketing}}</label>
+          </div>
+          <button class="btn full" type="submit">Leitfaden kostenlos holen</button>
           {{> lead-fuss}}
           <ul class="trust"><li>Kostenlos</li><li>Kein Spam</li><li>Keine Weitergabe an Dritte</li></ul>
         </form>
       </div>
     </div>
   </section>
+  {{/site.zusagen.leitfaden}}
 
   <section class="alt" aria-labelledby="persoenlich-titel">
     <div class="wrap">
       <h2 id="persoenlich-titel">Lieber gleich persönlich?</h2>
       <div class="alts">
         <a class="alt-card" href="/termin/">
-          <b>Ehrliche Einschätzung in 20 Minuten</b>
-          <span>Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Unverbindlich.</span>
-          <em>Termin wählen →</em>
+          <b>Kennenlerngespräch in 20&nbsp;Minuten</b>
+          <span>Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Kostenlos und unverbindlich.</span>
+          <em>Unverbindlich kennenlernen →</em>
         </a>
         <a class="alt-card" href="/finanz-check/">
           <b>Erst selbst schauen: der Finanz-Check</b>
-          <span>Fünf Fragen, 90 Sekunden. Du siehst sofort, wo du wahrscheinlich Geld liegen lässt.</span>
+          <span>Sechs Fragen, 90&nbsp;Sekunden. Danach siehst du, welche Geldthemen für dich wichtig sein können.</span>
           <em>Check starten →</em>
         </a>
       </div>

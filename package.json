@@ -2,13 +2,14 @@
   "name": "darian-krauss-homepage",
   "version": "1.0.0",
   "private": true,
-  "description": "Homepage und Funnel für Darian Krauß, Finanzberatung in Laut- und Gebärdensprache. Läuft auf Cloudflare Workers.",
+  "description": "Homepage und Funnel für Darian Krauß, Finanzwissen in Laut- und Gebärdensprache. Läuft auf Cloudflare Workers.",
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test --test-concurrency=1 test/*.test.mjs",
+    "deploy:eingebettet": "node tools/eingebettet.mjs"
   },
   "engines": {
     "node": ">=22"
