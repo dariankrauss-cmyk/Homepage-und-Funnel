@@ -2,8 +2,8 @@
 title: Finanz-Check in 90 Sekunden | Darian Krauß
 ogTitle: Finanz-Check: Welche Geldthemen sind für dich wichtig?
 description: Sechs Fragen, 90 Sekunden: Finde heraus, welche Themen bei Steuern, Vorsorge und Absicherung für dich wichtig sein können.
-headerCta: Leitfaden kostenlos holen
-headerCtaLink: /leitfaden/#anfordern
+headerCta: Unverbindlich kennenlernen
+headerCtaLink: /termin/
 telefonFreiwillig: true
 disclaimer: Der Finanz-Check gibt eine erste Orientierung und ersetzt keine individuelle Steuer- oder Finanzberatung. Pauschbeträge nach § 33b EStG, Stand November 2026, ohne Gewähr.
 ---
@@ -20,8 +20,8 @@ disclaimer: Der Finanz-Check gibt eine erste Orientierung und ersetzt keine indi
       <p class="geraet-hinweis"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><path d="M10.5 18h3"/></svg><span>Deine Antworten bleiben auf deinem Gerät. Nur wenn du am Ende das Formular abschickst, bekomme ich sie für deine Auswertung.</span></p>
 
       <div class="progress" aria-hidden="true"><i id="balken"></i></div>
-      <div id="fragen">
-        <noscript><p class="note">Der Finanz-Check braucht JavaScript. Alternativ kannst du dir direkt den <a href="/leitfaden/">Finanz-Leitfaden</a> holen.</p></noscript>
+      <div id="fragen" data-leitfaden="{{#site.zusagen.leitfaden}}ja{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}nein{{/site.zusagen.leitfaden}}">
+        <noscript><p class="note">Der Finanz-Check braucht JavaScript. Du kannst mir deine Fragen aber auch im <a href="/termin/">kostenlosen Kennenlerngespräch</a> stellen.</p></noscript>
       </div>
 
       <div id="ergebnis" class="hidden">
@@ -30,9 +30,9 @@ disclaimer: Der Finanz-Check gibt eine erste Orientierung und ersetzt keine indi
         <ul class="result" id="erg-liste"></ul>
 
         <div class="form-card">
-          <h3>Deine Auswertung und der Leitfaden per E-Mail</h3>
-          <p class="sub">Ich schicke dir deine Auswertung und den Finanz-Leitfaden 2027 als PDF{{#site.zusagen.leitfadenVideo}} und als Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}.</p>
-          <form class="lead-form" data-quelle="finanz-check" data-danke="/leitfaden/danke/" novalidate>
+          <h3>Deine Auswertung per E-Mail{{#site.zusagen.leitfaden}}, dazu der Leitfaden{{/site.zusagen.leitfaden}}</h3>
+          <p class="sub">Ich schicke dir deine Auswertung per E-Mail{{#site.zusagen.leitfaden}}, zusammen mit dem Finanz-Leitfaden 2027 als PDF{{#site.zusagen.leitfadenVideo}} und als Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}{{/site.zusagen.leitfaden}}.</p>
+          <form class="lead-form" data-quelle="finanz-check" data-danke="/finanz-check/danke/" novalidate>
             {{> lead-felder}}
             <div class="consent">
               <input id="consent_finanzcheck" name="consent_finanzcheck" type="checkbox" required>

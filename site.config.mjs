@@ -8,6 +8,12 @@
     als gelb markierter Platzhalter, und der Build listet sie dir auf.
   - Nach jeder Änderung baut Cloudflare die Seite beim nächsten Push neu.
 */
+
+// Der Finanz-Leitfaden 2027: erst auf true stellen, wenn das PDF fertig ist und die Mail damit
+// wirklich verschickt wird. Solange false, zeigt die Seite den Leitfaden als „in Vorbereitung“,
+// ohne Anforderungsformular, und der Finanz-Check verspricht nur die Auswertung.
+const LEITFADEN_FERTIG = false;
+
 export default {
   // Adresse der Website, ohne Schrägstrich am Ende. Wenn du eine eigene Domain
   // verbindest (z. B. https://www.darian-krauss.de), trag sie hier ein.
@@ -17,6 +23,11 @@ export default {
   // Suchmaschinen dürfen die Seite nicht aufnehmen (noindex).
   // Erst auf true stellen, wenn Impressum und Datenschutz vollständig sind.
   live: false,
+
+  // Formulare erst live schalten, wenn Anfragen wirklich ankommen: LEAD_WEBHOOK_URL ist in
+  // Cloudflare gesetzt und eine Test-Anfrage ist im CRM angekommen. Solange false, lässt der
+  // Build live: true nicht zu, damit keine Anfrage verloren geht.
+  formulareGeprueft: false,
 
   name: "Darian Krauß",
   // Unter dem Namen im Kopf und in der Fußzeile. Bewusst ohne Berufs- oder Erlaubnisangabe.
@@ -63,6 +74,7 @@ export default {
   // Zusagen, die erst stimmen, wenn sie eingerichtet sind. Erst auf true stellen, wenn es
   // wirklich so funktioniert. Solange false, verspricht die Seite das nicht.
   zusagen: {
+    leitfaden: LEITFADEN_FERTIG, // Finanz-Leitfaden als PDF per E-Mail (oben einstellen)
     leitfadenVideo: false, // Leitfaden zusätzlich als Video in DGS mit Untertiteln
     bestaetigungVideo: false, // Terminbestätigung zusätzlich als kurzes Video in DGS
   },
@@ -110,8 +122,7 @@ export default {
     // „Es gilt die Datenschutzerklärung.“
     leitfaden: "Ich möchte den Leitfaden per E-Mail bekommen.",
     // Nennt ausdrücklich den GdB: Er ist ein Gesundheitsdatum (Art. 9 DSGVO).
-    finanzCheck:
-      "Ich möchte meine Auswertung und den Leitfaden per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen.",
+    finanzCheck: `Ich möchte meine Auswertung${LEITFADEN_FERTIG ? " und den Leitfaden" : ""} per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen.`,
     marketing:
       "Darian Krauß darf mir per E-Mail und WhatsApp Tipps zu Finanzthemen und Einladungen zu Gesprächen schicken. Ich kann das jederzeit widerrufen.",
     termin:

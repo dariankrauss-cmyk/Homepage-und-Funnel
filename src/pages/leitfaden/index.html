@@ -1,7 +1,7 @@
 ---
-title: Finanz-Leitfaden 2027 kostenlos | Darian Krauß
+title: Finanz-Leitfaden 2027 | Darian Krauß
 ogTitle: Der Finanz-Leitfaden 2027, verständlich erklärt
-description: Steuervorteile bei Behinderung, Altersvorsorge, Geldanlage und Absicherung: der kostenlose Finanz-Leitfaden 2027, verständlich erklärt und per E-Mail. Kein Anruf nötig.
+description: Der Finanz-Leitfaden 2027 von Darian Krauß: Steuervorteile bei Behinderung, Altersvorsorge, Geldanlage und Absicherung, verständlich erklärt.
 headerCta: Finanz-Check starten
 headerCtaLink: /finanz-check/
 telefonFreiwillig: true
@@ -13,9 +13,10 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
 <main id="inhalt">
   <section class="hero">
     <div class="wrap">
-      <p class="badge">Kostenloser Leitfaden · {{#site.zusagen.leitfadenVideo}}auch in DGS{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}per E-Mail{{/site.zusagen.leitfadenVideo}}</p>
+      {{#site.zusagen.leitfaden}}<p class="badge">Kostenloser Leitfaden · {{#site.zusagen.leitfadenVideo}}auch in DGS{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}per E-Mail{{/site.zusagen.leitfadenVideo}}</p>{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}<p class="badge">In Vorbereitung</p>{{/site.zusagen.leitfaden}}
       <h1>Der Finanz-Leitfaden 2027, <span>{{#site.zusagen.leitfadenVideo}}erklärt in Gebärdensprache{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}verständlich erklärt{{/site.zusagen.leitfadenVideo}}</span></h1>
-      <p class="lead">Die wichtigsten Geldthemen kompakt und einfach erklärt: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Als PDF zum Nachlesen{{#site.zusagen.leitfadenVideo}} und als Video in Deutscher Gebärdensprache mit Untertiteln{{/site.zusagen.leitfadenVideo}}. Ich schicke {{#site.zusagen.leitfadenVideo}}dir beides{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}ihn dir{{/site.zusagen.leitfadenVideo}} direkt per E-Mail.</p>
+      {{#site.zusagen.leitfaden}}<p class="lead">Die wichtigsten Geldthemen kompakt und einfach erklärt: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Als PDF zum Nachlesen{{#site.zusagen.leitfadenVideo}} und als Video in Deutscher Gebärdensprache mit Untertiteln{{/site.zusagen.leitfadenVideo}}. Ich schicke {{#site.zusagen.leitfadenVideo}}dir beides{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}ihn dir{{/site.zusagen.leitfadenVideo}} direkt per E-Mail.</p>{{/site.zusagen.leitfaden}}
+      {{^site.zusagen.leitfaden}}<p class="lead">Die wichtigsten Geldthemen kompakt und einfach erklärt: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Der Leitfaden ist noch in Arbeit. Sobald er fertig ist, kannst du ihn hier kostenlos als PDF per E-Mail anfordern.</p>{{/site.zusagen.leitfaden}}
 
       {{#site.videos.leitfaden.src}}
       <div class="video" data-src="{{site.videos.leitfaden.src}}" data-poster="{{site.videos.leitfaden.poster}}" data-untertitel="{{site.videos.leitfaden.untertitel}}" data-label="Darian stellt den Leitfaden vor, in Gebärdensprache mit Untertiteln">
@@ -24,14 +25,15 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
       </div>
       {{/site.videos.leitfaden.src}}
 
-      <a class="btn" href="#anfordern">Leitfaden kostenlos holen</a>
+      {{#site.zusagen.leitfaden}}<a class="btn" href="#anfordern">Leitfaden kostenlos holen</a>{{/site.zusagen.leitfaden}}
+      {{^site.zusagen.leitfaden}}<div class="cta-row"><a class="btn" href="/finanz-check/">Finanz-Check starten</a><a class="btn ghost" href="/termin/">Unverbindlich kennenlernen</a></div>{{/site.zusagen.leitfaden}}
     </div>
   </section>
 
   <section class="alt" aria-labelledby="kapitel-titel">
     <div class="wrap">
-      <p class="kicker">Das erwartet dich</p>
-      <h2 id="kapitel-titel">Sechs Kapitel, kompakt und klar</h2>
+      <p class="kicker">{{#site.zusagen.leitfaden}}Das erwartet dich{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}Geplante Inhalte{{/site.zusagen.leitfaden}}</p>
+      <h2 id="kapitel-titel">{{#site.zusagen.leitfaden}}Sechs Kapitel, kompakt und klar{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}Darum wird es gehen{{/site.zusagen.leitfaden}}</h2>
       <ul class="list">
         <li><b>Der Behinderten-Pauschbetrag</b><span>Er richtet sich nach dem Grad der Behinderung: von 384&nbsp;€ bei GdB 20 bis 2.840&nbsp;€ bei GdB 100 im Jahr, mit Merkzeichen H, Bl oder TBl 7.400&nbsp;€. Er senkt das zu versteuernde Einkommen. Wo du ihn einträgst und wann er auch für frühere Jahre gelten kann.</span></li>
         <li><b>Weitere Steuerhebel, die viele übersehen</b><span>Fahrtkosten-Pauschale, Hilfsmittel und Pflege: wann dir zusätzlich etwas zusteht und welche Nachweise du brauchst.</span></li>
@@ -40,6 +42,7 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
         <li><b>Versicherungen verstehen</b><span>Welche Versicherungen es gibt, welche oft doppelt bezahlt werden und worauf viele beim Vertrag nicht achten.</span></li>
         <li><b>Die fünf teuersten Geldfehler</b><span>Vom Dispo bis zum Ratenkredit: woran du sie erkennst und wie du sie vermeidest.</span></li>
       </ul>
+      {{#site.zusagen.leitfaden}}
       <ul class="formats" aria-label="Formate">
         <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5H14l4 4v13H6.5z"/><path d="M14 3.5v4h4"/><path d="M9.5 12.5h5M9.5 15.5h5"/></svg>PDF zum Nachlesen</li>
         {{#site.zusagen.leitfadenVideo}}
@@ -48,9 +51,11 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
         {{/site.zusagen.leitfadenVideo}}
         <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>Per E-Mail, kein Anruf nötig</li>
       </ul>
+      {{/site.zusagen.leitfaden}}
     </div>
   </section>
 
+  {{#site.zusagen.leitfaden}}
   <section id="anfordern" aria-labelledby="anfordern-titel">
     <div class="wrap form-wrap">
       <div class="side">
@@ -80,6 +85,7 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
       </div>
     </div>
   </section>
+  {{/site.zusagen.leitfaden}}
 
   <section class="alt" aria-labelledby="persoenlich-titel">
     <div class="wrap">

@@ -33,18 +33,27 @@
     "Ja, GdB 100": "2.840\u00a0€ (mit Merkzeichen H, Bl oder TBl sogar 7.400\u00a0€)"
   };
 
-  var ZIELE = {
+  /* Hinweise zum Ziel. Kapitel des Leitfadens nur, wenn es ihn schon gibt (data-leitfaden auf der Seite). */
+  var ZIELE_LEITFADEN = {
     "Steuern sparen": "Kapitel 1 und 2 im Leitfaden zeigen dir Schritt für Schritt, was du eintragen kannst.",
     "Altersvorsorge aufbauen": "Kapitel 3 erklärt die drei Säulen der Vorsorge in einfachen Worten.",
     "Geld anlegen": "Kapitel 4 erklärt ETF mit Chancen, Risiken und Kosten. Investieren bietet Chancen, aber keine Garantie.",
     "Richtig abgesichert sein": "Kapitel 5 erklärt, welche Versicherungen es gibt und wofür sie da sind.",
     "Schulden loswerden": "Kapitel 6 zeigt die fünf teuersten Geldfehler und den Weg raus."
   };
+  var ZIELE_OHNE = {
+    "Steuern sparen": "Ich erkläre dir gern allgemein, welche Steuervorteile es gibt. Für deine Steuererklärung sind Steuerberater oder Lohnsteuerhilfevereine zuständig.",
+    "Altersvorsorge aufbauen": "Gesetzliche Rente, Betriebsrente und private Vorsorge: Ich erkläre dir die Grundlagen in einfachen Worten.",
+    "Geld anlegen": "Chancen, Risiken und Kosten von ETF: Ich erkläre dir die Grundlagen. Investieren bietet Chancen, aber keine Garantie.",
+    "Richtig abgesichert sein": "Welche Versicherungen es gibt und wofür sie da sind: Ich erkläre dir die Grundlagen.",
+    "Schulden loswerden": "Warum es sich meist lohnt, zuerst teure Schulden abzubauen: Ich erkläre dir die Grundlagen."
+  };
 
   var box = document.getElementById("fragen");
   var balken = document.getElementById("balken");
   var ergebnis = document.getElementById("ergebnis");
   if (!box || !balken || !ergebnis) return;
+  var ZIELE = box.getAttribute("data-leitfaden") === "ja" ? ZIELE_LEITFADEN : ZIELE_OHNE;
 
   var antworten = {};
   var schritt = 0;
@@ -115,7 +124,7 @@
     }
 
     if (a.vorsorge === "Noch gar nicht" || a.vorsorge === "Nur gesetzliche Rente") {
-      punkte.push({ hot: true, t: "Altersvorsorge", s: "Die gesetzliche Rente allein reicht bei den meisten nicht. Viele lassen dabei Zulagen vom Staat oder Zuschüsse vom Arbeitgeber liegen." });
+      punkte.push({ hot: true, t: "Altersvorsorge", s: "Die gesetzliche Rente deckt oft nur einen Teil des letzten Einkommens. Prüf, ob du Zulagen vom Staat oder Zuschüsse vom Arbeitgeber nutzen kannst." });
     } else {
       punkte.push({ hot: false, t: "Altersvorsorge", s: "Du sorgst schon vor. Ein Blick auf Kosten und Förderung deiner Verträge lohnt sich trotzdem." });
     }

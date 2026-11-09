@@ -53,8 +53,8 @@ Kein Häkchen ist vorausgewählt.
 
 | Formular | Häkchen | Wortlaut |
 |---|---|---|
-| Leitfaden | Pflicht | „Ich möchte den Leitfaden per E-Mail bekommen. Es gilt die Datenschutzerklärung.“ |
-| Finanz-Check | Pflicht | „Ich möchte meine Auswertung und den Leitfaden per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen. Es gilt die Datenschutzerklärung.“ |
+| Leitfaden | Pflicht | „Ich möchte den Leitfaden per E-Mail bekommen. Es gilt die Datenschutzerklärung.“ Erscheint erst, wenn der Leitfaden fertig ist. |
+| Finanz-Check | Pflicht | „Ich möchte meine Auswertung per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen. Es gilt die Datenschutzerklärung.“ Mit fertigem Leitfaden: „… meine Auswertung und den Leitfaden …“ |
 | Leitfaden und Finanz-Check | freiwillig, erscheint mit Handynummer | „Darian Krauß darf mir per E-Mail und WhatsApp Tipps zu Finanzthemen und Einladungen zu Gesprächen schicken. Ich kann das jederzeit widerrufen.“ |
 | Kennenlerngespräch | Pflicht | „Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, um mit mir einen Termin abzustimmen, und mich dazu per E-Mail und WhatsApp kontaktiert. Ich kann diese Einwilligung jederzeit widerrufen. Es gilt die Datenschutzerklärung.“ |
 
@@ -88,7 +88,7 @@ Kein Häkchen ist vorausgewählt.
 
 | Aussage | Wo sie steht |
 |---|---|
-| Der Leitfaden kommt **sofort** per Mail. In `FUNNEL.md` steht: erst eine Bestätigungsmail, dann der Leitfaden. Was stimmt? | Leitfaden, Leitfaden-Danke |
+| Der Leitfaden kommt **sofort** per Mail. In `FUNNEL.md` steht: erst eine Bestätigungsmail, dann der Leitfaden. Was stimmt? *(Erst wichtig, wenn der Leitfaden fertig ist.)* | Leitfaden, Leitfaden-Danke |
 | Die Terminbestätigung kommt **schriftlich per E-Mail oder WhatsApp**, den Link zum Video-Call gibt es vorher. | Startseite (Ablauf), Kennenlerngespräch, Danke-Seite |
 | Kostenlos und unverbindlich, 20 Minuten, kein Anruf nötig, ohne Dolmetscher | an vielen Stellen |
 | „Keine Weitergabe an Dritte“ | Leitfaden-Formular |
@@ -128,13 +128,14 @@ Tipp zum Mergen: „Squash and merge“.
 |---|---|---|
 | Foto, Hochformat 4:5, mindestens 800 × 1000 Pixel | `src/static/img/darian.jpg` | DK-Kreis im Bogen-Rahmen, kein Platzhalter-Foto |
 | DGS-Videos mit Untertiteln (`.vtt`) für Startseite, Kennenlerngespräch, beide Danke-Seiten, Leitfaden | `src/static/videos/`, Pfad in `site.config.mjs` | Dort erscheint nichts, keine Video-Vorschau |
-| Leitfaden: PDF fertig und in der Mail verlinkt (DGS-Video optional, dann `zusagen.leitfadenVideo: true`) | CRM | |
+| Finanz-Leitfaden 2027 als PDF, in der Mail verlinkt. Dann `LEITFADEN_FERTIG = true` (DGS-Video optional: `zusagen.leitfadenVideo`) | `site.config.mjs`, CRM | Leitfaden „in Vorbereitung“, kein Anforderungsformular |
 | Podcast: Name, falls es einen gibt, und Links | `site.config.mjs` → `social` | Keine Podcast-Knöpfe |
 | E-Mail-Adresse und WhatsApp-Nummer | `site.config.mjs` → `kontakt` | Keine WhatsApp- und E-Mail-Knöpfe |
 | Link zum Online-Kalender | `site.config.mjs` → `kalender` | Nach der Anfrage steht „Ich melde mich bei dir“ |
 | CRM-Webhook `LEAD_WEBHOOK_URL` | Secret in Cloudflare | Anfragen stehen nur bis zu sieben Tage im Protokoll, keine Mail |
 | Automationen im CRM: Double-Opt-In, Leitfaden-Mail, Terminbestätigung, Link zum Video-Call | CRM, Vorlagen in `FUNNEL.md` | |
 | Logo, falls gewünscht | `src/partials/marke.html` | „DK“ im Kreis |
+| Test-Anfrage über alle Formulare, dann `formulareGeprueft: true` | `site.config.mjs` | Der Build lässt `live: true` nicht zu |
 | Zum Schluss: `live: true` | `site.config.mjs` | Vorschau-Leiste oben, Suchmaschinen ausgesperrt |
 
 ---

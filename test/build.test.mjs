@@ -29,6 +29,7 @@ test("alle erwarteten Seiten werden gebaut", () => {
     "leitfaden/index.html",
     "leitfaden/danke/index.html",
     "finanz-check/index.html",
+    "finanz-check/danke/index.html",
     "termin/index.html",
     "termin/danke/index.html",
     "impressum/index.html",
@@ -73,8 +74,8 @@ test("passt zur Content-Security-Policy: keine Inline-Skripte, -Styles oder -Han
 
 test("Formulare: Quelle, Danke-Seite, Beschriftungen und Einwilligungstext", () => {
   const erwartet = {
-    "leitfaden/index.html": ["leitfaden", "/leitfaden/danke/", site.einwilligung.leitfaden],
-    "finanz-check/index.html": ["finanz-check", "/leitfaden/danke/", site.einwilligung.finanzCheck],
+    ...(site.zusagen.leitfaden ? { "leitfaden/index.html": ["leitfaden", "/leitfaden/danke/", site.einwilligung.leitfaden] } : {}),
+    "finanz-check/index.html": ["finanz-check", "/finanz-check/danke/", site.einwilligung.finanzCheck],
     "termin/index.html": ["termin", "/termin/danke/", site.einwilligung.termin],
   };
   for (const [name, [quelle, danke, text]] of Object.entries(erwartet)) {
@@ -98,7 +99,8 @@ test("Formulare: Quelle, Danke-Seite, Beschriftungen und Einwilligungstext", () 
 });
 
 test("Leitfaden und Finanz-Check: Nummer freiwillig, zwei getrennte Häkchen, Tipps erst mit Nummer", () => {
-  for (const [name, pflicht] of [["leitfaden/index.html", "consent_leitfaden"], ["finanz-check/index.html", "consent_finanzcheck"]]) {
+  const formulare = [["finanz-check/index.html", "consent_finanzcheck"], ...(site.zusagen.leitfaden ? [["leitfaden/index.html", "consent_leitfaden"]] : [])];
+  for (const [name, pflicht] of formulare) {
     const html = seiten[name];
     const telefon = html.match(/<input\b[^>]*id="phone"[^>]*>/)[0];
     assert.equal(/\srequired\b/.test(telefon), false, `${name}: Handynummer darf hier nicht required sein`);
@@ -164,7 +166,7 @@ test("Selbstbeschreibung: gehörlos, zwei Cochlea-Implantate (CI), DGS und Lauts
   const start = seiten["index.html"];
   // Darians eigener Satz, wörtlich
   assert.ok(
-    start.includes("Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS) und deutscher Lautsprache."),
+    start.includes("Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS), deutscher Lautsprache und schriftlich."),
     "Darians Satz im Abschnitt Über mich",
   );
   // Darians Text für „Über mich“, wörtlich
@@ -173,8 +175,8 @@ test("Selbstbeschreibung: gehörlos, zwei Cochlea-Implantate (CI), DGS und Lauts
     "Darians Text im Abschnitt Über mich",
   );
   assert.match(start, /<p class="hero-lead">Ich bin gehörlos und trage zwei Cochlea-Implantate \(CI\)\./);
-  for (const name of ["termin/index.html", "leitfaden/index.html"]) {
-    assert.match(seiten[name], /Gehörlos, mit zwei Cochlea-Implantaten \(CI\)\. Er kommuniziert in Deutscher Gebärdensprache \(DGS\) und deutscher Lautsprache\./, name);
+  for (const name of ["termin/index.html", ...(site.zusagen.leitfaden ? ["leitfaden/index.html"] : [])]) {
+    assert.match(seiten[name], /Gehörlos, mit zwei Cochlea-Implantaten \(CI\)\. Er kommuniziert in Deutscher Gebärdensprache \(DGS\), deutscher Lautsprache und schriftlich\./, name);
   }
 });
 
@@ -265,6 +267,37 @@ test("Knöpfe heißen überall gleich: unverbindliches Kennenlernen und Leitfade
     assert.equal(/Kostenlosen Termin wählen/.test(html), false, `${name}: alter Knopftext`);
   }
   assert.ok(termin >= 8, `nur ${termin} Termin-Knöpfe gefunden`);
+});
+
+test("Leitfaden in Vorbereitung: keine Anforderung, ehrliche Hinweise, Finanz-Check ohne Leitfaden-Versprechen", () => {
+  if (site.zusagen.leitfaden) return;
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/Leitfaden kostenlos holen|data-quelle="leitfaden"/.test(html), false, `${name}: Leitfaden wird angeboten`);
+    if (name !== "leitfaden/danke/index.html") {
+      assert.equal(/<a class="(?:btn|alt-card|wissen-karte)[^"]*" href="\/leitfaden\/"/.test(html), false, `${name}: Link zum Leitfaden`);
+    }
+  }
+  const leitfaden = seiten["leitfaden/index.html"];
+  assert.match(leitfaden, /<p class="badge">In Vorbereitung<\/p>/);
+  assert.match(leitfaden, /Der Leitfaden ist noch in Arbeit\./);
+  assert.match(seiten["index.html"], /<div class="wissen-karte vorbereitung" data-reveal>/);
+  assert.equal(/Leitfaden/.test(site.einwilligung.finanzCheck), false, "Einwilligung im Finanz-Check ohne Leitfaden");
+  assert.match(seiten["finanz-check/index.html"], /data-leitfaden="nein"/);
+  assert.equal(/Leitfaden/.test(seiten["finanz-check/danke/index.html"].replace(/<footer[\s\S]*$/, "")), false, "Danke-Seite ohne Leitfaden");
+});
+
+test("Live geht erst mit geprüften Formularen", async () => {
+  const { writeFileSync, mkdtempSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const ordner = mkdtempSync(join(tmpdir(), "konfig-"));
+  const datei = join(ordner, "site.config.mjs");
+  writeFileSync(datei, `import basis from ${JSON.stringify(join(ROOT, "site.config.mjs"))};\nexport default { ...basis, live: true, formulareGeprueft: false };\n`);
+  const { spawnSync } = await import("node:child_process");
+  const r = spawnSync(process.execPath, ["build.mjs"], { cwd: ROOT, env: { ...process.env, SITE_CONFIG: datei }, encoding: "utf8" });
+  rmSync(ordner, { recursive: true, force: true });
+  assert.equal(r.status, 1, "Build hätte abbrechen müssen");
+  assert.match(r.stderr, /formulareGeprueft/);
+  assert.ok(existsSync(join(DIST, "index.html")), "dist bleibt unangetastet");
 });
 
 test("Keine Zusagen, die noch nicht eingerichtet sind", () => {

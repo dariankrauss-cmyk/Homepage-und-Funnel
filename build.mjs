@@ -25,7 +25,8 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const SRC = join(ROOT, "src");
 const OUT = join(ROOT, "dist");
 
-const site = (await import(pathToFileURL(join(ROOT, "site.config.mjs")).href)).default;
+// SITE_CONFIG nur für Tests: eine andere Konfigurationsdatei prüfen, ohne die echte zu ändern.
+const site = (await import(pathToFileURL(process.env.SITE_CONFIG || join(ROOT, "site.config.mjs")).href)).default;
 site.url = String(site.url || "").replace(/\/+$/, "");
 
 const offen = new Map(); // leere Pflichtangaben: Schlüssel -> Hinweistext
@@ -177,6 +178,12 @@ function abgeleitet() {
 
 async function bauen() {
   const start = Date.now();
+  // Sicherung: Live gehen nur, wenn die Formulare wirklich ankommen (siehe site.config.mjs).
+  if (site.live && !site.formulareGeprueft) {
+    throw new Error(
+      "live: true geht erst, wenn formulareGeprueft: true ist. Vorher LEAD_WEBHOOK_URL in Cloudflare setzen und eine Test-Anfrage im CRM prüfen.",
+    );
+  }
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
   if (existsSync(join(SRC, "static"))) {

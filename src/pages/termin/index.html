@@ -84,11 +84,20 @@ description: 20 Minuten zum Kennenlernen per Video-Call: Du stellst deine Fragen
           <span>Sechs Fragen, 90&nbsp;Sekunden. Danach siehst du, welche Geldthemen für dich wichtig sein können.</span>
           <em>Check starten →</em>
         </a>
+        {{#site.zusagen.leitfaden}}
         <a class="alt-card" href="/leitfaden/">
           <b>Der Finanz-Leitfaden 2027</b>
           <span>Sechs Kapitel als PDF{{#site.zusagen.leitfadenVideo}} und als Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}, kostenlos per E-Mail.</span>
           <em>Leitfaden kostenlos holen →</em>
         </a>
+        {{/site.zusagen.leitfaden}}
+        {{^site.zusagen.leitfaden}}
+        <a class="alt-card" href="/#podcast">
+          <b>Mein Podcast</b>
+          <span>Regelmäßig Geldthemen in Laut- und Gebärdensprache, einfach erklärt.</span>
+          <em>Zum Podcast →</em>
+        </a>
+        {{/site.zusagen.leitfaden}}
       </div>
     </div>
   </section>

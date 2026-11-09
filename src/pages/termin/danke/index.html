@@ -41,11 +41,20 @@ sitemap: false
       {{/link.whatsappTermin}}
 
       <div class="alts">
+        {{#site.zusagen.leitfaden}}
         <a class="alt-card" href="/leitfaden/">
           <b>Zur Vorbereitung: der Finanz-Leitfaden</b>
           <span>Sechs Kapitel als PDF{{#site.zusagen.leitfadenVideo}} und als Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}, kostenlos per E-Mail.</span>
           <em>Leitfaden kostenlos holen →</em>
         </a>
+        {{/site.zusagen.leitfaden}}
+        {{^site.zusagen.leitfaden}}
+        <a class="alt-card" href="/#podcast">
+          <b>Mein Podcast</b>
+          <span>Regelmäßig Geldthemen in Laut- und Gebärdensprache, einfach erklärt.</span>
+          <em>Zum Podcast →</em>
+        </a>
+        {{/site.zusagen.leitfaden}}
         <a class="alt-card" href="/finanz-check/">
           <b>Der Finanz-Check in 90&nbsp;Sekunden</b>
           <span>Sechs Fragen, sofort dein Ergebnis. Gute Grundlage für unser Gespräch.</span>

@@ -18,7 +18,7 @@ description: Darian Krauß erklärt Finanzthemen in Deutscher Gebärdensprache u
         <p class="hero-lead">Ich bin gehörlos und trage zwei Cochlea-Implantate (CI). Ich erkläre dir Geld, Vorsorge und Absicherung. Klar, ehrlich und ohne Fachchinesisch.</p>
         <div class="cta-row">
           <a class="btn gold" href="/termin/">Unverbindlich kennenlernen</a>
-          <a class="btn ghost-dark" href="/leitfaden/">Leitfaden kostenlos holen</a>
+          {{#site.zusagen.leitfaden}}<a class="btn ghost-dark" href="/leitfaden/">Leitfaden kostenlos holen</a>{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}<a class="btn ghost-dark" href="/finanz-check/">Finanz-Check starten</a>{{/site.zusagen.leitfaden}}
         </div>
         <ul class="hero-fakten" aria-label="Das erste Gespräch">
           <li>Kostenlos und unverbindlich</li>
@@ -50,7 +50,7 @@ description: Darian Krauß erklärt Finanzthemen in Deutscher Gebärdensprache u
       <div class="ueber-text" data-reveal>
         <p class="kicker">Über mich</p>
         <h2 id="ueber-titel">Hi, ich bin <span class="akzent">Darian.</span></h2>
-        <p class="ueber-intro">Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS) und deutscher Lautsprache.</p>
+        <p class="ueber-intro">Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS), deutscher Lautsprache und schriftlich.</p>
         <p>Mir ist wichtig, Finanzthemen verständlich und zugänglich zu erklären. Außerdem produziere ich regelmäßig Podcasts.</p>
         <p>Viele Finanzgespräche laufen nur über Sprache. Wer nicht gut hört, bleibt dabei oft außen vor. Ich kenne diese Hürden aus eigener Erfahrung.</p>
         <p>Deshalb erkläre ich Geld so, dass du es wirklich verstehst. Ohne Renditeversprechen. Und du bestimmst, wie wir sprechen.</p>
@@ -178,7 +178,7 @@ description: Darian Krauß erklärt Finanzthemen in Deutscher Gebärdensprache u
           <p class="kicker">Finanzwissen</p>
           <h2 id="wissen-titel">Erst selbst schauen, ganz ohne Termin</h2>
         </div>
-        <p class="lead">Du willst dich erst selbst informieren? Gern. Beides ist kostenlos und in einfachen Worten erklärt.</p>
+        <p class="lead">Du willst dich erst selbst informieren? Gern. {{#site.zusagen.leitfaden}}Beides ist kostenlos und in einfachen Worten erklärt.{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}Der Finanz-Check ist kostenlos und in einfachen Worten erklärt. Der Leitfaden ist in Vorbereitung.{{/site.zusagen.leitfaden}}</p>
       </div>
       <div class="wissen-grid">
         <a class="wissen-karte" href="/finanz-check/" data-reveal>
@@ -187,12 +187,23 @@ description: Darian Krauß erklärt Finanzthemen in Deutscher Gebärdensprache u
           <p>Sechs Fragen, ein Klick pro Frage. Danach siehst du, welche Themen bei Steuern, Vorsorge und Absicherung für dich wichtig sein können.</p>
           <span class="wissen-mehr">Check starten <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
+        {{#site.zusagen.leitfaden}}
         <a class="wissen-karte" href="/leitfaden/" data-reveal>
           <span class="wissen-label">Kostenlos · PDF{{#site.zusagen.leitfadenVideo}} und DGS-Video{{/site.zusagen.leitfadenVideo}} per E-Mail</span>
           <h3>Der Finanz-Leitfaden 2027</h3>
           <p>Sechs Kapitel mit den wichtigsten Grundlagen: vom Behinderten-Pauschbetrag bis zu den fünf teuersten Geldfehlern. <span class="nowrap">Per E-Mail</span>, kein Anruf nötig.</p>
           <span class="wissen-mehr">Leitfaden kostenlos holen <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
+        {{/site.zusagen.leitfaden}}
+        {{^site.zusagen.leitfaden}}
+        <!-- Vorbereiteter Bereich: kein Link, keine Anforderung, bis der Leitfaden fertig ist -->
+        <div class="wissen-karte vorbereitung" data-reveal>
+          <span class="wissen-label">In Vorbereitung</span>
+          <h3>Der Finanz-Leitfaden 2027</h3>
+          <p>Die wichtigsten Grundlagen kompakt: vom Behinderten-Pauschbetrag bis zu den teuersten Geldfehlern. Sobald er fertig ist, kannst du ihn hier kostenlos per E-Mail anfordern.</p>
+          <span class="wissen-status"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>Noch in Arbeit</span>
+        </div>
+        {{/site.zusagen.leitfaden}}
       </div>
     </div>
   </section>

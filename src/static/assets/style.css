@@ -199,6 +199,12 @@ img.fehlt{display:none !important}
 .wissen-label::before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:var(--champagner)}
 .wissen-karte h3{font-size:clamp(1.5rem,2.4vw,1.875rem);line-height:1.2}
 .wissen-karte p{color:var(--muted)}
+/* Vorbereiteter Bereich (z. B. Leitfaden in Vorbereitung): gleiche Karte, aber ohne Link und ohne Bewegung */
+.wissen-karte.vorbereitung{background:var(--offwhite)}
+.wissen-karte.vorbereitung:hover{transform:none;box-shadow:none;border-color:var(--line)}
+.wissen-karte.vorbereitung:hover::before{transform:scaleX(.12)}
+.wissen-status{margin-top:auto;padding-top:.8rem;display:inline-flex;align-items:center;gap:.5rem;font-weight:700;color:var(--muted)}
+.wissen-status svg{width:1.2rem;height:1.2rem;fill:none;stroke:var(--bronze);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .wissen-mehr{margin-top:auto;padding-top:.8rem;display:inline-flex;align-items:center;gap:.5rem;font-weight:700;color:var(--ink)}
 .wissen-mehr svg{width:1.2rem;height:1.2rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease)}
 .wissen-karte:hover .wissen-mehr svg{transform:translateX(4px)}

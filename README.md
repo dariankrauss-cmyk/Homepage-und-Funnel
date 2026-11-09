@@ -1,18 +1,18 @@
 # Darian Krauß · Homepage und Funnel
 
 Website für **Darian Krauß, Finanzwissen in Laut- und Gebärdensprache**, gebaut für **Cloudflare Workers**.
-Inhalte und Design stammen aus der Strategie-Demo und dem Leitfaden-Funnel der Best Life Agency:
-Schwarz und Gold, helle Funnel-Seiten, Kontakt ohne Anruf.
+Premium-Design in Tiefschwarz, Weiß, warmem Off-White und Champagnergold mit dezentem Marmor, barrierearm,
+Kontakt ohne Anruf.
 
-**Live (Vorschau):** https://homepage.darian-krauss.workers.dev
+**Aktuelle Live-Seite (noch die alte Version):** https://homepage.darian-krauss.workers.dev
 
 | Seite | Adresse | Zweck |
 |---|---|---|
 | Startseite | `/` | Persönliche Marke, Über mich (DGS und Lautsprache), Themen, Ablauf, Finanzwissen, Podcast, FAQ, Kontakt |
 | Termin-Funnel | `/termin/` | Video, drei kurze Fragen, dann in den Kalender (Stufe 3 der Anzeigen) |
 | Termin, Schritt 2 | `/termin/danke/` | Uhrzeit im Online-Kalender wählen |
-| Leitfaden-Funnel | `/leitfaden/` | Finanz-Leitfaden 2027 als Freebie (PDF, DGS-Video erst mit `zusagen.leitfadenVideo`) |
-| Finanz-Check | `/finanz-check/` | Sechs Fragen, 90 Sekunden, Ergebnis, dann Leitfaden |
+| Leitfaden-Funnel | `/leitfaden/` | Finanz-Leitfaden 2027: „in Vorbereitung“, bis `LEITFADEN_FERTIG = true` in `site.config.mjs` |
+| Finanz-Check | `/finanz-check/` | Sechs Fragen, 90 Sekunden, Ergebnis, Auswertung per E-Mail (Danke-Seite `/finanz-check/danke/`) |
 | Danke-Seite | `/leitfaden/danke/` | Bestätigung und nächster Schritt: Termin |
 | Rechtliches | `/impressum/`, `/datenschutz/` | Vorlagen mit allen Pflichtfeldern |
 
@@ -63,6 +63,10 @@ oder im Impressum gelb markiert. Beim Bauen listet die Konsole auf, was noch feh
   Der Steckbrief nennt nur Angaben, die stimmen. Folgen, Gäste oder Links werden nicht erfunden.
 - **Vorschaubild und Icons:** `src/static/og-image.png` (1200 × 630, erscheint beim Teilen, z. B. in WhatsApp),
   `apple-touch-icon.png` und `favicon.svg` in Schwarz und Champagnergold.
+- **Leitfaden:** `LEITFADEN_FERTIG` oben in `site.config.mjs` bleibt `false`, bis das PDF fertig ist und verschickt wird.
+  Solange zeigt die Seite den Leitfaden als „in Vorbereitung“, ohne Anforderungsformular und ohne Leitfaden-Knöpfe.
+- **Formulare:** `formulareGeprueft` bleibt `false`, bis `LEAD_WEBHOOK_URL` gesetzt und eine Test-Anfrage im CRM
+  angekommen ist. Solange lässt der Build `live: true` nicht zu.
 - **Zusagen:** `zusagen.leitfadenVideo` und `zusagen.bestaetigungVideo` in `site.config.mjs` bleiben `false`, bis das
   jeweilige DGS-Video wirklich verschickt wird. Solange verspricht die Seite es nicht.
 - **Logo:** Sobald ein Logo da ist, ersetzt es das „DK“ in `src/partials/marke.html`.
@@ -151,7 +155,7 @@ Die ausführliche Liste mit allem, was Darian prüfen, entscheiden oder liefern 
 - [ ] Datenschutzerklärung ergänzt (`datenschutz`: CRM, Kalender, Video-Call, Aufsichtsbehörde), rechtlich geprüft
 - [ ] E-Mail-Adresse und WhatsApp-Nummer eingetragen
 - [ ] Kalender-Link eingetragen (`kalender.url`) und die Terminbestätigung eingerichtet
-- [ ] `LEAD_WEBHOOK_URL` gesetzt und eine Test-Anfrage im CRM angekommen
+- [ ] `LEAD_WEBHOOK_URL` gesetzt, eine Test-Anfrage im CRM angekommen, dann `formulareGeprueft: true`
 - [ ] Im CRM: Tipps und Einladungen nur bei `consent_marketing = true` und erst nach Double-Opt-In (siehe FUNNEL.md)
 - [ ] Leitfaden-PDF fertig und in der Mail verlinkt. DGS-Videos erst versprechen, wenn sie da sind (`zusagen`)
 - [ ] Videos mit Untertiteln eingebunden, Foto `src/static/img/darian.jpg` hochgeladen

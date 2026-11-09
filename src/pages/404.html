@@ -1,6 +1,6 @@
 ---
 title: Seite nicht gefunden | Darian Krauß
-description: Diese Seite gibt es leider nicht. Hier geht es zur Startseite, zum Finanz-Leitfaden und zur Terminanfrage.
+description: Diese Seite gibt es leider nicht. Hier geht es zur Startseite, zum Finanz-Check und zum Kennenlerngespräch.
 robots: noindex
 sitemap: false
 ---
@@ -15,7 +15,7 @@ sitemap: false
       <p class="lead">Vielleicht hat sich die Adresse geändert. Hier findest du alles Wichtige:</p>
       <div class="cta-row">
         <a class="btn" href="/">Zur Startseite</a>
-        <a class="btn ghost" href="/leitfaden/">Leitfaden kostenlos holen</a>
+        {{#site.zusagen.leitfaden}}<a class="btn ghost" href="/leitfaden/">Leitfaden kostenlos holen</a>{{/site.zusagen.leitfaden}}{{^site.zusagen.leitfaden}}<a class="btn ghost" href="/finanz-check/">Finanz-Check starten</a>{{/site.zusagen.leitfaden}}
         <a class="btn ghost" href="/termin/">Unverbindlich kennenlernen</a>
       </div>
     </div>

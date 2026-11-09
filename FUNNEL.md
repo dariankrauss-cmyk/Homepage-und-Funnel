@@ -13,7 +13,11 @@ Nirgends muss jemand anrufen, Kontakt läuft über Video, Chat und WhatsApp.
 | Bio-Link | „Termin für ein Kennenlerngespräch, Link in meiner Bio“ | `/termin/` |
 | Podcast-Beschreibung | YouTube und Spotify | `/leitfaden/` |
 
-Alle Wege enden beim Termin: Die Leitfaden-Danke-Seite und jede Mail laden zum Kennenlerngespräch ein.
+Alle Wege enden beim Termin: Die Danke-Seiten und jede Mail laden zum Kennenlerngespräch ein.
+
+**Stand:** Der Leitfaden ist in Vorbereitung (`LEITFADEN_FERTIG = false`). Bis dahin gibt es kein Leitfaden-Formular,
+und Anzeigen sollten auf `/finanz-check/` oder `/termin/` zeigen, nicht auf `/leitfaden/`. Der Finanz-Check hat eine
+eigene Danke-Seite (`/finanz-check/danke/`) und verspricht nur die Auswertung.
 
 **Wichtig für alle Texte, auch in Anzeigen und Mails:** keine Berufsbezeichnung, Erlaubnis oder Qualifikation nennen
 und keine individuelle Beratung versprechen. Finanzthemen werden allgemein und verständlich erklärt.

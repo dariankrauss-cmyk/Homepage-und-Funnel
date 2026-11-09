@@ -1,0 +1,49 @@
+---
+title: Danke für deine Anfrage | Darian Krauß
+description: Deine Anfrage zum Finanz-Check ist angekommen. Darian Krauß schickt dir deine Auswertung per E-Mail.
+robots: noindex, nofollow
+sitemap: false
+headerCta: Unverbindlich kennenlernen
+headerCtaLink: /termin/
+---
+{{> head}}
+<body class="funnel danke">
+{{> header-funnel}}
+<main id="inhalt">
+  <section class="hero">
+    <div class="wrap narrow">
+      <div class="done-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h1 data-vorname="Danke, {vorname}! Deine Anfrage ist angekommen.">Danke! Deine Anfrage ist angekommen.</h1>
+      <p class="lead">Ich schicke dir deine Auswertung per E-Mail{{#site.zusagen.leitfaden}}, zusammen mit dem Finanz-Leitfaden 2027{{/site.zusagen.leitfaden}}.</p>
+
+      <ol class="steps">
+        <li><b>Postfach öffnen</b><span>Absender: {{site.name}}.</span></li>
+        <li><b>Nichts da? Im Spam nachsehen</b><span>Markier die Mail als „kein Spam“.</span></li>
+        <li><b>Fragen zu deinem Ergebnis?</b><span>Stell sie mir im kostenlosen Kennenlerngespräch, in Gebärdensprache, Lautsprache oder per Chat.</span></li>
+      </ol>
+
+      <div class="cta-box" id="termin">
+        <p class="kicker">Nächster Schritt</p>
+        <h2>Lern mich kennen: 20&nbsp;Minuten per Video-Call</h2>
+        <p>Du stellst deine Fragen zu Geldthemen. Ich erkläre dir die Grundlagen, verständlich und in deiner Sprache. Kostenlos und unverbindlich.</p>
+        <a class="btn" href="/termin/">Unverbindlich kennenlernen</a>
+      </div>
+
+      <div class="alts">
+        <a class="alt-card" href="/#podcast">
+          <b>Mein Podcast</b>
+          <span>Regelmäßig Geldthemen in Laut- und Gebärdensprache, einfach erklärt.</span>
+          <em>Zum Podcast →</em>
+        </a>
+        <a class="alt-card" href="/#themen">
+          <b>Sechs Geldthemen im Überblick</b>
+          <span>Vom Behinderten-Pauschbetrag bis zur ersten eigenen Immobilie, in einfachen Worten.</span>
+          <em>Zu den Themen →</em>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+{{> footer-funnel}}
+</body>
+</html>
