@@ -1,2 +1,2 @@
-Hier das Foto als darian.jpg ablegen (quadratisch oder hochkant, mindestens 800 px breit).
-Solange es fehlt, zeigt die Website den DK-Kreis.
+Hier das Foto als darian.jpg ablegen, am besten im Hochformat 4:5 (mindestens 800 × 1000 Pixel).
+Solange es fehlt, zeigt die Website den DK-Kreis. Ein Platzhalter-Foto gibt es bewusst nicht.

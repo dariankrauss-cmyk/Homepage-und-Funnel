@@ -120,36 +120,83 @@ test("Finanz-Check: Alter zuerst, GdB an dritter Stelle, überall „Sechs Frage
   for (const [name, html] of Object.entries(seiten)) assert.equal(/Fünf (kurze )?Fragen/.test(html), false, name);
 });
 
-test("Foto mit DK-Fallback im Hero der Startseite", () => {
-  const fotos = seiten["index.html"].match(/<img\b[^>]*src="\/img\/darian\.jpg"[^>]*>/g) || [];
-  assert.equal(fotos.length, site.videos.startseite.src ? 0 : 1);
+test("Foto nur, wenn die Datei da ist, sonst der DK-Kreis ohne Bild-Platzhalter", () => {
+  const fotoDa = existsSync(join(ROOT, "src", "static", "img", "darian.jpg"));
+  const start = seiten["index.html"];
+  const fotos = start.match(/<img\b[^>]*src="\/img\/darian\.jpg"[^>]*>/g) || [];
+  assert.equal(fotos.length, fotoDa && !site.videos.startseite.src ? 1 : 0);
   for (const img of fotos) {
     assert.match(img, /\sdata-fallback\b/);
     assert.match(img, /\salt="[^"]{8,}"/);
     assert.equal(/\sonerror=/.test(img), false, "kein Inline-Handler (CSP)");
   }
-});
-
-test("Selbstbeschreibung: gehörlos mit zwei CIs, nirgends mehr „hörgeschädigt“", () => {
-  for (const [name, html] of Object.entries(seiten)) assert.equal(/hörgeschädigt/i.test(html), false, name);
-  const start = seiten["index.html"];
-  assert.match(start, /Ich bin gehörlos und trage zwei Cochlea-Implantate\./);
-  assert.match(start, /Deutscher Gebärdensprache \(DGS\) und in deutscher Lautsprache/);
-  // Die Berufsbezeichnung bleibt bis zur rechtlichen Klärung unverändert.
-  assert.match(start, /Ich bin Darian Krauß, Finanzberater und Makler\./);
-});
-
-test("Startseite: keine falschen Video-Vorschauen, keine erfundenen Podcast-Links", () => {
-  const start = seiten["index.html"];
-  if (!site.videos.startseite.src) {
-    assert.equal(/class="video\b/.test(start), false, "Video-Kasten ohne Video");
-    assert.equal(/folgt in Kürze/.test(start), false, "Platzhalter-Text");
+  if (!fotoDa) {
+    for (const [name, html] of Object.entries(seiten)) assert.equal(html.includes("/img/darian.jpg"), false, `${name}: Foto-Link ohne Datei`);
   }
+  if (!site.videos.startseite.src) assert.match(start, /<span class="monogramm" aria-hidden="true">DK<\/span>/);
+});
+
+test("Selbstbeschreibung: gehörlos, zwei Cochlea-Implantate (CI), DGS und Lautsprache", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/hörgeschädigt/i.test(html), false, `${name}: „hörgeschädigt“`);
+    assert.equal(/\(CIs\)/.test(html), false, `${name}: Schreibweise wie von Darian vorgegeben: (CI)`);
+  }
+  const start = seiten["index.html"];
+  // Darians eigener Satz, wörtlich
+  assert.ok(
+    start.includes("Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS) und deutscher Lautsprache."),
+    "Darians Satz im Abschnitt Über mich",
+  );
+  assert.match(start, /<p class="hero-lead">Ich bin Darian Krauß, Finanzberater und Makler\. Ich bin gehörlos und trage zwei Cochlea-Implantate \(CI\)\./);
+  for (const name of ["termin/index.html", "leitfaden/index.html"]) {
+    assert.match(seiten[name], /Gehörlos, mit zwei Cochlea-Implantaten \(CI\)\. Er kommuniziert in Deutscher Gebärdensprache \(DGS\) und deutscher Lautsprache\./, name);
+  }
+});
+
+test("Keine falschen Video-Vorschauen: Video-Kasten nur mit eingetragenem Video", () => {
+  const plaetze = {
+    "index.html": site.videos.startseite.src,
+    "termin/index.html": site.videos.termin.src,
+    "termin/danke/index.html": site.videos.terminDanke.src,
+    "leitfaden/index.html": site.videos.leitfaden.src,
+    "leitfaden/danke/index.html": site.videos.leitfadenDanke.src,
+  };
+  for (const [name, src] of Object.entries(plaetze)) {
+    assert.equal(/class="video\b/.test(seiten[name]), Boolean(src), `${name}: Video-Kasten`);
+  }
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/folgt in Kürze|class="ph"|class="play"/.test(html), false, `${name}: Platzhalter`);
+  }
+});
+
+test("Podcast: keine erfundenen Folgen, Gäste, Formate oder Links", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    const ohneKommentare = html.replace(/<!--[\s\S]*?-->/g, "");
+    assert.equal(/Gäste|Gästen|Community|Jede Woche|Kundengeschichte|Frag Darian|Episode|Folge \d/i.test(ohneKommentare), false, name);
+  }
+  const start = seiten["index.html"];
   const podcast = start.slice(start.indexOf('id="podcast"'), start.indexOf('id="fragen"'));
   for (const [dienst, url] of [["youtube", site.social.youtube], ["spotify", site.social.spotify]]) {
     if (!url) assert.equal(new RegExp(dienst, "i").test(podcast), false, `${dienst}: Link ohne Eintrag`);
   }
-  assert.equal(/Jede Woche neu|Kundengeschichten|Gäste/.test(podcast), false, "keine erfundenen Formate oder Gäste");
+  const dt = [...podcast.matchAll(/<dt>([^<]+)<\/dt>/g)].map((m) => m[1]);
+  assert.deepEqual(dt, ["Sprachen", "Themen", "Neue Folgen", "Für wen"]);
+  assert.equal(/Frag Darian/.test(readFileSync(join(ROOT, "build.mjs"), "utf8")), false, "kein erfundener Formatname in den Nachrichten-Vorlagen");
+});
+
+test("Icons als feine Linien wie auf der Startseite, keine bunten Emojis", () => {
+  const emoji = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
+  for (const [name, html] of Object.entries(seiten)) assert.equal(emoji.test(html), false, name);
+  assert.equal(emoji.test(readFileSync(join(DIST, "assets", "main.js"), "utf8")), false, "main.js");
+});
+
+test("Funnel-Kopf: Knopf nur, wo die Seite einen hat, und dann mit Platz für den Namen", () => {
+  for (const name of ["leitfaden/index.html", "finanz-check/index.html", "leitfaden/danke/index.html"]) {
+    assert.match(seiten[name], /<header class="top mit-knopf">/, name);
+  }
+  for (const name of ["termin/index.html", "termin/danke/index.html"]) {
+    assert.match(seiten[name], /<header class="top">/, name);
+  }
 });
 
 test("Startseite: Themen-Karten führen zum Termin, das Thema gibt es im Formular", () => {

@@ -201,12 +201,16 @@ img.fehlt{display:none !important}
 .podcast-frage{margin-top:1.5rem}
 .podcast-frage a{color:var(--champagner);font-weight:700}
 .podcast-karte{position:relative;border:1px solid rgba(205,182,138,.28);border-radius:1.75rem;padding:clamp(1.75rem,3.5vw,2.75rem);background:rgba(21,20,19,.78)}
-.podcast-emblem{width:6.5rem;height:6.5rem;margin-bottom:1.5rem}
+.podcast-kopf{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem}
+.podcast-kopf h3{color:var(--dark-text)}
+.podcast-emblem{width:5.5rem;height:5.5rem;flex-shrink:0}
 .podcast-emblem svg{width:100%;height:100%;fill:none;stroke:var(--champagner);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
 .podcast-emblem circle:first-child{stroke-opacity:.35}
-.podcast-themen{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem 1.5rem;margin-top:1.1rem}
-.podcast-themen li{position:relative;padding-left:1.4rem;color:var(--dark-text);font-size:1.0625rem}
-.podcast-themen li::before{content:"";position:absolute;left:0;top:.8em;width:.75rem;height:1px;background:var(--champagner)}
+/* Steckbrief: nur Angaben, die stimmen. Folgen, Gäste und Links kommen erst mit echten Daten dazu. */
+.steckbrief > div{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.25rem 1.25rem;padding:1rem 0;border-top:1px solid rgba(205,182,138,.22)}
+.steckbrief > div:last-child{padding-bottom:0}
+.steckbrief dt{color:var(--champagner);font-weight:700;font-size:1rem;line-height:1.6}
+.steckbrief dd{color:var(--dark-text);font-size:1.0625rem;line-height:1.55}
 
 /* ---------- Startseite: Häufige Fragen ---------- */
 .fragen-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(2rem,6vw,5.5rem);align-items:start}
@@ -250,10 +254,6 @@ img.fehlt{display:none !important}
 .video{position:relative;border-radius:1.4rem;overflow:hidden;background:radial-gradient(circle at 50% 38%,#2a251c 0,#0b0b0b 72%);aspect-ratio:16/9;display:grid;place-items:center;color:#fff;box-shadow:0 1.5rem 3.75rem rgba(23,21,19,.2);border:1px solid #2a2722}
 .video.hoch{aspect-ratio:4/5}
 .video video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
-.video .ph{text-align:center;padding:1.5rem;position:relative}
-.video .play{width:4.75rem;height:4.75rem;border-radius:50%;background:var(--champagner);color:var(--schwarz);display:grid;place-items:center;margin:0 auto 1rem;font-size:1.75rem;padding-left:.3rem}
-.video .ph b{display:block;font-family:var(--serif);font-weight:500;font-size:1.25rem}
-.video .ph small{color:#d2cab9;font-size:1rem}
 .video .dgs{position:absolute;top:.9rem;left:.9rem;z-index:2;background:var(--champagner);color:var(--schwarz);font-weight:700;font-size:.9375rem;border-radius:.4rem;padding:.25rem .6rem}
 .video .ton{position:absolute;right:.9rem;top:.9rem;z-index:2;border:0;background:rgba(255,255,255,.95);color:var(--ink);font-size:1rem;font-weight:700;border-radius:999px;padding:.45rem .95rem;cursor:pointer}
 .video .ton[hidden]{display:none}
@@ -266,7 +266,10 @@ img.fehlt{display:none !important}
 .cta-box h2{color:var(--dark-text);max-width:40rem}
 .cta-box p:not(.kicker){color:var(--dark-muted);margin:.5rem 0 1.4rem;max-width:40rem}
 .cta-box .opts{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.6rem}
-.cta-box .opts li{border:1px solid #4a453d;border-radius:999px;padding:.4rem .85rem;font-size:1rem;color:#eee9de}
+.cta-box .opts li{display:inline-flex;align-items:center;gap:.45rem;border:1px solid #4a453d;border-radius:999px;padding:.4rem .9rem .4rem .75rem;font-size:1rem;color:#eee9de}
+.cta-box .opts .ic{color:var(--champagner)}
+/* Feine Linien-Icons wie auf der Startseite (statt bunter Emojis) */
+.ic{width:1.25em;height:1.25em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .cta-box .cta-row{margin-top:0}
 
 /* ---------- Fußzeile ---------- */
@@ -298,7 +301,8 @@ img.fehlt{display:none !important}
 .list li span{color:var(--muted)}
 .list li:before{content:"";position:absolute;left:1.25rem;top:1.3rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--champagner) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/.95rem no-repeat}
 .formats{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
-.formats li{background:#fff;border:1px solid var(--line);border-radius:999px;padding:.45rem .9rem;font-size:1rem;font-weight:600}
+.formats li{display:inline-flex;align-items:center;gap:.45rem;background:#fff;border:1px solid var(--line);border-radius:999px;padding:.45rem .95rem .45rem .8rem;font-size:1rem;font-weight:600}
+.formats .ic{color:var(--bronze)}
 .funnel section{padding:3.75rem 0}
 .funnel .hero{padding:3.75rem 0 2.75rem}
 
@@ -327,6 +331,7 @@ img.fehlt{display:none !important}
 .side p:not(.kicker){color:var(--muted);margin-top:.6rem}
 .about{display:flex;gap:1rem;align-items:flex-start;margin-top:1.6rem;background:var(--bg2);border:1px solid var(--line);border-radius:1rem;padding:1.25rem}
 .about .pic{width:4rem;height:4rem;border-radius:50%;background:var(--schwarz);color:var(--champagner);display:grid;place-items:center;font-family:var(--serif);font-weight:500;flex-shrink:0;border:1px solid var(--champagner)}
+.about img.pic{object-fit:cover;object-position:50% 22%}
 .about b{display:block;font-family:var(--serif);font-weight:500;font-size:1.125rem}
 .about p{font-size:1rem;margin-top:.25rem;color:var(--muted)}
 
@@ -359,7 +364,7 @@ img.fehlt{display:none !important}
 .alt-card:hover{border-color:var(--champagner);box-shadow:var(--shadow-soft)}
 .alt-card b{display:block;font-size:1.125rem;margin-bottom:.25rem}
 .alt-card span{color:var(--muted);font-size:1rem}
-.alt-card em{font-style:normal;display:inline-block;margin-top:.6rem;font-weight:700;color:var(--bronze)}
+.alt-card em{font-style:normal;display:block;margin-top:.6rem;font-weight:700;color:var(--bronze)}
 
 /* Ablauf-Liste der Funnel-Seiten */
 .steps{counter-reset:s;display:grid;gap:.75rem;margin-top:1.6rem}
@@ -392,7 +397,8 @@ img.fehlt{display:none !important}
 .check .form-card{margin-top:.4rem}
 
 /* Danke-Seiten */
-.done-ic{width:4rem;height:4rem;border-radius:50%;background:#eaf6ee;color:var(--ok);display:grid;place-items:center;font-size:1.875rem;font-weight:800;margin-bottom:1.1rem}
+.done-ic{width:4rem;height:4rem;border-radius:50%;background:var(--gold-soft);border:1px solid var(--gold-line);color:var(--bronze);display:grid;place-items:center;margin-bottom:1.1rem}
+.done-ic svg{width:1.9rem;height:1.9rem;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .danke .cta-box{margin-top:2.1rem}
 .danke .alts{margin-top:1.9rem}
 .kalender-hinweis{margin-top:.9rem;font-size:1rem;color:var(--muted)}
@@ -477,8 +483,6 @@ mark.todo{background:#fff3b0;color:#5c4500;border:1px dashed #c9a400;border-radi
   .card{padding:1.4rem}
   .video,.video.hoch{border-radius:1rem;aspect-ratio:4/5}
   .termin-hero .video{aspect-ratio:16/9}
-  .video .ph{padding:2.9rem 1rem 1rem}
-  .video .play{width:3.5rem;height:3.5rem;font-size:1.3rem;margin-bottom:.6rem;padding-left:.25rem}
   .cta-box{padding:1.75rem 1.25rem;border-radius:1.25rem}
   .foot-grid{grid-template-columns:1fr;gap:1.75rem}
   .angaben{grid-template-columns:1fr;gap:2px}
@@ -501,8 +505,8 @@ mark.todo{background:#fff3b0;color:#5c4500;border:1px dashed #c9a400;border-radi
   .ablauf-liste li{padding-left:4rem}
   .ablauf-liste::before{display:block;left:1.5rem;right:auto;top:1.5rem;bottom:1.5rem;width:1px;height:auto;background:linear-gradient(180deg,var(--champagner),rgba(205,182,138,.25))}
   .schritt-nr{position:absolute;left:0;top:0;margin:0}
-  .podcast-themen{grid-template-columns:1fr}
-  .podcast-emblem{width:5rem;height:5rem}
+  .podcast-emblem{width:4.25rem;height:4.25rem}
+  .steckbrief > div{grid-template-columns:1fr;gap:.15rem}
   .faq summary{font-size:1.125rem;padding-right:3.4rem}
   .faq details > div{padding-right:0}
   .kontakt-box{border-radius:1.4rem}
@@ -514,10 +518,16 @@ mark.todo{background:#fff3b0;color:#5c4500;border:1px dashed #c9a400;border-radi
   .mobil-cta.an{transform:none;visibility:visible;transition:transform .35s var(--ease)}
   html.mit-leiste{scroll-padding-bottom:5.5rem}
 }
+@media (max-width:400px){
+  /* Funnel-Kopf mit Knopf: Auf schmalen Handys bleibt nur der DK-Kreis sichtbar, damit der Knopf
+     den Namen nicht überdeckt. Für Screenreader heißt der Link weiter „Darian Krauß“. */
+  .top.mit-knopf .mark span{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+}
 @media (max-width:380px){
   .wrap{padding:0 .875rem}
   .top .wrap{gap:.5rem}
   .menu-btn{padding:.5rem .8rem}
+  .btn-sm{padding:.55rem .95rem}
 }
 @media (prefers-reduced-motion:reduce){
   *{transition:none !important;animation:none !important;scroll-behavior:auto !important}

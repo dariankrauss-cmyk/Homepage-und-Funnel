@@ -134,10 +134,10 @@ function abgeleitet() {
   const link = {
     whatsapp: wa(site.kontakt.whatsappText),
     whatsappTermin: wa("Hallo Darian, ich möchte gern einen Termin für meine ehrliche Einschätzung."),
-    whatsappFrage: wa("Hallo Darian, ich habe eine Frage für „Frag Darian“: "),
+    whatsappFrage: wa("Hallo Darian, ich habe eine Frage für deinen Podcast: "),
     whatsappNummer: ziffern ? `+${ziffern}` : "",
     email: mail,
-    emailFrage: mail ? `${mail}?subject=${encodeURIComponent("Frage für „Frag Darian“")}` : "",
+    emailFrage: mail ? `${mail}?subject=${encodeURIComponent("Frage für deinen Podcast")}` : "",
   };
   link.frage = link.whatsappFrage || link.emailFrage || "/termin/";
   link.schreiben = link.whatsapp || link.email;
@@ -146,6 +146,8 @@ function abgeleitet() {
   const flags = {
     social: [s.instagram, s.tiktok, s.youtube, s.spotify].some(gefuellt),
     podcastLinks: gefuellt(s.youtube) || gefuellt(s.spotify),
+    // Das Foto erscheint erst, wenn die Datei da ist. Bis dahin steht dort der DK-Kreis, ohne Bild-Platzhalter.
+    foto: existsSync(join(SRC, "static", "img", "darian.jpg")),
   };
 
   const sameAs = [s.instagram, s.tiktok, s.youtube, s.spotify].filter(gefuellt);
@@ -242,6 +244,9 @@ async function bauen() {
   // Zusammenfassung
   console.log(`✓ ${seiten.size} Seiten gebaut nach dist/ (${Date.now() - start} ms)`);
   if (!site.live) console.log("ℹ Vorschau-Modus (live: false): Hinweisleiste an, Suchmaschinen ausgesperrt.");
+  if (!extra.flags.foto) console.log("ℹ Foto fehlt noch: src/static/img/darian.jpg (bis dahin erscheint der DK-Kreis)");
+  const ohneVideo = Object.entries(site.videos || {}).filter(([, v]) => !gefuellt(v?.src)).map(([k]) => k);
+  if (ohneVideo.length) console.log(`ℹ Noch kein Video eingetragen (dort erscheint kein Video-Kasten): ${ohneVideo.join(", ")}`);
   if (offen.size) {
     console.log(`${site.live ? "⚠ ACHTUNG, live geschaltet und" : "ℹ"} noch offen in site.config.mjs (gelb markiert):`);
     for (const [k, hinweis] of offen) console.log(`   - ${k}: ${hinweis}`);

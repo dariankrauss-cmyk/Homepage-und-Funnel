@@ -15,7 +15,7 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
       <div class="hero-text">
         <p class="kicker">Finanzwissen, das man sehen kann.</p>
         <h1 id="hero-titel">Finanzberatung in <span class="akzent">Gebärden&shy;sprache</span> und Laut&shy;sprache</h1>
-        <p class="hero-lead">Ich bin Darian Krauß, Finanzberater und Makler. Ich bin gehörlos und trage zwei Cochlea-Implantate. Ich erkläre dir Geld, Vorsorge und Absicherung. Klar, ehrlich und ohne Fachchinesisch.</p>
+        <p class="hero-lead">Ich bin Darian Krauß, Finanzberater und Makler. Ich bin gehörlos und trage zwei Cochlea-Implantate (CI). Ich erkläre dir Geld, Vorsorge und Absicherung. Klar, ehrlich und ohne Fachchinesisch.</p>
         <div class="cta-row">
           <a class="btn gold" href="/termin/">Kostenlosen Termin wählen</a>
           <a class="btn ghost-dark" href="/leitfaden/">Leitfaden kostenlos holen</a>
@@ -30,7 +30,7 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
       <figure class="hero-portrait">
         <div class="portrait-rahmen">
           <span class="monogramm" aria-hidden="true">DK</span>
-          <img src="/img/darian.jpg" alt="Porträt von Darian Krauß" width="800" height="1000" fetchpriority="high" data-fallback>
+          {{#flags.foto}}<img src="/img/darian.jpg" alt="Porträt von Darian Krauß" width="800" height="1000" fetchpriority="high" data-fallback>{{/flags.foto}}
         </div>
         <figcaption class="portrait-karte"><b>Darian Krauß</b><span>Beratung in DGS und Lautsprache</span></figcaption>
       </figure>
@@ -38,7 +38,7 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
       {{#site.videos.startseite.src}}
       <div class="video hoch hero-video" data-src="{{site.videos.startseite.src}}" data-poster="{{site.videos.startseite.poster}}" data-untertitel="{{site.videos.startseite.untertitel}}" data-label="Darian stellt sich vor, in Gebärdensprache mit Untertiteln">
         <span class="dgs">DGS · Untertitel</span>
-        <button class="ton" type="button" hidden>🔈 Ton an</button>
+        <button class="ton" type="button" hidden>Ton an</button>
       </div>
       {{/site.videos.startseite.src}}
     </div>
@@ -50,10 +50,9 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
       <div class="ueber-text" data-reveal>
         <p class="kicker">Über mich</p>
         <h2 id="ueber-titel">Hi, ich bin <span class="akzent">Darian.</span></h2>
-        <p class="ueber-intro">Finanzberater und Makler. Gehörlos, mit zwei Cochlea-Implantaten (CIs).</p>
-        <p>Ich kommuniziere in Deutscher Gebärdensprache (DGS) und in deutscher Lautsprache.</p>
+        <p class="ueber-intro">Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS) und deutscher Lautsprache.</p>
         <p>Viele Finanzgespräche laufen nur über Sprache. Wer nicht gut hört, bleibt dabei oft außen vor. Ich kenne diese Hürden aus eigener Erfahrung.</p>
-        <p>Deshalb mache ich es anders. Bei mir bestimmst du, wie wir sprechen. Und ich erkläre dir Geld so, dass du es wirklich verstehst.</p>
+        <p>Deshalb mache ich es als Finanzberater und Makler anders. Bei mir bestimmst du, wie wir sprechen. Und ich erkläre dir Geld so, dass du es wirklich verstehst.</p>
         <p>Mein Anspruch: ehrlich, klar und verständlich. Du bekommst keine Renditeversprechen. Du bekommst eine klare Einschätzung. Dann entscheidest du selbst.</p>
       </div>
       <div class="sprachen-karte" data-reveal>
@@ -198,13 +197,13 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
     </div>
   </section>
 
-  <!-- Podcast: keine erfundenen Folgen, Gäste oder Links. Links erscheinen erst, wenn sie in site.config.mjs stehen. -->
+  <!-- Podcast: keine erfundenen Folgen, Gäste oder Links. Die Knöpfe erscheinen erst, wenn die Links in site.config.mjs stehen. -->
   <section id="podcast" class="dark start-podcast" aria-labelledby="podcast-titel">
     <div class="wrap podcast-grid">
       <div class="podcast-text" data-reveal>
         <p class="kicker">Podcast</p>
         <h2 id="podcast-titel">Finanzen in <span class="akzent">Laut- und Gebärden&shy;sprache</span></h2>
-        <p class="lead">Ich mache regelmäßig einen Podcast über Geld. Darin erkläre ich Finanzthemen in Deutscher Gebärdensprache und in Lautsprache.</p>
+        <p class="lead">In meinem Podcast erkläre ich regelmäßig Geldthemen. In Deutscher Gebärdensprache und in Lautsprache.</p>
         <p>Damit bei Finanzen niemand außen vor bleibt.</p>
         {{#flags.podcastLinks}}
         <div class="cta-row">
@@ -215,18 +214,18 @@ description: Finanzberatung in Deutscher Gebärdensprache und Lautsprache: Alter
         {{#link.schreiben}}<p class="podcast-frage">Du hast eine Frage für den Podcast? <a href="{{link.frage}}">Schreib sie mir.</a></p>{{/link.schreiben}}
       </div>
       <div class="podcast-karte" data-reveal>
-        <div class="podcast-emblem" aria-hidden="true">
-          <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58"/><circle cx="60" cy="60" r="44"/><rect x="51" y="34" width="18" height="34" rx="9"/><path d="M42 58a18 18 0 0 0 36 0"/><path d="M60 76v10M50 86h20"/></svg>
+        <div class="podcast-kopf">
+          <div class="podcast-emblem" aria-hidden="true">
+            <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="58"/><circle cx="60" cy="60" r="44"/><rect x="51" y="34" width="18" height="34" rx="9"/><path d="M42 58a18 18 0 0 0 36 0"/><path d="M60 76v10M50 86h20"/></svg>
+          </div>
+          <h3>Der Podcast auf einen Blick</h3>
         </div>
-        <h3>Darum geht es</h3>
-        <ul class="podcast-themen">
-          <li>Vorsorge und Rente</li>
-          <li>Steuervorteile bei Behinderung</li>
-          <li>Geld anlegen</li>
-          <li>Versicherungen</li>
-          <li>Raus aus Schulden</li>
-          <li>Die eigene Immobilie</li>
-        </ul>
+        <dl class="steckbrief">
+          <div><dt>Sprachen</dt><dd>Deutsche Gebärdensprache (DGS) und deutsche Lautsprache</dd></div>
+          <div><dt>Themen</dt><dd>Geld, Vorsorge und Absicherung, verständlich erklärt</dd></div>
+          <div><dt>Neue Folgen</dt><dd>Regelmäßig</dd></div>
+          <div><dt>Für wen</dt><dd>Für alle, die Geld besser verstehen wollen: gehörlos, schwerhörig oder hörend</dd></div>
+        </dl>
       </div>
     </div>
   </section>

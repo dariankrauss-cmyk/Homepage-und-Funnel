@@ -29,7 +29,7 @@
   }
 
   /* 2. Videos: starten stumm mit Untertiteln, „Ton an“ schaltet den Ton zu.
-     Ohne data-src bleibt der Platzhalter stehen. */
+     Den Video-Kasten gibt es nur, wenn in site.config.mjs ein Video eingetragen ist. */
   document.querySelectorAll(".video").forEach(function (box) {
     var src = box.getAttribute("data-src");
     if (!src) return;
@@ -49,8 +49,6 @@
       v.appendChild(spur);
     }
     box.insertBefore(v, box.firstChild);
-    var ph = box.querySelector(".ph");
-    if (ph) ph.remove();
     var ton = box.querySelector(".ton");
     if (ton) {
       ton.hidden = false;
@@ -59,7 +57,7 @@
         if (!v.muted) v.currentTime = 0;
         var p = v.play();
         if (p && p.catch) p.catch(function () {});
-        ton.textContent = v.muted ? "🔈 Ton an" : "🔇 Ton aus";
+        ton.textContent = v.muted ? "Ton an" : "Ton aus";
       });
     }
   });

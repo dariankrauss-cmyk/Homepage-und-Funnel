@@ -50,7 +50,7 @@ export default {
   // Videos in Gebärdensprache. MP4-Dateien in src/static/videos/ ablegen
   // (höchstens 25 MB pro Datei) und hier den Pfad eintragen, z. B.
   // "/videos/vorstellung.mp4". Untertitel als WebVTT-Datei (.vtt).
-  // Leer = an der Stelle steht „Video folgt in Kürze“.
+  // Leer = an der Stelle erscheint nichts, auch keine Video-Vorschau.
   videos: {
     startseite: { src: "", poster: "", untertitel: "" },
     leitfaden: { src: "", poster: "", untertitel: "" },

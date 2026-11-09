@@ -18,7 +18,7 @@ sitemap: false
       <p class="kalender-hinweis">Du wechselst dafür zu meinem Online-Kalender{{#site.kalender.anbieter}} bei {{site.kalender.anbieter}}{{/site.kalender.anbieter}}. Danach bekommst du die Bestätigung per WhatsApp und E-Mail.</p>
       {{/site.kalender.url}}
       {{^site.kalender.url}}
-      <div class="done-ic" aria-hidden="true">✓</div>
+      <div class="done-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
       <h1 data-vorname="Danke, {vorname}! Deine Anfrage ist angekommen.">Danke! Deine Anfrage ist angekommen.</h1>
       <p class="lead">Ich melde mich in Kürze per WhatsApp oder E-Mail bei dir, und wir finden gemeinsam einen Termin für unseren Video-Call. Telefonieren musst du nicht.</p>
       {{/site.kalender.url}}
@@ -29,15 +29,12 @@ sitemap: false
         <li><b>20 Minuten, in deiner Sprache</b><span>Gebärdensprache, Lautsprache oder Chat. Du brauchst nur ein Handy, Tablet oder einen Computer mit Kamera.</span></li>
       </ol>
 
-      <div class="video" data-src="{{site.videos.terminDanke.src}}" data-poster="{{site.videos.terminDanke.poster}}" data-untertitel="{{site.videos.terminDanke.untertitel}}" data-label="Darian sagt Danke, in Gebärdensprache mit Untertiteln">
+      {{#site.videos.terminDanke.src}}
+      <div class="video" data-src="{{site.videos.terminDanke.src}}" data-poster="{{site.videos.terminDanke.poster}}" data-untertitel="{{site.videos.terminDanke.untertitel}}" data-label="Darian sagt Danke und erklärt, wie es weitergeht, in Gebärdensprache mit Untertiteln">
         <span class="dgs">DGS · Untertitel · Ton</span>
-        <div class="ph">
-          <div class="play" aria-hidden="true">▶</div>
-          <b>Darian sagt Danke und erklärt, wie es weitergeht</b>
-          <small>Video in Gebärdensprache folgt in Kürze</small>
-        </div>
-        <button class="ton" type="button" hidden>🔈 Ton an</button>
+        <button class="ton" type="button" hidden>Ton an</button>
       </div>
+      {{/site.videos.terminDanke.src}}
 
       {{#link.whatsappTermin}}
       <p class="kalender-hinweis">Lieber direkt schreiben? <a href="{{link.whatsappTermin}}">Schick mir eine WhatsApp-Nachricht</a>.</p>

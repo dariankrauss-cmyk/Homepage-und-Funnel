@@ -53,11 +53,16 @@ oder im Impressum gelb markiert. Beim Bauen listet die Konsole auf, was noch feh
   ohne fremde Bildrechte: `python3 tools/marmor.py` (braucht numpy und Pillow).
 - **Videos:** MP4 nach `src/static/videos/` legen (höchstens 25 MB pro Datei), Untertitel als `.vtt` daneben,
   dann den Pfad in `site.config.mjs` unter `videos` eintragen, z. B. `"/videos/vorstellung.mp4"`.
+  Ohne Eintrag erscheint an der Stelle nichts, auch keine Video-Vorschau.
 - **Foto:** als `src/static/img/darian.jpg` ablegen, am besten im Hochformat 4:5 (mindestens 800 × 1000 Pixel).
-  Es erscheint im Bogen-Rahmen im Hero. Solange die Datei fehlt, zeigt der Rahmen das Monogramm „DK“.
+  Es erscheint im Bogen-Rahmen im Hero und im Kasten „Über Darian“ der Funnel-Seiten. Solange die Datei fehlt,
+  zeigen beide das Monogramm „DK“, ohne Bild-Platzhalter.
 - **Video auf der Startseite:** Sobald `videos.startseite.src` in `site.config.mjs` gefüllt ist, ersetzt das
   DGS-Video den Foto-Rahmen im Hero (mit Untertiteln aus `untertitel`). Ohne Eintrag gibt es keine Video-Vorschau.
 - **Podcast:** Knöpfe zu YouTube und Spotify erscheinen erst, wenn `social.youtube` bzw. `social.spotify` gefüllt sind.
+  Der Steckbrief nennt nur Angaben, die stimmen. Folgen, Gäste oder Links werden nicht erfunden.
+- **Vorschaubild und Icons:** `src/static/og-image.png` (1200 × 630, erscheint beim Teilen, z. B. in WhatsApp),
+  `apple-touch-icon.png` und `favicon.svg` in Schwarz und Champagnergold.
 - **Logo:** Sobald das DANOKA-Logo da ist, ersetzt es das „DK“ in `src/partials/marke.html`.
 
 ## Lokal ansehen
@@ -133,7 +138,12 @@ auskommentierten Block `ratelimits` einkommentieren.
 
 ## Vor dem Livegang
 
+Die ausführliche Liste mit allem, was Darian prüfen, entscheiden oder liefern muss, steht in
+**[`docs/FREIGABE.md`](docs/FREIGABE.md)**. Kurzfassung:
+
 - [ ] Impressum und Erstinformation vollständig (`site.config.mjs` → `impressum`), rechtlich geprüft
+- [ ] „Makler“ und die Beratungsthemen passen zu den Erlaubnissen (§ 34d, § 34f, § 34i, § 34c GewO)
+- [ ] Finanz-Check: Variante A oder B entschieden, Einwilligung für den GdB und getrennte Häkchen geklärt
 - [ ] Datenschutzerklärung ergänzt (`datenschutz`: CRM, Kalender, Video-Call, Aufsichtsbehörde), rechtlich geprüft
 - [ ] E-Mail-Adresse und WhatsApp-Nummer eingetragen
 - [ ] Kalender-Link eingetragen (`kalender.url`) und im Kalender die WhatsApp-Bestätigung aktiv
@@ -157,4 +167,6 @@ src/static/         CSS, JS, Bilder, Videos, Sicherheits-Header (_headers), Weit
 tools/eingebettet.mjs  Deploy ohne Datei-Upload (Weg C), mit worker/eingebettet.js
 tools/marmor.py     Erzeugt die Marmor-Texturen (optional, braucht numpy und Pillow)
 test/               Tests für Build und Lead-API (npm test)
+docs/FREIGABE.md    Was vor dem Livegang geprüft, entschieden oder geliefert werden muss
+docs/screenshots/   Screenshots für die Prüfung im Pull Request
 ```

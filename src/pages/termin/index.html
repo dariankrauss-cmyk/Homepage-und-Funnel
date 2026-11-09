@@ -14,15 +14,12 @@ description: In 20 Minuten schauen wir gemeinsam auf deine Finanzen. Per Video-C
         <h1>Deine ehrliche Einschätzung, <span>in deiner Sprache</span></h1>
         <p class="lead">In 20 Minuten schauen wir gemeinsam auf deine Finanzen: was gut läuft, wo Geld liegen bleibt und was du als Erstes angehen solltest. Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Ehrlich und unverbindlich.</p>
 
+        {{#site.videos.termin.src}}
         <div class="video" data-src="{{site.videos.termin.src}}" data-poster="{{site.videos.termin.poster}}" data-untertitel="{{site.videos.termin.untertitel}}" data-label="Darian stellt sich vor, in Gebärdensprache mit Untertiteln">
           <span class="dgs">DGS · Untertitel · Ton</span>
-          <div class="ph">
-            <div class="play" aria-hidden="true">▶</div>
-            <b>Darian stellt sich vor</b>
-            <small>Video in Gebärdensprache folgt in Kürze</small>
-          </div>
-          <button class="ton" type="button" hidden>🔈 Ton an</button>
+          <button class="ton" type="button" hidden>Ton an</button>
         </div>
+        {{/site.videos.termin.src}}
       </div>
 
       <div class="form-card" id="anfrage">
