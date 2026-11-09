@@ -9,11 +9,14 @@ Nirgends muss jemand anrufen, Kontakt läuft über Video, Chat und WhatsApp.
 |---|---|---|
 | 1 · Sehen | Bester Clip als Anzeige, an neue Menschen | `/leitfaden/` (Freebie) oder Profil |
 | 2 · Vertrauen | Kundengeschichte oder Partner-Folge, an Video-Zuschauer | `/finanz-check/` oder `/leitfaden/` |
-| 3 · Termin | „Ehrliche Einschätzung zu deinen Finanzen: 20 Minuten per Video-Call“, an Interessierte | `/termin/` |
-| Bio-Link | „Termin für deine ehrliche Einschätzung, Link in meiner Bio“ | `/termin/` |
+| 3 · Termin | „Kostenloses Kennenlerngespräch: 20 Minuten per Video-Call“, an Interessierte | `/termin/` |
+| Bio-Link | „Termin für ein Kennenlerngespräch, Link in meiner Bio“ | `/termin/` |
 | Podcast-Beschreibung | YouTube und Spotify | `/leitfaden/` |
 
-Alle Wege enden beim Termin: Die Leitfaden-Danke-Seite und jede Mail laden zur ehrlichen Einschätzung ein.
+Alle Wege enden beim Termin: Die Leitfaden-Danke-Seite und jede Mail laden zum Kennenlerngespräch ein.
+
+**Wichtig für alle Texte, auch in Anzeigen und Mails:** keine Berufsbezeichnung, Erlaubnis oder Qualifikation nennen
+und keine individuelle Beratung versprechen. Finanzthemen werden allgemein und verständlich erklärt.
 
 ### Kampagnen-Kennungen anhängen
 
@@ -88,7 +91,7 @@ CRM. Vorlagen dafür muss Meta einmal freigeben.
 >
 > Fragen? Antworte einfach auf diese Mail oder schreib mir per WhatsApp. Telefonieren musst du nicht.
 >
-> Wenn du magst, schauen wir gemeinsam auf deine Finanzen: 20 Minuten per Video-Call, in Gebärdensprache,
+> Wenn du magst, lernen wir uns kennen: 20 Minuten per Video-Call, in Gebärdensprache,
 > Lautsprache oder per Chat. Kostenlos und unverbindlich: {url}/termin/
 >
 > Viele Grüße, Darian
@@ -100,7 +103,7 @@ Beim Finanz-Check kannst du mit `finanzcheck_ziel` verzweigen und das passende K
 **3. Zwei bis drei Tage später: Einladung zum Termin**
 
 > Hi {vorname}, hast du schon in Kapitel 1 geschaut? Viele merken dabei, dass sie Jahr für Jahr Geld liegen lassen.
-> Wenn du wissen willst, was bei dir drin ist: 20 Minuten per Video-Call, in deiner Sprache. {url}/termin/
+> Du hast Fragen dazu? Lern mich kennen: 20 Minuten per Video-Call, in deiner Sprache. {url}/termin/
 
 ### Terminanfrage (`termin-anfrage`)
 
@@ -117,7 +120,7 @@ Beim Finanz-Check kannst du mit `finanzcheck_ziel` verzweigen und das passende K
 
 **Kein Termin nach 24 Stunden gebucht**
 
-> Hi {vorname}, du wolltest dir eine ehrliche Einschätzung zu deinen Finanzen holen. Hat mit dem Kalender alles geklappt?
+> Hi {vorname}, du wolltest einen Termin für ein Kennenlerngespräch. Hat mit dem Kalender alles geklappt?
 > Wenn du magst, schick ich dir zwei Terminvorschläge.
 
 ## Was wir messen

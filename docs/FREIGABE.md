@@ -1,197 +1,144 @@
-# Freigabe-Liste vor dem Livegang
+# Freigabe-Liste vor der Veröffentlichung
 
-Stand: 9. November 2026, Pull Request #2 (nach Variante A für den Finanz-Check). **Nichts davon ist veröffentlicht.** Die Live-Seite zeigt noch die alte Version.
+Stand: 9. November 2026, Pull Request #2. **Nichts davon ist veröffentlicht.**
 
-Hier steht alles, was Darian vor dem Livegang **prüfen**, **entscheiden** oder **liefern** muss.
+Hier steht, was vor der Veröffentlichung **geklärt**, **bestätigt** oder **geliefert** werden muss.
 
-- **Pflicht** heißt: muss vor dem Livegang geklärt sein.
-- **Bestätigen** heißt: Die Aussage steht auf der Seite. Bitte sag, ob sie stimmt.
-- **Entscheiden** heißt: Es gibt mehrere gute Wege. Du wählst.
+- **Pflicht** heißt: muss vor der Veröffentlichung geklärt sein.
+- **Bestätigen** heißt: Die Aussage steht auf der Seite. Bitte sagen, ob sie stimmt.
+- **Entscheiden** heißt: Es gibt mehrere gute Wege.
 
-> **Wichtig:** Ich bin kein Anwalt. Die rechtlichen Punkte sind Hinweise zum Prüfen, keine Rechtsberatung.
-> Bitte lass Impressum, Datenschutzerklärung und Einwilligungen von einer Fachperson prüfen, zum Beispiel
-> von einer Anwältin oder einem Anwalt oder deiner IHK. Ich ändere diese Texte erst nach deiner Freigabe.
+> Diese Liste ist eine technische Prüfliste und keine Rechtsberatung. Impressum, Datenschutzerklärung,
+> Einwilligungen und die Texte zu den Angeboten bitte von einer Fachperson prüfen lassen, zum Beispiel von einer
+> Anwältin oder einem Anwalt.
 
 ---
 
-## 1. Rechtliches
+## 1. Pflichtangaben
 
-### 1.1 Impressum und Erstinformation · Pflicht
+### 1.1 Impressum · Pflicht
 
 Diese Angaben fehlen noch. Sie stehen in `site.config.mjs` unter `impressum` und erscheinen bis dahin gelb markiert:
 
-- Name, Anschrift, Kontakt
-- Berufsbezeichnung
-- Registernummer im Vermittlerregister
-- Zuständige IHK
-- Status nach § 34d GewO
-- Beteiligungen über 10 % an oder von Versicherungsunternehmen
+- Name
+- Anschrift
+- Kontakt
 
-Freiwillig: Umsatzsteuer-ID, Berufshaftpflicht, weitere Schlichtungsstelle.
+Freiwillig: Umsatzsteuer-ID.
 
-**Bitte prüfen lassen:** Die Erstinformation musst du beim ersten Kontakt **in Textform** geben (§ 15 VersVermV),
-zum Beispiel als PDF per Mail. Der Abschnitt im Impressum allein reicht dafür wahrscheinlich nicht.
+**Bitte rechtlich klären:** Gehören für die eigene Tätigkeit weitere Pflichtangaben ins Impressum? Die Website hat dafür
+den Schalter `vermittler` in `site.config.mjs`. Er ist **aus**. Damit erscheinen keine Angaben zu einer
+Vermittlertätigkeit, also keine Berufsbezeichnung, keine Registernummer, keine IHK und keine Erstinformation.
+Eingeschaltet wird er erst, wenn diese Angaben rechtlich geprüft sind.
 
-### 1.2 Das Wort „Makler“ · Pflicht
+### 1.2 Datenschutzerklärung · Pflicht
 
-Es steht im Hero der Startseite, bei „Über mich“, in der Fußzeile und im Kasten „Über Darian“ auf den Funnel-Seiten.
+Diese Angaben fehlen noch (`site.config.mjs` unter `datenschutz`, bis dahin gelb markiert):
 
-„Makler“ darf nur stehen, wenn du im Vermittlerregister als **Versicherungsmakler** eingetragen bist.
-Als Versicherungsvertreter wäre das Wort irreführend. Bitte bestätige es oder nenn mir die richtige Bezeichnung.
-
-### 1.3 Erlaubnisse für die Beratungsthemen · Pflicht
-
-Die Startseite nennt sechs Themen. Für manche braucht man eine eigene Erlaubnis, wenn man dazu berät oder vermittelt.
-
-| Thema auf der Seite | Erlaubnis | Frage an dich |
-|---|---|---|
-| Altersvorsorge, Absicherung | § 34d GewO (Versicherungen) | Vorhanden? |
-| Geld anlegen mit ETF | § 34f GewO (Finanzanlagen) oder § 34h GewO | Vorhanden? Sonst nur als allgemeine Information oder streichen. |
-| Die erste eigene Immobilie (Finanzierung) | § 34i GewO (Immobiliardarlehen) | Vorhanden? Sonst nur allgemein erklären. |
-| Raus aus Dispo und Ratenkredit, im Finanz-Check auch „Umschulden“ | § 34c GewO, wenn du Kredite vermittelst | Vermittelst du Kredite? |
-| Steuervorteile bei Behinderung | Steuerberatung dürfen nur Steuerberater (StBerG) | Die Seite sagt schon: „Ich bin Finanzberater, kein Steuerberater.“ Bitte so lassen. |
-
-Das Impressum nennt im Moment § 34d und § 34f („je nach Erlaubnis“). Es muss genau zu deinen Erlaubnissen passen.
-
-### 1.4 Datenschutzerklärung: fehlende Angaben · Pflicht
-
-In `site.config.mjs` unter `datenschutz`, bis dahin gelb markiert:
-
-- CRM-Anbieter mit Name und Anschrift, zum Beispiel FinSuites
+- Anbieter des CRM mit Name und Anschrift
 - Anbieter für die Video-Calls mit Name und Anschrift
 - Zuständige Datenschutz-Aufsichtsbehörde
 - Online-Kalender: Der Abschnitt erscheint erst, wenn ein Kalender-Link eingetragen ist. Dann den Anbieter nennen.
 
-### 1.5 Finanz-Check: Grad der Behinderung (GdB) · umgesetzt, Wortlaut prüfen lassen
+**Bitte klären:** Wer bekommt die Daten aus den Formularen? Die Erklärung nennt Darian Krauß als Verantwortlichen und
+das CRM als Dienstleister. Haben weitere Personen oder Unternehmen Zugriff auf die Anfragen, muss das in der
+Datenschutzerklärung und in den Einwilligungen stehen.
 
-Du hast **Variante A** gewählt. So ist es jetzt umgesetzt:
+**Double-Opt-In:** Die Erklärung verspricht eine Bestätigungsmail, bevor Tipps und Einladungen kommen. Das muss im CRM
+eingerichtet sein, bevor die Seite veröffentlicht wird.
 
-- Die Antworten gehen **nur mit dem Finanz-Check-Formular** an dein CRM, nie mit dem Leitfaden- oder dem
-  Terminformular. Nach dem Absenden werden sie im Browser gelöscht.
-- Unter der Überschrift steht ehrlich: „Deine Antworten bleiben auf deinem Gerät. Nur wenn du am Ende das Formular
-  abschickst, bekomme ich sie für deine Auswertung.“
-- Der GdB gilt als **Gesundheitsdatum** (Art. 9 DSGVO). Das Pflicht-Häkchen nennt ihn deshalb ausdrücklich
-  (siehe 1.6).
-- Der Abschnitt „Finanz-Check“ in der Datenschutzerklärung beschreibt das jetzt, mit Art. 9 Abs. 2 lit. a DSGVO.
+### 1.3 Einwilligungen · Wortlaut prüfen lassen
 
-**Bitte prüfen lassen:** den Wortlaut des Pflicht-Häkchens und den neuen Abschnitt in der Datenschutzerklärung.
+Kein Häkchen ist vorausgewählt.
 
-### 1.6 Einwilligung im Finanz-Check: zwei Häkchen · umgesetzt, Wortlaut prüfen lassen
+| Formular | Häkchen | Wortlaut |
+|---|---|---|
+| Leitfaden | Pflicht | „Ich möchte den Leitfaden per E-Mail bekommen. Es gilt die Datenschutzerklärung.“ |
+| Finanz-Check | Pflicht | „Ich möchte meine Auswertung und den Leitfaden per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen. Es gilt die Datenschutzerklärung.“ |
+| Leitfaden und Finanz-Check | freiwillig, erscheint mit Handynummer | „Darian Krauß darf mir per E-Mail und WhatsApp Tipps zu Finanzthemen und Einladungen zu Gesprächen schicken. Ich kann das jederzeit widerrufen.“ |
+| Kennenlerngespräch | Pflicht | „Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, um mit mir einen Termin abzustimmen, und mich dazu per E-Mail und WhatsApp kontaktiert. Ich kann diese Einwilligung jederzeit widerrufen. Es gilt die Datenschutzerklärung.“ |
 
-Wie beim Leitfaden gibt es jetzt zwei getrennte Häkchen. **Keins ist vorausgewählt.**
-
-- **Pflicht:** „Ich möchte meine Auswertung und den Leitfaden per E-Mail bekommen. Dafür darf Darian Krauß meine
-  Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das
-  jederzeit widerrufen. Es gilt die Datenschutzerklärung.“
-- **Freiwillig** (erscheint, sobald eine Handynummer dasteht): „Ihr dürft mir per E-Mail und WhatsApp Tipps und
-  Einladungen zur Beratung schicken. Ich kann das jederzeit widerrufen.“
-- Die Handynummer ist jetzt freiwillig, wie beim Leitfaden. Für die Auswertung per E-Mail braucht es sie nicht.
-- An dein CRM gehen die Felder `consent_finanzcheck` und `consent_marketing`, jeweils mit Wortlaut und Zeitpunkt.
-  Das alte Feld `einwilligung` gibt es beim Finanz-Check nicht mehr. Bitte die Zuordnung im CRM anpassen
-  (siehe `FUNNEL.md`).
-
-### 1.7 Einwilligung beim Termin · Bestätigen
-
-Der Text heute: „Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, um mit mir einen Termin abzustimmen,
-und mich dazu per E-Mail und WhatsApp kontaktiert. …“ Das Häkchen ist Pflicht.
-
-Bitte prüfen lassen, ob das so passt. Die Datenschutzerklärung nennt für den Termin die Anfrage selbst als Grundlage
-(Art. 6 Abs. 1 lit. b DSGVO) und für WhatsApp die Einwilligung.
-
-### 1.8 Double-Opt-In · Pflicht
-
-Die Datenschutzerklärung verspricht eine Bestätigungsmail (Double-Opt-In), bevor Tipps und Einladungen kommen.
-Das gilt für das freiwillige Häkchen bei Leitfaden und Finanz-Check (`consent_marketing = true`). Das muss
-**in deinem CRM eingerichtet** sein, bevor die Seite live geht. Sonst stimmt der Text nicht.
-
-### 1.9 Hinweis in der Fußzeile · Entscheiden
-
-Der Text auf allen Seiten: „Allgemeine Informationen, keine individuelle Steuer- oder Finanzberatung. Investieren
-bietet Chancen, aber keine Garantie.“
-
-- Der Satz widerspricht deinem Angebot „Finanzberatung“.
-- **Vorschlag:** „Die Inhalte dieser Website sind allgemeine Informationen und ersetzen keine persönliche Beratung.
-  Ich bin kein Steuerberater. Investieren bietet Chancen, aber keine Garantie.“
-- Leitfaden und Finanz-Check haben eigene Hinweise. Die passen.
+- Der GdB gilt als Gesundheitsdatum (Art. 9 DSGVO). Deshalb nennt ihn das Pflicht-Häkchen im Finanz-Check ausdrücklich.
+  Die Antworten gehen nur mit dem Finanz-Check-Formular an das CRM (Variante A).
+- Das freiwillige Häkchen nennt jetzt Darian Krauß als Absender und verspricht keine Beratung. Die Datenschutzerklärung
+  ist an dieser Stelle angepasst.
+- An das CRM gehen `consent_leitfaden` bzw. `consent_finanzcheck` und `consent_marketing`, jeweils mit Wortlaut und
+  Zeitpunkt (siehe `FUNNEL.md`).
 
 ---
 
-## 2. Aussagen auf der Seite · Bestätigen
+## 2. Keine Berufs-, Erlaubnis- oder Beratungsangaben · umgesetzt, bitte prüfen lassen
 
-Bitte bestätige, dass diese Aussagen stimmen. Sonst ändere ich sie.
+- Die Website nennt **keine Berufsbezeichnung, keine Zulassung und keine Qualifikation**. Im Mittelpunkt steht die
+  persönliche Marke „Darian Krauß“.
+- Die Angebote sind zurückhaltend formuliert:
+  - allgemeine Informationen zu sechs Geldthemen
+  - Finanz-Check und Leitfaden
+  - Podcast
+  - ein kostenloses Kennenlerngespräch: 20 Minuten per Video-Call, Fragen stellen, Grundlagen verstehen
+- Auf der Startseite steht: „Hier bekommst du allgemeine Informationen. Sie ersetzen keine individuelle Beratung.
+  Ich bin kein Steuerberater.“ Der Hinweis in der Fußzeile passt dazu.
+- **Bitte prüfen lassen:** die Texte zu den sechs Themen, zum Kennenlerngespräch und zum Finanz-Check-Ergebnis.
+- Das gilt auch außerhalb der Website: Anzeigen, Mails, WhatsApp-Vorlagen und Social Media. Die Vorlagen in
+  `FUNNEL.md` sind entsprechend angepasst.
+
+---
+
+## 3. Aussagen auf der Seite · Bestätigen
 
 | Aussage | Wo sie steht |
 |---|---|
-| Der Leitfaden kommt als PDF **und als Video in DGS** mit großen Untertiteln. | Startseite, Leitfaden, Finanz-Check, beide Danke-Seiten, Termin |
-| Der Leitfaden kommt **sofort** per Mail. In `FUNNEL.md` steht aber: erst eine Bestätigungsmail, dann der Leitfaden. Was stimmt? | Leitfaden, Leitfaden-Danke |
-| Die Terminbestätigung kommt **per WhatsApp als Text und kurzes Video in Gebärdensprache**, kurz vorher die Erinnerung mit Link. | Startseite (Ablauf), Termin, Termin-Danke |
-| Kostenlos und unverbindlich, 20 Minuten, kein Anruf nötig, ohne Dolmetscher. | an vielen Stellen |
-| „Keine Weitergabe an Dritte“. Dein CRM, WhatsApp (Meta) und Cloudflare verarbeiten die Daten. Bitte prüfen lassen, ob der Satz so stehen darf. | Leitfaden-Formular |
+| Der Leitfaden kommt als PDF **und als Video in DGS** mit großen Untertiteln. | Startseite, Leitfaden, Finanz-Check, beide Danke-Seiten, Kennenlerngespräch |
+| Der Leitfaden kommt **sofort** per Mail. In `FUNNEL.md` steht: erst eine Bestätigungsmail, dann der Leitfaden. Was stimmt? | Leitfaden, Leitfaden-Danke |
+| Die Terminbestätigung kommt **per WhatsApp als Text und kurzes Video in Gebärdensprache**, kurz vorher die Erinnerung mit Link. | Startseite (Ablauf), Kennenlerngespräch, Danke-Seite |
+| Kostenlos und unverbindlich, 20 Minuten, kein Anruf nötig, ohne Dolmetscher | an vielen Stellen |
+| „Keine Weitergabe an Dritte“ | Leitfaden-Formular |
 | „Kein Spam“ | Leitfaden, Finanz-Check |
 | „Die Website setzt keine Cookies und kein Tracking.“ Das stimmt für die Website selbst. In Cloudflare dürfen keine Analyse- oder Bot-Funktionen an sein, die Cookies setzen. | Häufige Fragen, Datenschutz |
 | „Mit Cloudflare besteht ein Vertrag zur Auftragsverarbeitung.“ Protokolle höchstens sieben Tage. | Datenschutz |
-| Podcast: regelmäßig neue Folgen, Themen „Geld, Vorsorge und Absicherung“, für gehörlose, schwerhörige und hörende Menschen | Startseite, Leitfaden-Danke, Kasten „Über Darian“ |
-| Instagram-Link `da.no.ka` (aus dem Anzeigen-Entwurf übernommen) | Fußzeile |
+| Podcast: regelmäßig neue Folgen, Themen „Geld, Vorsorge und Absicherung“ | Startseite, Leitfaden-Danke, Kasten „Über Darian“ |
+| Instagram-Link `da.no.ka`: Ist das das eigene, persönliche Profil? | Fußzeile |
 
 Die Pauschbeträge (384 € bis 2.460 €, 2.840 €, 7.400 €) stimmen mit § 33b EStG überein, Stand November 2026.
-Bitte vor dem Livegang noch einmal auf Änderungen prüfen.
 
 ---
 
-## 3. Deine Entscheidungen · Entscheiden
+## 4. Entscheidungen
 
-### 3.1 Finanz-Check: A oder B · entschieden
+1. **Video im Hero, sobald es da ist:** Es startet automatisch ohne Ton, außer bei „reduzierte Bewegung“. Alternative:
+   Start per Klick.
+2. **Link-Text** in den Themen-Karten: „Termin zu diesem Thema“. Passt das?
+3. **Domain:** Gewünscht ist `www.darian-krauß-finanzen.de`. Es ist noch nichts registriert und nichts umgestellt.
+   Tipp: auch die Schreibweise mit „ss“ sichern (`darian-krauss-finanzen.de`).
 
-Variante A, umgesetzt (Punkte 1.5 und 1.6).
-
-### 3.2 Leitfaden-Mail: sofort oder erst nach Bestätigung?
-
-Siehe Punkt 2. Wenn zuerst eine Bestätigungsmail kommt, passe ich die Leitfaden-Seite und die Danke-Seite an.
-
-### 3.3 Video im Hero, sobald es da ist
-
-Es startet automatisch ohne Ton, außer bei „reduzierte Bewegung“. Die Alternative ist ein Start per Klick.
-
-### 3.4 Link-Text in den Themen-Karten
-
-Dort steht „Termin zu diesem Thema“. Passt das?
-
-### 3.5 Domain
-
-Gewünscht ist `www.darian-krauß-finanzen.de`. Es ist noch nichts registriert und nichts umgestellt.
-**Tipp:** Sichere auch die Schreibweise mit „ss“ (`darian-krauss-finanzen.de`). Viele Tastaturen und Programme
-tippen kein ß oder wandeln es um.
-
-### 3.6 Screenshots im Pull Request · erledigt
-
-Die reinen Prüf-Screenshots sind aus dem Branch entfernt. Die Beschreibung des Pull Requests zeigt sie weiter über
-einen festen Link auf den letzten Stand mit Screenshots. **Tipp:** Beim Mergen „Squash and merge“ wählen, dann landen
-die Bilder gar nicht erst in der Historie von `main`.
+Erledigt: Finanz-Check Variante A mit zwei Häkchen. Die Prüf-Screenshots sind aus dem Branch entfernt.
+Tipp zum Mergen: „Squash and merge“.
 
 ---
 
-## 4. Was noch fehlt
+## 5. Was noch fehlt
 
 | Was | Wohin | Bis dahin |
 |---|---|---|
 | Foto, Hochformat 4:5, mindestens 800 × 1000 Pixel | `src/static/img/darian.jpg` | DK-Kreis im Bogen-Rahmen, kein Platzhalter-Foto |
-| DGS-Videos mit Untertiteln (`.vtt`) für Startseite, Termin, Termin-Danke, Leitfaden, Leitfaden-Danke | `src/static/videos/`, Pfad in `site.config.mjs` | An diesen Stellen erscheint nichts. Keine Video-Vorschau. |
-| Leitfaden: PDF und DGS-Video fertig, in der Mail verlinkt | dein CRM | |
-| Podcast: Name, falls es einen gibt, und Links zu YouTube und Spotify | `site.config.mjs` → `social` | Keine Knöpfe zu YouTube und Spotify |
+| DGS-Videos mit Untertiteln (`.vtt`) für Startseite, Kennenlerngespräch, beide Danke-Seiten, Leitfaden | `src/static/videos/`, Pfad in `site.config.mjs` | Dort erscheint nichts, keine Video-Vorschau |
+| Leitfaden: PDF und DGS-Video fertig, in der Mail verlinkt | CRM | |
+| Podcast: Name, falls es einen gibt, und Links | `site.config.mjs` → `social` | Keine Podcast-Knöpfe |
 | E-Mail-Adresse und WhatsApp-Nummer | `site.config.mjs` → `kontakt` | Keine WhatsApp- und E-Mail-Knöpfe |
-| Link zum Online-Kalender | `site.config.mjs` → `kalender` | Nach der Terminanfrage steht „Ich melde mich bei dir“. |
-| CRM-Webhook `LEAD_WEBHOOK_URL` | Secret in Cloudflare | Anfragen stehen nur bis zu sieben Tage im Protokoll, und es geht keine Mail raus. Bitte prüfen, ob er gesetzt ist. |
-| Automationen im CRM: Double-Opt-In, Leitfaden-Mail, WhatsApp-Bestätigung mit DGS-Video, Erinnerung | dein CRM, Vorlagen in `FUNNEL.md` | |
-| Logo (DANOKA), falls gewünscht | `src/partials/marke.html` | „DK“ im Kreis |
+| Link zum Online-Kalender | `site.config.mjs` → `kalender` | Nach der Anfrage steht „Ich melde mich bei dir“ |
+| CRM-Webhook `LEAD_WEBHOOK_URL` | Secret in Cloudflare | Anfragen stehen nur bis zu sieben Tage im Protokoll, keine Mail |
+| Automationen im CRM: Double-Opt-In, Leitfaden-Mail, WhatsApp-Bestätigung, Erinnerung | CRM, Vorlagen in `FUNNEL.md` | |
+| Logo, falls gewünscht | `src/partials/marke.html` | „DK“ im Kreis |
 | Zum Schluss: `live: true` | `site.config.mjs` | Vorschau-Leiste oben, Suchmaschinen ausgesperrt |
 
 ---
 
-## 5. Bewusst nicht geändert
+## 6. Was sich an rechtlichen Texten geändert hat
 
-- Impressum, der Fußzeilen-Hinweis und die Einwilligungen bei Leitfaden und Termin: Der Wortlaut ist unverändert.
-- Nach deiner Entscheidung geändert: die Einwilligung im Finanz-Check und der Abschnitt „Finanz-Check“ in der
-  Datenschutzerklärung (Punkte 1.5 und 1.6). Bitte prüfen lassen.
-- Das Wort „Makler“.
-- Die Zahlen 2.840 € und 7.400 €.
-- Formulare, `/api/lead`, Worker, Cloudflare-Einstellungen und die Domain.
+- **Impressum:** Die Angaben zu einer Vermittlertätigkeit sind ausgeblendet (Schalter `vermittler` aus).
+  Name, Anschrift, Kontakt, „Verantwortlich nach § 18 Abs. 2 MStV“ und der Hinweis zu den Inhalten bleiben.
+- **Datenschutzerklärung:** der Abschnitt Finanz-Check (Variante A, GdB). Der Satz zu Tipps und Einladungen passt jetzt
+  zum neuen Häkchen. Der Platzhalter für das CRM nennt keinen Anbieter mehr.
+- **Einwilligungen:** Finanz-Check (zwei Häkchen) und der Text des freiwilligen Häkchens (siehe 1.3).
+- **Unverändert:** die Einwilligungen bei Leitfaden und Kennenlerngespräch, der Hinweis in der Fußzeile und die Zahlen
+  2.840 € und 7.400 €.

@@ -1,6 +1,6 @@
 # Darian Krauß · Homepage und Funnel
 
-Website für **Darian Krauß, Finanzberatung in Laut- und Gebärdensprache**, gebaut für **Cloudflare Workers**.
+Website für **Darian Krauß, Finanzwissen in Laut- und Gebärdensprache**, gebaut für **Cloudflare Workers**.
 Inhalte und Design stammen aus der Strategie-Demo und dem Leitfaden-Funnel der Best Life Agency:
 Schwarz und Gold, helle Funnel-Seiten, Kontakt ohne Anruf.
 
@@ -8,7 +8,7 @@ Schwarz und Gold, helle Funnel-Seiten, Kontakt ohne Anruf.
 
 | Seite | Adresse | Zweck |
 |---|---|---|
-| Startseite | `/` | Angebot, Über mich (DGS und Lautsprache), Beratung, Ablauf, Finanzwissen, Podcast, FAQ, Kontakt |
+| Startseite | `/` | Persönliche Marke, Über mich (DGS und Lautsprache), Themen, Ablauf, Finanzwissen, Podcast, FAQ, Kontakt |
 | Termin-Funnel | `/termin/` | Video, drei kurze Fragen, dann in den Kalender (Stufe 3 der Anzeigen) |
 | Termin, Schritt 2 | `/termin/danke/` | Uhrzeit im Online-Kalender wählen |
 | Leitfaden-Funnel | `/leitfaden/` | Finanz-Leitfaden 2027 als Freebie (PDF und DGS-Video) |
@@ -28,7 +28,7 @@ Clip / Anzeige ──▶ /termin/ oder /leitfaden/ oder /finanz-check/
               prüft Angaben, Spam-Schutz (Honigtopf, Herkunft)
                          │
                          ▼
-              dein CRM-Webhook (Secret LEAD_WEBHOOK_URL, z. B. FinSuites)
+              dein CRM-Webhook (Secret LEAD_WEBHOOK_URL)
               ──▶ Mail mit Leitfaden, WhatsApp-Bestätigung, Erinnerung
 ```
 
@@ -63,7 +63,9 @@ oder im Impressum gelb markiert. Beim Bauen listet die Konsole auf, was noch feh
   Der Steckbrief nennt nur Angaben, die stimmen. Folgen, Gäste oder Links werden nicht erfunden.
 - **Vorschaubild und Icons:** `src/static/og-image.png` (1200 × 630, erscheint beim Teilen, z. B. in WhatsApp),
   `apple-touch-icon.png` und `favicon.svg` in Schwarz und Champagnergold.
-- **Logo:** Sobald das DANOKA-Logo da ist, ersetzt es das „DK“ in `src/partials/marke.html`.
+- **Logo:** Sobald ein Logo da ist, ersetzt es das „DK“ in `src/partials/marke.html`.
+- **Vermittlerangaben im Impressum:** `vermittler` in `site.config.mjs` bleibt `false`, bis diese Angaben rechtlich
+  geprüft sind. Solange erscheint dazu nichts auf der Website.
 
 ## Lokal ansehen
 
@@ -117,7 +119,7 @@ dafür Weg A oder B nehmen. Beide Wege ersetzen die eingebettete Version ohne We
 Damit Anfragen in deinem CRM landen, den Webhook als **Secret** hinterlegen:
 
 - im Dashboard: **Workers & Pages → homepage → Settings → Variables and Secrets → Add**,
-  Typ **Secret**, Name `LEAD_WEBHOOK_URL`, Wert: die Webhook-Adresse aus FinSuites (oder Zapier, Make, n8n …),
+  Typ **Secret**, Name `LEAD_WEBHOOK_URL`, Wert: die Webhook-Adresse deines CRM (oder Zapier, Make, n8n …),
 - oder per Konsole: `npx wrangler secret put LEAD_WEBHOOK_URL`.
 
 Mehrere Ziele mit Komma trennen. Fällt der Webhook aus, bekommt die Person eine Fehlermeldung mit
@@ -141,8 +143,8 @@ auskommentierten Block `ratelimits` einkommentieren.
 Die ausführliche Liste mit allem, was Darian prüfen, entscheiden oder liefern muss, steht in
 **[`docs/FREIGABE.md`](docs/FREIGABE.md)**. Kurzfassung:
 
-- [ ] Impressum und Erstinformation vollständig (`site.config.mjs` → `impressum`), rechtlich geprüft
-- [ ] „Makler“ und die Beratungsthemen passen zu den Erlaubnissen (§ 34d, § 34f, § 34i, § 34c GewO)
+- [ ] Impressum vollständig (`site.config.mjs` → `impressum`) und rechtlich geprüft, auch ob weitere Pflichtangaben nötig sind
+- [ ] Texte zu Themen und Kennenlerngespräch rechtlich geprüft: keine Berufs-, Erlaubnis- oder Beratungsbehauptungen
 - [ ] Wortlaut der Einwilligungen (Finanz-Check mit GdB, Leitfaden, Termin) rechtlich geprüft
 - [ ] Datenschutzerklärung ergänzt (`datenschutz`: CRM, Kalender, Video-Call, Aufsichtsbehörde), rechtlich geprüft
 - [ ] E-Mail-Adresse und WhatsApp-Nummer eingetragen

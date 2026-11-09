@@ -4,7 +4,7 @@
   - Alle Seiten, Bilder und Skripte kommen direkt aus dist/ (Static Assets).
   - POST /api/lead nimmt die Formulare entgegen (Leitfaden, Finanz-Check,
     Termin), prüft sie und leitet sie an deinen CRM-Webhook weiter.
-    Die Adresse steht im Secret LEAD_WEBHOOK_URL (z. B. FinSuites),
+    Die Adresse steht im Secret LEAD_WEBHOOK_URL,
     mehrere Adressen mit Komma trennen.
 */
 import site from "../site.config.mjs";

@@ -129,7 +129,7 @@ test("Finanz-Check Variante A: ehrlicher Hinweis, GdB ausdrücklich in der Einwi
 test("„ohne Fachchinesisch“ steht nur noch im Hero der Startseite", () => {
   const treffer = Object.entries(seiten).flatMap(([name, html]) => (html.match(/ohne Fachchinesisch/gi) || []).map(() => name));
   assert.deepEqual(treffer, ["index.html"]);
-  assert.match(seiten["index.html"], /<p class="hero-lead">Ich bin Darian Krauß[^<]*ohne Fachchinesisch/);
+  assert.match(seiten["index.html"], /<p class="hero-lead">Ich bin gehörlos[^<]*ohne Fachchinesisch/);
   assert.equal(/Fachchinesisch/.test(readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8")), false);
 });
 
@@ -167,7 +167,12 @@ test("Selbstbeschreibung: gehörlos, zwei Cochlea-Implantate (CI), DGS und Lauts
     start.includes("Ich bin gehörlos, trage zwei Cochlea-Implantate (CI) und kommuniziere in Deutscher Gebärdensprache (DGS) und deutscher Lautsprache."),
     "Darians Satz im Abschnitt Über mich",
   );
-  assert.match(start, /<p class="hero-lead">Ich bin Darian Krauß, Finanzberater und Makler\. Ich bin gehörlos und trage zwei Cochlea-Implantate \(CI\)\./);
+  // Darians Text für „Über mich“, wörtlich
+  assert.ok(
+    start.includes("Mir ist wichtig, Finanzthemen verständlich und zugänglich zu erklären. Außerdem produziere ich regelmäßig Podcasts."),
+    "Darians Text im Abschnitt Über mich",
+  );
+  assert.match(start, /<p class="hero-lead">Ich bin gehörlos und trage zwei Cochlea-Implantate \(CI\)\./);
   for (const name of ["termin/index.html", "leitfaden/index.html"]) {
     assert.match(seiten[name], /Gehörlos, mit zwei Cochlea-Implantaten \(CI\)\. Er kommuniziert in Deutscher Gebärdensprache \(DGS\) und deutscher Lautsprache\./, name);
   }
@@ -217,6 +222,28 @@ test("Funnel-Kopf: Knopf nur, wo die Seite einen hat, und dann mit Platz für de
   for (const name of ["termin/index.html", "termin/danke/index.html"]) {
     assert.match(seiten[name], /<header class="top">/, name);
   }
+});
+
+test("Persönliche Marke: Name im Hero, Person statt Finanzdienstleister", () => {
+  const start = seiten["index.html"];
+  assert.match(start, /<h1 id="hero-titel" class="hero-marke"><span class="marke-name">Darian Krauß<\/span>/);
+  const ld = JSON.parse(start.match(/<script type="application\/ld\+json">([^<]+)<\/script>/)[1]);
+  assert.equal(ld["@type"], "Person");
+  assert.equal(ld.name, "Darian Krauß");
+  assert.equal("address" in ld || "jobTitle" in ld || "hasCredential" in ld, false, "keine Anschrift, Berufsbezeichnung oder Erlaubnis im Datensatz");
+  assert.equal(site.untertitel, "Finanzwissen in Laut- und Gebärdensprache");
+});
+
+test("Keine Berufs-, Erlaubnis- oder Beratungsangaben, solange vermittler aus ist", () => {
+  if (site.vermittler) return;
+  const verboten = /Makler|Finanzberater|Finanzberatung in|Beratung (?:per|in)|Erstinformation|Vermittler|§\s?34|34[cdfhi] GewO|VersVermV|FinVermV|ehrliche Einschätzung|Einladungen zur Beratung|FinSuites/i;
+  for (const [name, html] of Object.entries(seiten)) {
+    const treffer = html.match(verboten);
+    assert.equal(treffer, null, `${name}: „${treffer && treffer[0]}“`);
+    assert.equal(html.includes("<!--"), false, `${name}: HTML-Kommentar veröffentlicht`);
+  }
+  assert.equal(/id="erstinformation"/.test(seiten["impressum/index.html"]), false);
+  assert.match(site.einwilligung.marketing, /^Darian Krauß darf mir /);
 });
 
 test("Startseite: Themen-Karten führen zum Termin, das Thema gibt es im Formular", () => {

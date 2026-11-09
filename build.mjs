@@ -133,7 +133,7 @@ function abgeleitet() {
   const mail = site.kontakt.email ? `mailto:${site.kontakt.email}` : "";
   const link = {
     whatsapp: wa(site.kontakt.whatsappText),
-    whatsappTermin: wa("Hallo Darian, ich möchte gern einen Termin für meine ehrliche Einschätzung."),
+    whatsappTermin: wa("Hallo Darian, ich möchte gern einen Termin für ein Kennenlerngespräch."),
     whatsappFrage: wa("Hallo Darian, ich habe eine Frage für deinen Podcast: "),
     whatsappNummer: ziffern ? `+${ziffern}` : "",
     email: mail,
@@ -151,21 +151,21 @@ function abgeleitet() {
   };
 
   const sameAs = [s.instagram, s.tiktok, s.youtube, s.spotify].filter(gefuellt);
+  // Die persönliche Marke steht im Mittelpunkt: eine Person, kein Finanzdienstleister.
+  // Bewusst ohne Berufsbezeichnung, Erlaubnis oder Anschrift.
   const startseite = {
     "@context": "https://schema.org",
-    "@type": "FinancialService",
+    "@type": "Person",
     name: site.name,
-    description: `${site.untertitel}: Altersvorsorge, Geldanlage, Absicherung und Steuervorteile bei Behinderung, per Video-Call, Chat oder WhatsApp.`,
+    description: `${site.untertitel}: Altersvorsorge, Geldanlage, Absicherung und Steuervorteile bei Behinderung verständlich erklärt.`,
     url: `${site.url}/`,
     image: `${site.url}/og-image.png`,
-    areaServed: { "@type": "Country", name: "Deutschland" },
     knowsLanguage: [
       { "@type": "Language", name: "Deutsch", alternateName: "de" },
       { "@type": "Language", name: "Deutsche Gebärdensprache", alternateName: "gsg" },
     ],
     ...(site.kontakt.email ? { email: site.kontakt.email } : {}),
     ...(sameAs.length ? { sameAs } : {}),
-    ...(gefuellt(site.impressum.anschrift) ? { address: site.impressum.anschrift.replace(/\n/g, ", ") } : {}),
   };
   const jsonLd = (obj) =>
     `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`;
@@ -216,7 +216,8 @@ async function bauen() {
     page.disclaimer ||=
       "Allgemeine Informationen, keine individuelle Steuer- oder Finanzberatung. Investieren bietet Chancen, aber keine Garantie.";
 
-    const html = rendern(einbinden(inhalt, bausteine, rel), { site, page, asset, ...extra }, rel);
+    // HTML-Kommentare sind Notizen für die Pflege der Seite und werden nicht veröffentlicht.
+    const html = rendern(einbinden(inhalt, bausteine, rel), { site, page, asset, ...extra }, rel).replace(/<!--[\s\S]*?-->\n?/g, "");
     const ziel = join(OUT, rel);
     await mkdir(dirname(ziel), { recursive: true });
     await writeFile(ziel, html);

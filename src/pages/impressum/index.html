@@ -1,6 +1,6 @@
 ---
-title: Impressum und Erstinformation | Darian Krauß
-description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krauß, Finanzberatung in Laut- und Gebärdensprache.
+title: Impressum | Darian Krauß
+description: Impressum von Darian Krauß, Finanzwissen in Laut- und Gebärdensprache.
 ---
 {{> head}}
 <body>
@@ -9,7 +9,7 @@ description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krau�
   <section class="legal">
     <div class="wrap narrow">
       <h1>Impressum</h1>
-      {{^site.live}}<div class="todo-box"><b>Entwurf:</b> Gelb markierte Angaben bitte in <code>site.config.mjs</code> eintragen und das Impressum vor dem Livegang rechtlich prüfen lassen.</div>{{/site.live}}
+      {{^site.live}}<div class="todo-box"><b>Entwurf:</b> Gelb markierte Pflichtangaben bitte in <code>site.config.mjs</code> eintragen. Vor der Veröffentlichung rechtlich prüfen lassen, ob weitere Pflichtangaben nötig sind.</div>{{/site.live}}
 
       <h2>Angaben gemäß § 5 DDG</h2>
       <!-- PLATZHALTER-BLOCK: Werte bewusst leer, bis die Angaben rechtlich geklärt sind.
@@ -18,10 +18,12 @@ description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krau�
         <dt>Name</dt><dd>{{? site.impressum.name | noch offen}}</dd>
         <dt>Anschrift</dt><dd>{{? site.impressum.anschrift | noch offen}}</dd>
         <dt>Kontakt</dt><dd>{{? site.impressum.kontakt | noch offen}}</dd>
+        {{#site.vermittler}}
         <dt>Berufsbezeichnung</dt><dd>{{? site.impressum.berufsbezeichnung | noch offen}}</dd>
         <dt>Registernummer (Vermittlerregister)</dt><dd>{{? site.impressum.registernummer | noch offen}}</dd>
         <dt>Zuständige IHK</dt><dd>{{? site.impressum.ihk | noch offen}}</dd>
         <dt>Status nach § 34d GewO</dt><dd>{{? site.impressum.status34d | noch offen}}</dd>
+        {{/site.vermittler}}
       </dl>
 
       {{#site.impressum.ustId}}
@@ -29,6 +31,8 @@ description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krau�
       <p>Umsatzsteuer-Identifikationsnummer nach § 27a Umsatzsteuergesetz: {{site.impressum.ustId}}</p>
       {{/site.impressum.ustId}}
 
+      <!-- Erscheint nur mit vermittler: true in site.config.mjs -->
+      {{#site.vermittler}}
       <h2 id="erstinformation">Erstinformation und Angaben zur Vermittlertätigkeit</h2>
       <p>Diese Angaben gelten auch als Erstinformation nach § 15 der Versicherungsvermittlungsverordnung (VersVermV) und § 12 der Finanzanlagenvermittlungsverordnung (FinVermV).</p>
 
@@ -53,6 +57,7 @@ description: Impressum und Erstinformation nach § 15 VersVermV von Darian Krau�
         <li>Ombudsmann Private Kranken- und Pflegeversicherung, Postfach 06 02 22, 10052 Berlin, <a href="https://www.pkv-ombudsmann.de">www.pkv-ombudsmann.de</a></li>
       </ul>
       {{#site.impressum.weitereSchlichtung}}<p>{{site.impressum.weitereSchlichtung}}</p>{{/site.impressum.weitereSchlichtung}}
+      {{/site.vermittler}}
 
       <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
       <p>{{? site.impressum.name | noch offen}}, Anschrift wie oben</p>

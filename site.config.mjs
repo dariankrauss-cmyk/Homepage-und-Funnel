@@ -19,7 +19,8 @@ export default {
   live: false,
 
   name: "Darian Krauß",
-  untertitel: "Finanzberatung in Laut- und Gebärdensprache",
+  // Unter dem Namen im Kopf und in der Fußzeile. Bewusst ohne Berufs- oder Erlaubnisangabe.
+  untertitel: "Finanzwissen in Laut- und Gebärdensprache",
 
   kontakt: {
     email: "", // z. B. "hallo@darian-krauss.de"
@@ -30,8 +31,8 @@ export default {
     telefon: "", // optional, erscheint nur im Impressum
   },
 
-  // Dein Online-Kalender für die „ehrliche Einschätzung in 20 Minuten“
-  // (z. B. Calendly, Cal.com oder der Kalender aus FinSuites).
+  // Dein Online-Kalender für das kostenlose Kennenlerngespräch (20 Minuten),
+  // z. B. Calendly oder Cal.com.
   // Leer = nach der Anfrage meldest du dich selbst mit Terminvorschlägen.
   kalender: {
     url: "",
@@ -62,8 +63,14 @@ export default {
   // Foto von Darian: als src/static/img/darian.jpg ablegen. Solange die Datei
   // fehlt, zeigen Startseite und „Über mich“ den DK-Kreis.
 
+  // Angaben zu einer Vermittlertätigkeit im Impressum: Berufsbezeichnung, Registernummer,
+  // IHK, Status und Erstinformation. Nur einschalten, wenn diese Angaben rechtlich geprüft sind.
+  // Solange false, erscheint dazu nichts auf der Website, auch kein Platzhalter.
+  vermittler: false,
+
   // Pflichtangaben für das Impressum. Werte bewusst leer: Sie werden nach der
   // rechtlichen Klärung eingetragen und erscheinen bis dahin als gelber Platzhalter.
+  // Die Felder ab „berufsbezeichnung“ erscheinen nur mit vermittler: true.
   impressum: {
     name: "",
     anschrift: "", // Zeilenumbruch mit \n, z. B. "Musterstraße 1\n12345 Musterstadt"
@@ -81,7 +88,7 @@ export default {
 
   // Dienstleister für die Datenschutzerklärung (Name und Anschrift).
   datenschutz: {
-    crm: "", // z. B. FinSuites: Anbieter, Anschrift
+    crm: "", // Anbieter deines CRM: Name, Anschrift
     kalender: "", // Anbieter des Online-Kalenders, Anschrift
     videoCall: "", // z. B. Zoom, Microsoft Teams oder Google Meet: Anbieter, Anschrift
     aufsicht: "", // Datenschutz-Aufsichtsbehörde deines Bundeslandes
@@ -99,7 +106,7 @@ export default {
     finanzCheck:
       "Ich möchte meine Auswertung und den Leitfaden per E-Mail bekommen. Dafür darf Darian Krauß meine Antworten aus dem Finanz-Check nutzen. Das gilt auch für meine Angabe zum Grad der Behinderung (GdB). Ich kann das jederzeit widerrufen.",
     marketing:
-      "Ihr dürft mir per E-Mail und WhatsApp Tipps und Einladungen zur Beratung schicken. Ich kann das jederzeit widerrufen.",
+      "Darian Krauß darf mir per E-Mail und WhatsApp Tipps zu Finanzthemen und Einladungen zu Gesprächen schicken. Ich kann das jederzeit widerrufen.",
     termin:
       "Ich bin einverstanden, dass Darian Krauß meine Angaben nutzt, um mit mir einen Termin abzustimmen, und mich dazu per E-Mail und WhatsApp kontaktiert. Ich kann diese Einwilligung jederzeit widerrufen.",
   },
