@@ -11,7 +11,7 @@ Schwarz und Gold, helle Funnel-Seiten, Kontakt ohne Anruf.
 | Startseite | `/` | Persönliche Marke, Über mich (DGS und Lautsprache), Themen, Ablauf, Finanzwissen, Podcast, FAQ, Kontakt |
 | Termin-Funnel | `/termin/` | Video, drei kurze Fragen, dann in den Kalender (Stufe 3 der Anzeigen) |
 | Termin, Schritt 2 | `/termin/danke/` | Uhrzeit im Online-Kalender wählen |
-| Leitfaden-Funnel | `/leitfaden/` | Finanz-Leitfaden 2027 als Freebie (PDF und DGS-Video) |
+| Leitfaden-Funnel | `/leitfaden/` | Finanz-Leitfaden 2027 als Freebie (PDF, DGS-Video erst mit `zusagen.leitfadenVideo`) |
 | Finanz-Check | `/finanz-check/` | Sechs Fragen, 90 Sekunden, Ergebnis, dann Leitfaden |
 | Danke-Seite | `/leitfaden/danke/` | Bestätigung und nächster Schritt: Termin |
 | Rechtliches | `/impressum/`, `/datenschutz/` | Vorlagen mit allen Pflichtfeldern |
@@ -29,7 +29,7 @@ Clip / Anzeige ──▶ /termin/ oder /leitfaden/ oder /finanz-check/
                          │
                          ▼
               dein CRM-Webhook (Secret LEAD_WEBHOOK_URL)
-              ──▶ Mail mit Leitfaden, WhatsApp-Bestätigung, Erinnerung
+              ──▶ Mail mit Leitfaden, Terminbestätigung, Link zum Video-Call
 ```
 
 - Keine Cookies, kein Tracking, keine externen Schriften. Deshalb braucht die Seite kein Cookie-Banner.
@@ -63,6 +63,8 @@ oder im Impressum gelb markiert. Beim Bauen listet die Konsole auf, was noch feh
   Der Steckbrief nennt nur Angaben, die stimmen. Folgen, Gäste oder Links werden nicht erfunden.
 - **Vorschaubild und Icons:** `src/static/og-image.png` (1200 × 630, erscheint beim Teilen, z. B. in WhatsApp),
   `apple-touch-icon.png` und `favicon.svg` in Schwarz und Champagnergold.
+- **Zusagen:** `zusagen.leitfadenVideo` und `zusagen.bestaetigungVideo` in `site.config.mjs` bleiben `false`, bis das
+  jeweilige DGS-Video wirklich verschickt wird. Solange verspricht die Seite es nicht.
 - **Logo:** Sobald ein Logo da ist, ersetzt es das „DK“ in `src/partials/marke.html`.
 - **Vermittlerangaben im Impressum:** `vermittler` in `site.config.mjs` bleibt `false`, bis diese Angaben rechtlich
   geprüft sind. Solange erscheint dazu nichts auf der Website.
@@ -148,10 +150,10 @@ Die ausführliche Liste mit allem, was Darian prüfen, entscheiden oder liefern 
 - [ ] Wortlaut der Einwilligungen (Finanz-Check mit GdB, Leitfaden, Termin) rechtlich geprüft
 - [ ] Datenschutzerklärung ergänzt (`datenschutz`: CRM, Kalender, Video-Call, Aufsichtsbehörde), rechtlich geprüft
 - [ ] E-Mail-Adresse und WhatsApp-Nummer eingetragen
-- [ ] Kalender-Link eingetragen (`kalender.url`) und im Kalender die WhatsApp-Bestätigung aktiv
+- [ ] Kalender-Link eingetragen (`kalender.url`) und die Terminbestätigung eingerichtet
 - [ ] `LEAD_WEBHOOK_URL` gesetzt und eine Test-Anfrage im CRM angekommen
 - [ ] Im CRM: Tipps und Einladungen nur bei `consent_marketing = true` und erst nach Double-Opt-In (siehe FUNNEL.md)
-- [ ] Leitfaden-PDF und DGS-Video fertig und in der Mail verlinkt
+- [ ] Leitfaden-PDF fertig und in der Mail verlinkt. DGS-Videos erst versprechen, wenn sie da sind (`zusagen`)
 - [ ] Videos mit Untertiteln eingebunden, Foto `src/static/img/darian.jpg` hochgeladen
 - [ ] Instagram-Link geprüft (aus dem Anzeigen-Entwurf übernommen: `da.no.ka`)
 - [ ] In `site.config.mjs` **`live: true`** setzen: Vorschau-Leiste verschwindet, Google darf die Seite aufnehmen

@@ -19,7 +19,7 @@
       hinweis: "Eine Auswahl genügt, du legst dich damit nicht fest.",
       optionen: ["Ja, schon eingetragen", "Nein", "Ich mache keine Steuererklärung", "Weiß ich nicht"] },
     { feld: "kredit", titel: "Nutzt du gerade Dispo oder Ratenkredit?",
-      hinweis: "Hier geht es oft um mehr Geld, als man denkt.",
+      hinweis: "Dispo und Ratenkredit haben oft hohe Zinsen.",
       optionen: ["Nein", "Ja, den Dispo", "Ja, einen Ratenkredit", "Beides"] },
     { feld: "ziel", titel: "Was willst du als Nächstes klären?",
       hinweis: "Darauf schneide ich deine Auswertung zu.",
@@ -37,7 +37,7 @@
     "Steuern sparen": "Kapitel 1 und 2 im Leitfaden zeigen dir Schritt für Schritt, was du eintragen kannst.",
     "Altersvorsorge aufbauen": "Kapitel 3 erklärt die drei Säulen der Vorsorge in einfachen Worten.",
     "Geld anlegen": "Kapitel 4 erklärt ETF mit Chancen, Risiken und Kosten. Investieren bietet Chancen, aber keine Garantie.",
-    "Richtig abgesichert sein": "Kapitel 5 zeigt, welche Versicherungen du wirklich brauchst.",
+    "Richtig abgesichert sein": "Kapitel 5 erklärt, welche Versicherungen es gibt und wofür sie da sind.",
     "Schulden loswerden": "Kapitel 6 zeigt die fünf teuersten Geldfehler und den Weg raus."
   };
 
@@ -103,14 +103,15 @@
 
     if (PAUSCH[a.gdb] && a.pauschbetrag !== "Ja, schon eingetragen") {
       punkte.push({ hot: true, t: "Behinderten-Pauschbetrag",
-        s: "Bei deinem GdB stehen dir " + PAUSCH[a.gdb] + " im Jahr als Pauschbetrag zu, das senkt dein zu versteuerndes Einkommen. " +
-          ({ "Nein": "Trag ihn in deiner nächsten Steuererklärung ein, oft geht das auch für frühere Jahre.",
-             "Ich mache keine Steuererklärung": "Ohne Steuererklärung geht er verloren, freiwillig abgeben lohnt sich oft auch rückwirkend.",
-             "Weiß ich nicht": "Prüf in deinem letzten Steuerbescheid, ob er bei dir wirklich ankommt." })[a.pauschbetrag] });
+        s: "Bei deinem GdB beträgt der Pauschbetrag " + PAUSCH[a.gdb] + " im Jahr. Er senkt dein zu versteuerndes Einkommen. " +
+          "Wie viel Steuer du sparst, hängt von deinem Steuersatz ab. " +
+          ({ "Nein": "Du kannst ihn in der Steuererklärung eintragen. Unter Umständen gilt er auch für frühere Jahre.",
+             "Ich mache keine Steuererklärung": "Ohne Steuererklärung wird er oft nicht berücksichtigt. Eine freiwillige Steuererklärung ist in der Regel bis zu vier Jahre rückwirkend möglich.",
+             "Weiß ich nicht": "In deinem Steuerbescheid siehst du, ob er berücksichtigt wurde." })[a.pauschbetrag] });
     } else if (PAUSCH[a.gdb]) {
-      punkte.push({ hot: false, t: "Behinderten-Pauschbetrag", s: "Den nutzt du schon. Im Leitfaden steht, welche Kosten du zusätzlich ansetzen kannst." });
+      punkte.push({ hot: false, t: "Behinderten-Pauschbetrag", s: "Den nutzt du schon. Prüf ab und zu, ob er noch zu deinem aktuellen GdB passt." });
     } else if (a.gdb === "Weiß ich nicht genau") {
-      punkte.push({ hot: true, t: "GdB klären", s: "Ab einem GdB von 20 gibt es einen Pauschbetrag in der Steuer. Der Leitfaden zeigt, wo du deinen Bescheid findest und was er dir bringt." });
+      punkte.push({ hot: true, t: "GdB klären", s: "Ab einem GdB von 20 gibt es einen Pauschbetrag in der Steuer. Deinen GdB findest du im Bescheid vom Versorgungsamt, ab GdB 50 auch im Schwerbehindertenausweis." });
     }
 
     if (a.vorsorge === "Noch gar nicht" || a.vorsorge === "Nur gesetzliche Rente") {

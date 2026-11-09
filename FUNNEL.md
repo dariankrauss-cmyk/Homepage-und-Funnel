@@ -85,9 +85,9 @@ CRM. Vorlagen dafür muss Meta einmal freigeben.
 >
 > Hi {vorname}, schön, dass du da bist! Hier ist dein Finanz-Leitfaden 2027:
 > 📄 PDF zum Nachlesen: {link-pdf}
-> 🤟 Video in Gebärdensprache mit Untertiteln: {link-video}
+> 🤟 Video in Gebärdensprache mit Untertiteln: {link-video} *(erst, wenn es das Video gibt; dann auf der Website `zusagen.leitfadenVideo: true`)*
 >
-> Mein Tipp: Fang mit Kapitel 1 an. Der Behinderten-Pauschbetrag ist für viele der schnellste Hebel, oft in zehn Minuten erledigt.
+> Mein Tipp: Fang mit Kapitel 1 an. Dort steht, wie der Behinderten-Pauschbetrag funktioniert.
 >
 > Fragen? Antworte einfach auf diese Mail oder schreib mir per WhatsApp. Telefonieren musst du nicht.
 >
@@ -102,17 +102,17 @@ Beim Finanz-Check kannst du mit `finanzcheck_ziel` verzweigen und das passende K
 
 **3. Zwei bis drei Tage später: Einladung zum Termin**
 
-> Hi {vorname}, hast du schon in Kapitel 1 geschaut? Viele merken dabei, dass sie Jahr für Jahr Geld liegen lassen.
+> Hi {vorname}, hast du schon in Kapitel 1 geschaut? Dort steht, wie der Behinderten-Pauschbetrag funktioniert.
 > Du hast Fragen dazu? Lern mich kennen: 20 Minuten per Video-Call, in deiner Sprache. {url}/termin/
 
 ### Terminanfrage (`termin-anfrage`)
 
-**Termin gebucht: Bestätigung per WhatsApp** (Text und kurzes Video in DGS, 20 Sekunden)
+**Termin gebucht: Bestätigung per E-Mail oder WhatsApp** (als Text. Ein kurzes Video in DGS erst, wenn es eingerichtet ist; dann auf der Website `zusagen.bestaetigungVideo: true`)
 
 > Hi {vorname}, dein Termin steht ✅
 > {datum}, {uhrzeit} Uhr per Video-Call.
 > Du entscheidest: Gebärdensprache, Lautsprache oder Chat.
-> [Video: Darian begrüßt dich in DGS]
+> [später, wenn eingerichtet: Video, Darian begrüßt dich in DGS]
 
 **Erinnerung, eine Stunde vorher**
 

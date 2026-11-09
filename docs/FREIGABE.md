@@ -88,9 +88,8 @@ Kein Häkchen ist vorausgewählt.
 
 | Aussage | Wo sie steht |
 |---|---|
-| Der Leitfaden kommt als PDF **und als Video in DGS** mit großen Untertiteln. | Startseite, Leitfaden, Finanz-Check, beide Danke-Seiten, Kennenlerngespräch |
 | Der Leitfaden kommt **sofort** per Mail. In `FUNNEL.md` steht: erst eine Bestätigungsmail, dann der Leitfaden. Was stimmt? | Leitfaden, Leitfaden-Danke |
-| Die Terminbestätigung kommt **per WhatsApp als Text und kurzes Video in Gebärdensprache**, kurz vorher die Erinnerung mit Link. | Startseite (Ablauf), Kennenlerngespräch, Danke-Seite |
+| Die Terminbestätigung kommt **schriftlich per E-Mail oder WhatsApp**, den Link zum Video-Call gibt es vorher. | Startseite (Ablauf), Kennenlerngespräch, Danke-Seite |
 | Kostenlos und unverbindlich, 20 Minuten, kein Anruf nötig, ohne Dolmetscher | an vielen Stellen |
 | „Keine Weitergabe an Dritte“ | Leitfaden-Formular |
 | „Kein Spam“ | Leitfaden, Finanz-Check |
@@ -99,7 +98,13 @@ Kein Häkchen ist vorausgewählt.
 | Podcast: regelmäßig neue Folgen, Themen „Geld, Vorsorge und Absicherung“ | Startseite, Leitfaden-Danke, Kasten „Über Darian“ |
 | Instagram-Link `da.no.ka`: Ist das das eigene, persönliche Profil? | Fußzeile |
 
-Die Pauschbeträge (384 € bis 2.460 €, 2.840 €, 7.400 €) stimmen mit § 33b EStG überein, Stand November 2026.
+**Ausgeschaltet, bis es eingerichtet ist** (Schalter `zusagen` in `site.config.mjs`): Leitfaden zusätzlich als
+Video in DGS (`leitfadenVideo`) und Terminbestätigung zusätzlich als kurzes Video in DGS (`bestaetigungVideo`). Solange
+sie aus sind, verspricht die Seite beides nicht.
+
+Die Pauschbeträge (384 € bei GdB 20 bis 2.840 € bei GdB 100, mit Merkzeichen H, Bl oder TBl 7.400 €) stimmen mit
+§ 33b EStG überein, Stand November 2026. Die Seite erklärt sachlich: Der Pauschbetrag senkt das zu versteuernde
+Einkommen. Wie viel Steuer man spart, hängt vom persönlichen Steuersatz ab.
 
 ---
 
@@ -107,7 +112,8 @@ Die Pauschbeträge (384 € bis 2.460 €, 2.840 €, 7.400 €) stimmen mit § 
 
 1. **Video im Hero, sobald es da ist:** Es startet automatisch ohne Ton, außer bei „reduzierte Bewegung“. Alternative:
    Start per Klick.
-2. **Link-Text** in den Themen-Karten: „Termin zu diesem Thema“. Passt das?
+2. **Termin-Knöpfe:** überall „Unverbindlich kennenlernen“, in den Themen-Karten „Kennenlerngespräch zu diesem Thema“.
+   Passt das so?
 3. **Domain:** Gewünscht ist `www.darian-krauß-finanzen.de`. Es ist noch nichts registriert und nichts umgestellt.
    Tipp: auch die Schreibweise mit „ss“ sichern (`darian-krauss-finanzen.de`).
 
@@ -122,12 +128,12 @@ Tipp zum Mergen: „Squash and merge“.
 |---|---|---|
 | Foto, Hochformat 4:5, mindestens 800 × 1000 Pixel | `src/static/img/darian.jpg` | DK-Kreis im Bogen-Rahmen, kein Platzhalter-Foto |
 | DGS-Videos mit Untertiteln (`.vtt`) für Startseite, Kennenlerngespräch, beide Danke-Seiten, Leitfaden | `src/static/videos/`, Pfad in `site.config.mjs` | Dort erscheint nichts, keine Video-Vorschau |
-| Leitfaden: PDF und DGS-Video fertig, in der Mail verlinkt | CRM | |
+| Leitfaden: PDF fertig und in der Mail verlinkt (DGS-Video optional, dann `zusagen.leitfadenVideo: true`) | CRM | |
 | Podcast: Name, falls es einen gibt, und Links | `site.config.mjs` → `social` | Keine Podcast-Knöpfe |
 | E-Mail-Adresse und WhatsApp-Nummer | `site.config.mjs` → `kontakt` | Keine WhatsApp- und E-Mail-Knöpfe |
 | Link zum Online-Kalender | `site.config.mjs` → `kalender` | Nach der Anfrage steht „Ich melde mich bei dir“ |
 | CRM-Webhook `LEAD_WEBHOOK_URL` | Secret in Cloudflare | Anfragen stehen nur bis zu sieben Tage im Protokoll, keine Mail |
-| Automationen im CRM: Double-Opt-In, Leitfaden-Mail, WhatsApp-Bestätigung, Erinnerung | CRM, Vorlagen in `FUNNEL.md` | |
+| Automationen im CRM: Double-Opt-In, Leitfaden-Mail, Terminbestätigung, Link zum Video-Call | CRM, Vorlagen in `FUNNEL.md` | |
 | Logo, falls gewünscht | `src/partials/marke.html` | „DK“ im Kreis |
 | Zum Schluss: `live: true` | `site.config.mjs` | Vorschau-Leiste oben, Suchmaschinen ausgesperrt |
 

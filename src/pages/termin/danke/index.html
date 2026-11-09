@@ -14,8 +14,8 @@ sitemap: false
       <p class="step-no">Schritt 2 von 2</p>
       <h1 data-vorname="Fast geschafft, {vorname}! Wähl jetzt deine Uhrzeit.">Fast geschafft! Wähl jetzt deine Uhrzeit.</h1>
       <p class="lead">Deine Angaben sind angekommen. Such dir im Kalender eine freie Uhrzeit für unseren Video-Call aus. Das dauert eine Minute.</p>
-      <a class="btn" href="{{site.kalender.url}}" data-kalender {{#site.kalender.vorbefuellen}}data-vorbefuellen{{/site.kalender.vorbefuellen}}>Kostenlosen Termin wählen</a>
-      <p class="kalender-hinweis">Du wechselst dafür zu meinem Online-Kalender{{#site.kalender.anbieter}} bei {{site.kalender.anbieter}}{{/site.kalender.anbieter}}. Danach bekommst du die Bestätigung per WhatsApp und E-Mail.</p>
+      <a class="btn" href="{{site.kalender.url}}" data-kalender {{#site.kalender.vorbefuellen}}data-vorbefuellen{{/site.kalender.vorbefuellen}}>Uhrzeit im Kalender wählen</a>
+      <p class="kalender-hinweis">Du wechselst dafür zu meinem Online-Kalender{{#site.kalender.anbieter}} bei {{site.kalender.anbieter}}{{/site.kalender.anbieter}}. Danach bekommst du eine Bestätigung per E-Mail.</p>
       {{/site.kalender.url}}
       {{^site.kalender.url}}
       <div class="done-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
@@ -24,9 +24,9 @@ sitemap: false
       {{/site.kalender.url}}
 
       <ol class="steps">
-        <li><b>Bestätigung per WhatsApp</b><span>Du bekommst deinen Termin als Text und als kurzes Video von mir in Gebärdensprache.</span></li>
-        <li><b>Erinnerung mit Link</b><span>Kurz vor dem Termin kommt die Erinnerung mit dem Link zum Video-Call.</span></li>
-        <li><b>20 Minuten, in deiner Sprache</b><span>Gebärdensprache, Lautsprache oder Chat. Du brauchst nur ein Handy, Tablet oder einen Computer mit Kamera.</span></li>
+        <li><b>Bestätigung</b><span>Du bekommst deinen Termin schriftlich, per E-Mail oder WhatsApp.{{#site.zusagen.bestaetigungVideo}} Dazu kommt ein kurzes Video von mir in Gebärdensprache.{{/site.zusagen.bestaetigungVideo}}</span></li>
+        <li><b>Link zum Video-Call</b><span>Den Link bekommst du rechtzeitig vor dem Termin.</span></li>
+        <li><b>20&nbsp;Minuten, in deiner Sprache</b><span>Gebärdensprache, Lautsprache oder Chat. Du brauchst nur ein Handy, Tablet oder einen Computer mit Kamera.</span></li>
       </ol>
 
       {{#site.videos.terminDanke.src}}
@@ -43,11 +43,11 @@ sitemap: false
       <div class="alts">
         <a class="alt-card" href="/leitfaden/">
           <b>Zur Vorbereitung: der Finanz-Leitfaden</b>
-          <span>Sechs Kapitel als PDF und als Video in Gebärdensprache, kostenlos per E-Mail.</span>
+          <span>Sechs Kapitel als PDF{{#site.zusagen.leitfadenVideo}} und als Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}, kostenlos per E-Mail.</span>
           <em>Leitfaden kostenlos holen →</em>
         </a>
         <a class="alt-card" href="/finanz-check/">
-          <b>Der Finanz-Check in 90 Sekunden</b>
+          <b>Der Finanz-Check in 90&nbsp;Sekunden</b>
           <span>Sechs Fragen, sofort dein Ergebnis. Gute Grundlage für unser Gespräch.</span>
           <em>Check starten →</em>
         </a>

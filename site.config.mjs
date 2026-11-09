@@ -60,6 +60,13 @@ export default {
     terminDanke: { src: "", poster: "", untertitel: "" },
   },
 
+  // Zusagen, die erst stimmen, wenn sie eingerichtet sind. Erst auf true stellen, wenn es
+  // wirklich so funktioniert. Solange false, verspricht die Seite das nicht.
+  zusagen: {
+    leitfadenVideo: false, // Leitfaden zusätzlich als Video in DGS mit Untertiteln
+    bestaetigungVideo: false, // Terminbestätigung zusätzlich als kurzes Video in DGS
+  },
+
   // Foto von Darian: als src/static/img/darian.jpg ablegen. Solange die Datei
   // fehlt, zeigen Startseite und „Über mich“ den DK-Kreis.
 

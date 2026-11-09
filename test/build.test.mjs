@@ -254,13 +254,43 @@ test("Startseite: Themen-Karten führen zum Termin, das Thema gibt es im Formula
   for (const t of themen) assert.ok(termin.includes(`name="thema" value="${t}"`), `Thema ${t} fehlt im Terminformular`);
 });
 
-test("Knöpfe heißen überall gleich", () => {
+test("Knöpfe heißen überall gleich: unverbindliches Kennenlernen und Leitfaden", () => {
+  let termin = 0;
   for (const [name, html] of Object.entries(seiten)) {
-    for (const m of html.matchAll(/<a class="btn\b[^"]*" href="\/(termin|leitfaden)\/">([^<]+)<\/a>/g)) {
-      const soll = m[1] === "termin" ? "Kostenlosen Termin wählen" : "Leitfaden kostenlos holen";
+    for (const m of html.matchAll(/<a class="(?:btn\b[^"]*|text-link)" href="\/(termin|leitfaden)\/">([^<]+)<\/a>/g)) {
+      const soll = m[1] === "termin" ? "Unverbindlich kennenlernen" : "Leitfaden kostenlos holen";
       assert.equal(m[2], soll, `${name}: Knopf zu /${m[1]}/`);
+      if (m[1] === "termin") termin++;
     }
+    assert.equal(/Kostenlosen Termin wählen/.test(html), false, `${name}: alter Knopftext`);
   }
+  assert.ok(termin >= 8, `nur ${termin} Termin-Knöpfe gefunden`);
+});
+
+test("Keine Zusagen, die noch nicht eingerichtet sind", () => {
+  for (const [name, html] of Object.entries(seiten)) {
+    if (!site.zusagen.bestaetigungVideo) {
+      assert.equal(/kurzes Video|Video von mir/i.test(html), false, `${name}: Bestätigung mit DGS-Video versprochen`);
+    }
+    if (!site.zusagen.leitfadenVideo) {
+      assert.equal(/DGS-Video|Video in (?:Deutscher )?Gebärdensprache|Große Untertitel|erklärt in Gebärdensprache/i.test(html), false, `${name}: Leitfaden-Video versprochen`);
+    }
+    if (!site.kalender.url) assert.equal(/direkt in den Kalender|deinen Termin im Kalender/i.test(html), false, `${name}: Kalender versprochen`);
+  }
+});
+
+test("Behinderten-Pauschbetrag sachlich: Spanne, Merkzeichen, Steuersatz, keine Übertreibung", () => {
+  const start = seiten["index.html"];
+  const karte = start.slice(start.indexOf("<h3>Steuervorteile bei Behinderung</h3>"), start.indexOf('href="/termin/?thema=Steuervorteile"'));
+  for (const teil of ["384&nbsp;€ bei GdB 20", "2.840&nbsp;€ bei GdB 100 im Jahr", "Merkzeichen H, Bl oder TBl sind es 7.400&nbsp;€", "zu versteuernde Einkommen", "Steuersatz"]) {
+    assert.ok(karte.includes(teil), `fehlt: ${teil}`);
+  }
+  const js = readFileSync(join(DIST, "assets", "finanz-check.js"), "utf8");
+  assert.match(js, /"Ja, GdB 20 bis 40": "384 bis 860\\u00a0€"/);
+  for (const [name, html] of Object.entries(seiten)) {
+    assert.equal(/Geld liegen(?! bleibt)|lassen dieses Geld|bares Geld|schnellste Hebel|in zehn Minuten|als man denkt/i.test(html), false, name);
+  }
+  assert.equal(/geht er verloren|stehen dir/i.test(js), false, "Finanz-Check-Texte sachlich");
 });
 
 test("Schriften liegen auf dem eigenen Server und werden vorab geladen", () => {

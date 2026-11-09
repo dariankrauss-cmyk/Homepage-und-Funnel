@@ -10,9 +10,9 @@ description: 20 Minuten zum Kennenlernen per Video-Call: Du stellst deine Fragen
   <section class="hero termin-hero">
     <div class="wrap termin-grid">
       <div class="termin-intro">
-        <p class="badge">Kostenlos · 20 Minuten · per Video-Call</p>
+        <p class="badge">Kostenlos · 20&nbsp;Minuten · per Video-Call</p>
         <h1>Lern mich kennen, <span>in deiner Sprache</span></h1>
-        <p class="lead">In 20 Minuten lernen wir uns kennen. Du erzählst mir, welche Geldthemen dich beschäftigen, und stellst deine Fragen. Ich erkläre dir die Grundlagen. Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Kostenlos und unverbindlich.</p>
+        <p class="lead">In 20&nbsp;Minuten lernen wir uns kennen. Du erzählst mir, welche Geldthemen dich beschäftigen, und stellst deine Fragen. Ich erkläre dir die Grundlagen. Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Kostenlos und unverbindlich.</p>
 
         {{#site.videos.termin.src}}
         <div class="video" data-src="{{site.videos.termin.src}}" data-poster="{{site.videos.termin.poster}}" data-untertitel="{{site.videos.termin.untertitel}}" data-label="Darian stellt sich vor, in Gebärdensprache mit Untertiteln">
@@ -23,7 +23,7 @@ description: 20 Minuten zum Kennenlernen per Video-Call: Du stellst deine Fragen
       </div>
 
       <div class="form-card" id="anfrage">
-        <h2 class="form-h">Drei kurze Fragen, dann direkt in den Kalender</h2>
+        <h2 class="form-h">{{#site.kalender.url}}Drei kurze Fragen, dann direkt in den Kalender{{/site.kalender.url}}{{^site.kalender.url}}Drei kurze Fragen, dann melde ich mich{{/site.kalender.url}}</h2>
         <p class="sub">Dauert keine Minute. Telefonieren musst du nicht.</p>
         <form class="lead-form" data-quelle="termin" data-danke="/termin/danke/" novalidate>
           <fieldset class="choice-group" data-pflicht>
@@ -56,7 +56,7 @@ description: 20 Minuten zum Kennenlernen per Video-Call: Du stellst deine Fragen
             <label for="einwilligung">{{site.einwilligung.termin}} Es gilt die <a href="/datenschutz/">Datenschutzerklärung</a>.</label>
             <p class="msg" id="einwilligung-msg">Bitte bestätige kurz die Einwilligung.</p>
           </div>
-          <button class="btn full" type="submit">Kostenlosen Termin wählen</button>
+          <button class="btn full" type="submit">Unverbindlich anfragen</button>
           {{> lead-fuss}}
           <ul class="trust"><li>Kostenlos</li><li>Unverbindlich</li><li>Kein Anruf nötig</li></ul>
         </form>
@@ -65,9 +65,10 @@ description: 20 Minuten zum Kennenlernen per Video-Call: Du stellst deine Fragen
       <div class="termin-extra">
         <p class="kicker">So geht es weiter</p>
         <ol class="steps">
-          <li><b>Uhrzeit wählen</b><span>Im Online-Kalender, wann es dir passt.</span></li>
-          <li><b>Bestätigung per WhatsApp</b><span>Als Text und als kurzes Video von mir in Gebärdensprache, kurz vorher die Erinnerung mit dem Link.</span></li>
-          <li><b>20 Minuten per Video-Call</b><span>In Gebärdensprache, Lautsprache oder per Chat. Kostenlos und unverbindlich.</span></li>
+          {{#site.kalender.url}}<li><b>Uhrzeit wählen</b><span>Im Online-Kalender, wann es dir passt.</span></li>{{/site.kalender.url}}
+          {{^site.kalender.url}}<li><b>Termin finden</b><span>Ich melde mich per E-Mail oder WhatsApp, und wir finden eine Uhrzeit.</span></li>{{/site.kalender.url}}
+          <li><b>Bestätigung, wie du willst</b><span>Schriftlich per E-Mail oder WhatsApp.{{#site.zusagen.bestaetigungVideo}} Dazu ein kurzes Video von mir in Gebärdensprache.{{/site.zusagen.bestaetigungVideo}} Den Link zum Video-Call bekommst du vorher.</span></li>
+          <li><b>20&nbsp;Minuten per Video-Call</b><span>In Gebärdensprache, Lautsprache oder per Chat. Kostenlos und unverbindlich.</span></li>
         </ol>
         {{> ueber-darian}}
       </div>
@@ -80,12 +81,12 @@ description: 20 Minuten zum Kennenlernen per Video-Call: Du stellst deine Fragen
       <div class="alts">
         <a class="alt-card" href="/finanz-check/">
           <b>Erst selbst schauen: der Finanz-Check</b>
-          <span>Sechs Fragen, 90 Sekunden. Du siehst sofort, wo du wahrscheinlich Geld liegen lässt.</span>
+          <span>Sechs Fragen, 90&nbsp;Sekunden. Danach siehst du, welche Geldthemen für dich wichtig sein können.</span>
           <em>Check starten →</em>
         </a>
         <a class="alt-card" href="/leitfaden/">
           <b>Der Finanz-Leitfaden 2027</b>
-          <span>Als PDF und als Video in Gebärdensprache, kostenlos per E-Mail.</span>
+          <span>Sechs Kapitel als PDF{{#site.zusagen.leitfadenVideo}} und als Video in Gebärdensprache{{/site.zusagen.leitfadenVideo}}, kostenlos per E-Mail.</span>
           <em>Leitfaden kostenlos holen →</em>
         </a>
       </div>

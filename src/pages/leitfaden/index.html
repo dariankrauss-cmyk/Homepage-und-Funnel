@@ -1,7 +1,7 @@
 ---
-title: Finanz-Leitfaden 2027 kostenlos, erklärt in Gebärdensprache | Darian Krauß
-ogTitle: Der Finanz-Leitfaden 2027, erklärt in Gebärdensprache
-description: Steuervorteile bei Behinderung, Altersvorsorge, Geldanlage und Absicherung: der kostenlose Finanz-Leitfaden 2027 als PDF und als Video in Deutscher Gebärdensprache.
+title: Finanz-Leitfaden 2027 kostenlos | Darian Krauß
+ogTitle: Der Finanz-Leitfaden 2027, verständlich erklärt
+description: Steuervorteile bei Behinderung, Altersvorsorge, Geldanlage und Absicherung: der kostenlose Finanz-Leitfaden 2027, verständlich erklärt und per E-Mail. Kein Anruf nötig.
 headerCta: Finanz-Check starten
 headerCtaLink: /finanz-check/
 telefonFreiwillig: true
@@ -13,9 +13,9 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
 <main id="inhalt">
   <section class="hero">
     <div class="wrap">
-      <p class="badge">Kostenloser Leitfaden · auch in DGS</p>
-      <h1>Der Finanz-Leitfaden 2027, <span>erklärt in Gebärdensprache</span></h1>
-      <p class="lead">Die wichtigsten Geldthemen kompakt und einfach erklärt: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Als PDF zum Nachlesen und als Video in Deutscher Gebärdensprache mit Untertiteln. Ich schicke dir beides direkt per E-Mail.</p>
+      <p class="badge">Kostenloser Leitfaden · {{#site.zusagen.leitfadenVideo}}auch in DGS{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}per E-Mail{{/site.zusagen.leitfadenVideo}}</p>
+      <h1>Der Finanz-Leitfaden 2027, <span>{{#site.zusagen.leitfadenVideo}}erklärt in Gebärdensprache{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}verständlich erklärt{{/site.zusagen.leitfadenVideo}}</span></h1>
+      <p class="lead">Die wichtigsten Geldthemen kompakt und einfach erklärt: Steuervorteile bei Behinderung, Altersvorsorge, Geld anlegen, Absicherung und die teuersten Fehler. Als PDF zum Nachlesen{{#site.zusagen.leitfadenVideo}} und als Video in Deutscher Gebärdensprache mit Untertiteln{{/site.zusagen.leitfadenVideo}}. Ich schicke {{#site.zusagen.leitfadenVideo}}dir beides{{/site.zusagen.leitfadenVideo}}{{^site.zusagen.leitfadenVideo}}ihn dir{{/site.zusagen.leitfadenVideo}} direkt per E-Mail.</p>
 
       {{#site.videos.leitfaden.src}}
       <div class="video" data-src="{{site.videos.leitfaden.src}}" data-poster="{{site.videos.leitfaden.poster}}" data-untertitel="{{site.videos.leitfaden.untertitel}}" data-label="Darian stellt den Leitfaden vor, in Gebärdensprache mit Untertiteln">
@@ -31,9 +31,9 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
   <section class="alt" aria-labelledby="kapitel-titel">
     <div class="wrap">
       <p class="kicker">Das erwartet dich</p>
-      <h2 id="kapitel-titel">Sechs Kapitel, die bares Geld wert sind</h2>
+      <h2 id="kapitel-titel">Sechs Kapitel, kompakt und klar</h2>
       <ul class="list">
-        <li><b>Der Behinderten-Pauschbetrag</b><span>2.840&nbsp;€ im Jahr weniger zu versteuerndes Einkommen bei einem GdB von 100, mit Merkzeichen H, Bl oder TBl sogar 7.400&nbsp;€. So trägst du ihn richtig ein, und warum sich auch ein Blick auf frühere Jahre lohnen kann.</span></li>
+        <li><b>Der Behinderten-Pauschbetrag</b><span>Er richtet sich nach dem Grad der Behinderung: von 384&nbsp;€ bei GdB 20 bis 2.840&nbsp;€ bei GdB 100 im Jahr, mit Merkzeichen H, Bl oder TBl 7.400&nbsp;€. Er senkt das zu versteuernde Einkommen. Wo du ihn einträgst und wann er auch für frühere Jahre gelten kann.</span></li>
         <li><b>Weitere Steuerhebel, die viele übersehen</b><span>Fahrtkosten-Pauschale, Hilfsmittel und Pflege: wann dir zusätzlich etwas zusteht und welche Nachweise du brauchst.</span></li>
         <li><b>Altersvorsorge, einfach erklärt</b><span>Gesetzliche Rente, Betriebsrente und private Vorsorge im Überblick, und welche Zulagen du mitnehmen kannst.</span></li>
         <li><b>Geld anlegen mit ETF</b><span>Chancen, Risiken und Kosten verständlich erklärt. Investieren bietet Chancen, aber keine Garantie.</span></li>
@@ -42,8 +42,10 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
       </ul>
       <ul class="formats" aria-label="Formate">
         <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5H14l4 4v13H6.5z"/><path d="M14 3.5v4h4"/><path d="M9.5 12.5h5M9.5 15.5h5"/></svg>PDF zum Nachlesen</li>
+        {{#site.zusagen.leitfadenVideo}}
         <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 11V5a1.5 1.5 0 0 1 3 0v6"/><path d="M14 11.5V7a1.5 1.5 0 0 1 3 0v7c0 3.9-2.6 7-6.4 7-2.3 0-3.8-1-5-2.9L4 15.2a1.5 1.5 0 0 1 2.4-1.8L8 15.4"/></svg>Video in Deutscher Gebärdensprache</li>
         <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M7 11h10M7 14.5h4M13 14.5h4"/></svg>Große Untertitel</li>
+        {{/site.zusagen.leitfadenVideo}}
         <li><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg>Per E-Mail, kein Anruf nötig</li>
       </ul>
     </div>
@@ -84,13 +86,13 @@ disclaimer: Der Leitfaden dient allgemeinen Informationszwecken und ersetzt kein
       <h2 id="persoenlich-titel">Lieber gleich persönlich?</h2>
       <div class="alts">
         <a class="alt-card" href="/termin/">
-          <b>Kennenlerngespräch in 20 Minuten</b>
+          <b>Kennenlerngespräch in 20&nbsp;Minuten</b>
           <span>Per Video-Call, in Gebärdensprache, Lautsprache oder per Chat. Kostenlos und unverbindlich.</span>
-          <em>Kostenlosen Termin wählen →</em>
+          <em>Unverbindlich kennenlernen →</em>
         </a>
         <a class="alt-card" href="/finanz-check/">
           <b>Erst selbst schauen: der Finanz-Check</b>
-          <span>Sechs Fragen, 90 Sekunden. Du siehst sofort, wo du wahrscheinlich Geld liegen lässt.</span>
+          <span>Sechs Fragen, 90&nbsp;Sekunden. Danach siehst du, welche Geldthemen für dich wichtig sein können.</span>
           <em>Check starten →</em>
         </a>
       </div>
